@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.faint.mapper.MemberMapper">
+	
+	    <insert id="insertUser">
+        INSERT INTO tbl_user (EMAIL, PASSWORD, NICKNAME)
+        VALUES (#{memberEmail}, #{memberPassword}, #{memberName})
+    </insert>
+
+    <select id="checkdupl" resultType="MemberVO">
+        SELECT
+            ID    memberID,
+            PRI_LEVEL userState
+        FROM tbl_user
+        WHERE EMAIL = #{userEmail}
+    </select>
+    <select id="checkduplName" resultType="MemberVO">
+        SELECT
+            ID    memberID,
+            PRI_LEVEL userState
+        FROM tbl_user
+        WHERE NICKNAME = #{userName}
+    </select>
+    <select id="getUserPassword" resultType="MemberVO">
+    select PASSWORD memberPassword
+    FROM  tbl_user
+    WHERE EMAIL = #{memberEmail}
+    </select>
+    <select id="login" resultType="MemberVO">
+        SELECT
+            EMAIL   memberEmail,
+            ID      memberID,
+            NICKNAME    memberName,
+            PROFILE_PHOTO memberPicture,
+            PRI_LEVEL userState
+        FROM tbl_user
+        WHERE EMAIL = #{memberEmail}
+              AND PASSWORD = #{memberPassword}
+    </select>
+
+    <select id="readUser" resultType="MemberVO">
+        SELECT
+            ID        memberID,
+            EMAIL     memberEmail,
+            NICKNAME      memberName,
+            SNSID snsID,
+            PROFILE_PHOTO   memberPicture
+        FROM tbl_user
+        WHERE ID = #{memberID}
+    </select>
+
+    <update id="updateUser">
+        UPDATE tbl_user
+        SET
+            NICKNAME    = #{memberName},
+            PROFILE_PHOTO = #{memberPicture}
+        WHERE ID = #{memberID}
+    </update>
+    <update id="deleteUser">
+        UPDATE tbl_user
+        SET
+            PRI_LEVEL = '2'
+        WHERE ID = #{memberID}
+
+    </update>
+
+    <insert id="naverInsertUser">
+        INSERT INTO tbl_user (EMAIL, SNSID, NICKNAME)
+        VALUES (#{memberEmail}, #{snsID}, #{memberName})
+    </insert>
+
+    <select id="naverReadUser" resultType="MemberVO">
+        SELECT
+            ID      memberID,
+            NICKNAME    memberName,
+            EMAIL   memberEmail,
+            PROFILE_PHOTO memberPicture
+        FROM tbl_user
+        WHERE SNSID = #{snsID}
+    </select>
+
+    <update id="createAuthKey">
+        UPDATE tbl_user
+        SET AUTHKEY = #{memberAuthKey}
+        WHERE EMAIL = #{memberEmail}
+    </update>
+
+    <update id="userAuth">
+        UPDATE tbl_user
+        SET
+            PRI_LEVEL = '1'
+        where EMAIL = #{memberEmail}
+
+    </update>
+    <select id="chkAuth" resultType="MemberVO">
+
+        SELECT
+            ID    memberID,
+            NICKNAME  memberName,
+            EMAIL memberEmail
+        FROM tbl_user
+        WHERE AUTHKEY = #{memberAuthKey}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE tbl_user
+        SET
+            PASSWORD = #{memberPassword}
+        WHERE ID = #{memberID}
+    </update>
+
+    <update id="successAuth">
+        UPDATE tbl_user
+        SET
+            AUTHKEY = NULL,
+            pri_level ='1'
+        WHERE ID = #{memberID}
+    </update>
+
+
+
+
+
+
+    <select id="getUserProfile" resultType="String">
+        SELECT
+            PROFILE_PHOTO
+        from tbl_user
+        where ID = #{memberID}
+    </select>
+
+    <update id="deleteImage">
+        UPDATE tbl_user
+        SET PROFILE_PHOTO =NULL
+        WHERE ID = #{memberID}
+    </update>
+
+
+
+
+
+</mapper>
