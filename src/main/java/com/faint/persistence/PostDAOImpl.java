@@ -75,4 +75,19 @@ public class PostDAOImpl implements PostDAO {
 		session.insert(namespace + ".insertPostedTag", paramMap);
 	}
 
+	
+	@Override
+	public List<PostVO> read(Integer userid) throws Exception{
+		return session.selectList(namespace+".read", userid);
+	}
+	
+	@Override
+	public void update(PostVO vo) throws Exception{
+		session.update(namespace+".update", vo);
+	}
+	
+	@Override
+	public void delete(Integer id) throws Exception{
+		session.delete(namespace+".delete", id);
+	}
 }

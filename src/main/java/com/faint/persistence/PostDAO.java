@@ -32,4 +32,12 @@ public interface PostDAO {
 	///////////post와 tag relation ////////////////////
 	//postid와 tagid 등록
 	public void insertPostedTag(int postid, int tagid) throws Exception;
+	
+	
+	public List<PostVO> read(Integer userid) throws Exception;
+	
+	public void update(PostVO vo) throws Exception;
+	
+	public void delete(Integer id) throws Exception;
+	
 }

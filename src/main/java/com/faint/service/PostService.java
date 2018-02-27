@@ -26,4 +26,9 @@ public interface PostService {
 	// postid와 tagid 등록
 	public void insertPostedTag(int postid, int tagid) throws Exception;
 
+	public List<PostVO> read(Integer userid) throws Exception;
+	
+	public void modify(PostVO post) throws Exception;
+	
+	public void remove(Integer id) throws Exception;
 }

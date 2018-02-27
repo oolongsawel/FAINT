@@ -7,19 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form role="form" method="post">
-	<table>
-	<tr>
-	<laber>email</laber>
-	</tr>
-	<tr>
-	<laber>email</laber>
-	</tr>
-	<tr>
-	<laber>email</laber>
-	</tr>
-	
-	</table>
-</form>
+	<script>
+		self.location="/member/profile_main";
+	</script>
 </body>
 </html>

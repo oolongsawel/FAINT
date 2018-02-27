@@ -76,7 +76,6 @@ public class UploadController {
 			}
 			
 			logger.info("headers : " + headers);
-//			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
 			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

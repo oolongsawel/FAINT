@@ -104,4 +104,19 @@ public class PostServiceImpl implements PostService {
 		insertPostedTag(postid, vo.getId());
 
 	}
+	
+	@Override
+	public List<PostVO> read(Integer userid) throws Exception{
+		return dao.read(userid);
+	}
+	
+	@Override
+	public void modify(PostVO post) throws Exception{
+		dao.update(post);
+	}
+	
+	@Override
+	public void remove(Integer id) throws Exception{
+		dao.delete(id);
+	}
 }

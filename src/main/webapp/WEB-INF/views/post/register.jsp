@@ -49,7 +49,7 @@
 				DROP Here</div>
 		</div>
 		<input type="submit">
-		<<!-- input type="hidden" id='cateid' name='cateid' value=0> -->
+		<!-- <input type="hidden" id='cateid' name='cateid' value=0> -->
 	</form>
 </body>
 <script type="text/javascript" src="/resources/js/upload.js"></script>

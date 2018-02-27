@@ -1,17 +1,20 @@
 package com.faint.domain;
 
 public class UserVO {
+	
 	private int id;
 	private String email;
+	private String password;
 	private String name;
 	private String nickname;
 	private String phonenumber;
-	private String website;
 	private int sex;
-	private String password;
-	private String profilephoto;
+	private String website;
 	private String intro;
 	private int prilevel;
+	private String sessionkey;
+	private int sessionlimit;
+
 	public int getId() {
 		return id;
 	}
@@ -23,6 +26,12 @@ public class UserVO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getName() {
 		return name;
@@ -42,29 +51,17 @@ public class UserVO {
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
-	public String getWebsite() {
-		return website;
-	}
-	public void setWebsite(String website) {
-		this.website = website;
-	}
 	public int getSex() {
 		return sex;
 	}
 	public void setSex(int sex) {
 		this.sex = sex;
 	}
-	public String getPassword() {
-		return password;
+	public String getWebsite() {
+		return website;
 	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getProfile_photo() {
-		return profilephoto;
-	}
-	public void setProfile_photo(String profilephoto) {
-		this.profilephoto = profilephoto;
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 	public String getIntro() {
 		return intro;
@@ -75,23 +72,27 @@ public class UserVO {
 	public int getPrilevel() {
 		return prilevel;
 	}
-	public String getProfilephoto() {
-		return profilephoto;
-	}
-	public void setProfilephoto(String profilephoto) {
-		this.profilephoto = profilephoto;
-	}
 	public void setPrilevel(int prilevel) {
 		this.prilevel = prilevel;
 	}
+	public String getSessionkey() {
+		return sessionkey;
+	}
+	public void setSessionkey(String sessionkey) {
+		this.sessionkey = sessionkey;
+	}
+	public int getSessionlimit() {
+		return sessionlimit;
+	}
+	public void setSessionlimit(int sessionlimit) {
+		this.sessionlimit = sessionlimit;
+	}
 	@Override
 	public String toString() {
-		return "UserVO [id=" + id + ", email=" + email + ", name=" + name + ", nickname=" + nickname + ", phonenumber="
-				+ phonenumber + ", website=" + website + ", sex=" + sex + ", password=" + password + ", profilephoto="
-				+ profilephoto + ", intro=" + intro + ", prilevel=" + prilevel + "]";
+		return "UserVO [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", nickname="
+				+ nickname + ", phonenumber=" + phonenumber + ", sex=" + sex + ", website=" + website + ", intro="
+				+ intro + ", prilevel=" + prilevel + ", sessionkey=" + sessionkey + ", sessionlimit=" + sessionlimit
+				+ "]";
 	}
 	
-	
-	
 }
-

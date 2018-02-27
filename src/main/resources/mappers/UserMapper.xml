@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.faint.mapper.userMapper">
+	<!-- 가입 -->
+	<insert id="create">
+		INSERT INTO tbl_user
+		(
+		email
+		,password
+		,name
+		,nickname
+		,phonenumber
+		,website
+		,intro
+		,sessionkey
+		)
+
+		VALUES
+
+		(
+		#{email}
+		,#{password}
+		,#{name}
+		,#{nickname}
+		,#{phonenumber}
+		,#{website}
+		,#{intro}
+		,#{sessionkey}
+		)
+	</insert>
+
+	<!-- 특정 유저데이터 읽기 -->
+	<select id="read" resultType="com.faint.domain.UserVO">
+		SELECT *
+		FROM
+		tbl_user
+		WHERE id=#{id}
+	</select>
+
+	<!-- 유저데이터 수정 -->
+	<update id="update">
+		UPDATE tbl_user
+		SET intro=#{intro}
+		WHERE id=#{id}
+	</update>
+
+	<!-- 유저데이터 삭제 -->
+	<delete id="delete">
+		DELETE
+		FROM tbl_user
+		WHERE id=#{id}
+	</delete>
+
+	<!-- 리스트형식으로 모든 유저 읽기 -->
+	<select id="listAll" resultType="com.faint.domain.UserVO">
+	<![CDATA[
+		SELECT *
+		FROM
+			tbl_user
+		WHERE id>0
+		ORDER BY id DESC
+	]]>
+	</select>
+
+	<!-- follow -->
+	<!-- 팔로우등록 -->
+	<insert id="flwCreate">
+		INSERT INTO tbl_follow
+		(
+		userid
+		,followedid
+		)
+		VALUES
+		(
+		#{userid}
+		,#{followedid}
+		)
+	</insert>
+
+	<!-- 팔로우해제 -->
+	<delete id="flwDelete">
+		DELETE
+		FROM tbl_follow
+		WHERE userid=#{userid}
+		AND
+		followedid=#{followedid}
+	</delete>
+
+	<!-- 팔로잉 여부 -->
+	<select id="isFlw" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM
+		tbl_follow
+		WHERE userid=#{userid}
+		AND followedid=#{followedid}
+	</select>
+
+	<!-- 해당 유저가 팔로우하는 사람 리스트 -->
+	<select id="flwnList" resultType="com.faint.domain.UserVO">
+		SELECT *
+		FROM
+		tbl_user
+		WHERE id in
+		(SELECT followedid
+		FROM
+		tbl_follow
+		WHERE userid=#{userid})
+	</select>
+
+	<!-- 해당 유저를 팔로우 중인 사람 리스트 -->
+	<select id="flwdList" resultType="com.faint.domain.UserVO">
+		SELECT *
+		FROM
+		tbl_user
+		WHERE id in
+		(SELECT userid
+		FROM
+		tbl_follow
+		WHERE followedid=#{userid})
+	</select>
+
+	<!-- 해당 유저가 팔로우하는 사람count -->
+	<select id="flwnCnt" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM
+		tbl_follow
+		WHERE userid=#{userid}
+	</select>
+
+	<!-- 해당 유저를 팔로우 중인 사람count -->
+	<select id="flwdCnt" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM
+		tbl_follow
+		WHERE followedid=#{userid}
+	</select>
+
+	<!-- login -->
+	<select id="login" resultType="com.faint.domain.UserVO">
+		SELECT *
+		FROM tbl_user
+		WHERE
+		email=#{email}
+		AND password=#{password}
+	</select>
+
+	<!-- <insert id="create"> insert into tbl_user (email, nickname, password) 
+		values(#{email},#{nickname},#{password}) </insert> 회원전체목록 <select id="listAll" 
+		resultType="com.faint.domain.UserVO"> <![CDATA[ select name, nickname, profilephoto 
+		from tbl_user where id > 0 ]]> </select> 회원키워드목록 nickname 또는 name이 키워드랑 부분일치하면 
+		검색됨 <select id="listKeyword" resultType="com.faint.domain.UserVO"> <![CDATA[ 
+		select name, nickname, profilephoto from tbl_user where nickname like CONCAT(#{keyword},'%') 
+		or name like CONCAT(#{keyword},'%') order by id desc, nickname desc limit 
+		0,30 ]]> </select> -->
+</mapper>
