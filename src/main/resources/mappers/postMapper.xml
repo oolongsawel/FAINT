@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.faint.mapper.postMapper">
+
+	<insert id="create">
+		insert into tbl_post (userid, cateid, caption)
+		values(#{userid}, #{cateid}, #{caption})
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			<!-- pk가 아닐땐, 키컬럼도 넣어 설정할 수 있음 -->
+			select last_insert_id() as id
+		</selectKey> 
+	</insert>
+
+	<insert id="addAttach">
+		insert into tbl_attach (postid, url) values (LAST_INSERT_ID(), #{url})
+	</insert>
+
+	<!--post 전체목록 -->
+	<select id="listAllPost" resultType="com.faint.domain.PostVO">
+	 <![CDATA[
+	 select 
+	    *
+	 from 
+	   tbl_post
+	 where id > 0 
+	 ]]>
+	</select>
+	
+		<!-- post키워드목록 -->
+	<!-- nickname 또는 name이 키워드랑 부분일치하면 검색됨 -->
+	<!-- 키워드 일치 리스트 가져오고 , tag의 count+1해주기 -->
+	<select id="listPostKeyword" resultType="com.faint.domain.PostVO">
+	 <![CDATA[
+		select
+		*
+		from
+		tbl_post
+		where id=
+		any
+		(
+		select
+		 ptag.postid as postid
+		from tbl_tag tag, tbl_posted_tag ptag
+		where
+		tag.id=ptag.tagid
+		and
+		tag.name=#{keyword}
+		)
+		;
+	 ]]>
+	</select> 
+	
+	
+	
+	<!--                    tag 관련                  -->	
+	<!--Tag 삽입  -->
+	<insert id="insertTag">
+		insert into tbl_tag (name, tagcount)
+		values (#{name}, #{tagcount})
+	
+		<selectKey keyProperty="id" resultType="int" order="AFTER"> 
+		<!-- pk가 아닐땐, 키컬럼도 넣어 설정할 수 있음 -->
+            select last_insert_id() as id
+        </selectKey> 
+	</insert>
+	
+	<!-- 태그 name으로 찾기 -->
+	<select id="selectTagByName" resultType="com.faint.domain.TagVO">
+		 <![CDATA[
+	 select 
+	    *
+	 from 
+	   tbl_tag
+	 where  name =#{name}
+	 ]]>
+	</select>
+	
+	<!-- tagcount 1증가 -->
+	<update id="plusTagCount">
+	<![CDATA[
+		update 
+		tbl_tag 
+		set
+		tagcount=tagcount+1
+		where
+		name=#{ keyword}
+		;
+	]]>
+	</update>
+
+	<!--postid , tagid 넣기  -->
+	<insert id="insertPostedTag">
+		insert into tbl_posted_tag (postid, tagid)
+		values(#{postid}, #{tagid})
+	</insert>
+</mapper>
