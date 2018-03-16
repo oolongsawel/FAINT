@@ -1,5 +1,6 @@
 package com.faint.interceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -66,14 +67,49 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 			flashMapManager.saveOutputFlashMap(flashMap, request, response);
 			return;
 		}
-
+//		else if(vo.getUserState()==9){
+//			flashMap.put("msg" , "너는 관리자다 좋겠");
+//			System.out.println("관리자인데 바로 안넘어가니??");
+//			session.setAttribute("dest","admin/admin_test");
+//			System.out.println("===================넘어갔으면 좋겠다 ");
+//			FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
+//			flashMapManager.saveOutputFlashMap(flashMap, request, response);
+//			return;
+//		}
+		System.out.println("여기는 실행이 안된나봐 왜 ");
 		if(vo.getUserState()==1||vo.getUserState()==9) {
 			session.setAttribute(LOGIN, userVO);
 			//response.sendRedirect("/");
 			//System.out.println(userVO);
+			System.out.println("결국 여기는 ");
 			Object dest = session.getAttribute("dest");
+			System.out.println(vo.getUserState());
+			if(vo.getUserState()==9) {
+				System.out.println("관리자로 좀 넘어가자 ");
+				flashMap.put("msg" , "너는 관리자다 좋겠");
+				session.setAttribute("dest","admin/admin_test");
+				response.sendRedirect("/admin/admin_dashboard");
+				System.out.println("관리자 +로그인 상태 유지");
+				logger.info("관리자 +그인 상태 유지");
+				Cookie loginCookie = new Cookie("loginCookie", session.getId());
+				loginCookie.setPath("/");
+				// 쿠키 수명 : 하루동안 브라우저에 보관
+				loginCookie.setMaxAge(60 * 60 * 24);
+				response.addCookie(loginCookie);
+			}
 			if(dest=="/user/login"||dest==""||dest==null){
+				System.out.println("돌아버리겠다 ");
+				System.out.println("기본회원인듯요 ");
 				session.setAttribute("dest","/");
+				
+				System.out.println("로그인 상태 유지");
+				logger.info("로그인 상태 유지");
+				Cookie loginCookie = new Cookie("loginCookie", session.getId());
+				loginCookie.setPath("/");
+				// 쿠키 수명 : 하루동안 브라우저에 보관
+				loginCookie.setMaxAge(60 * 60 * 24);
+				response.addCookie(loginCookie);
+				
 			}
 			//System.out.println("postHandle dest: "+dest);
 

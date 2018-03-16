@@ -3,13 +3,13 @@
 <jsp:include page="/WEB-INF/views/include/header.jsp" flush="false"/>
 
 
-<script>
+<!-- <script>
     var socialId=Boolean(${socialID});
     if(socialId){
         self.location = '/user/modifyUser';
     }
 
-</script>
+</script> -->
 
 <link href="/resources/dist/css/login.css" rel="stylesheet">
 
@@ -32,8 +32,8 @@
                 <form name="login" action="/user/modifyAuthCheck" method="post">
 
 
-                    <input type="text" class="form-control" id="userEmail" name="userEmail" value="${login.userEmail}" readonly autofocus>
-                    <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="Password를 입력해주세요" autofocus >
+                    <input type="text" class="form-control" id="memberEmail" name="memberEmail" value="${login.memberEmail}" readonly autofocus>
+                    <input type="password" class="form-control" id="memberPassword" name="memberPassword" placeholder="Password를 입력해주세요" autofocus >
                     <input type="submit" class="form-control btn btn-primary" value="로그인"/>
 
                 </form>

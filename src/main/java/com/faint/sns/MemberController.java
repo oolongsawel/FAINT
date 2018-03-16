@@ -2,6 +2,7 @@ package com.faint.sns;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -240,7 +241,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/loginTest", method = RequestMethod.GET)
 	public void loginGET(@ModelAttribute("dto") LoginDTO dto) {
 		
 	}
@@ -261,6 +262,7 @@ public class MemberController {
 			rttr.addFlashAttribute("msg" , "인증 대기 중인 아이디 입니다.\n 메일에 접속해 인증해주세요");
 			System.out.println("인증대기");
 			model.addAttribute("userVO",vo);
+			
 			return;
 		}else if(vo.getUserState()==2){
 			rttr.addFlashAttribute("msg" , "탈퇴된 회원입니다. \n 관리자에게 문의해주세요");
@@ -271,8 +273,23 @@ public class MemberController {
 			rttr.addFlashAttribute("msg", "관리자 계정입니다. \n 환영합니다.");
 			System.out.println("관리자 로그인");
 			model.addAttribute("userVO", vo);
-			return;
+			
+			return ;
 		}
+		System.out.println("=\2=2=2=2=22==");
+		System.out.println(dto.isUseCookie());
+		
+		if (!dto.isUseCookie()) {
+			System.out.println("쿠기");
+			int amount = 60 * 60 * 24;
+
+			Date sessionLimit = new Date(System.currentTimeMillis() + (1000 * amount));
+
+			service.keepLogin(vo.getMemberID(), session.getId(), sessionLimit);
+
+		}
+
+		
 		System.out.println("usercontroller vo =" +vo);
 		model.addAttribute("userVO",vo);
 		System.out.println("====================");
@@ -284,8 +301,9 @@ public class MemberController {
 	@RequestMapping(value = "/loginPost", method = RequestMethod.GET)
 	public void loginPOSTGet(LoginDTO dto, HttpSession session, Model model) throws Exception{
 		//바로 login
+		
 		System.out.println("로그인포스후 ㅎㄷㅅ ㅁ");
-    	session.setAttribute("dest","/");
+		session.setAttribute("dest","/");
 	}
 
 	@RequestMapping(value = "/socialLoginPost", method = RequestMethod.GET)
@@ -307,11 +325,14 @@ public class MemberController {
     		session.invalidate();
 
     		Cookie loginCookie = WebUtils.getCookie(request,"loginCookie");
+    		
+    		System.out.println("로그인쿠"+loginCookie);
     		if(loginCookie !=null){
+    			System.out.println("로그아웃시 세션 아");
     			loginCookie.setPath("/");
     			loginCookie.setMaxAge(0);
     			response.addCookie(loginCookie);
-
+    			service.keepLogin(vo.getMemberID(), session.getId(), new Date());
 			}
 		}
 		return "/user/logout";
@@ -347,6 +368,11 @@ public class MemberController {
 	public void ModifyUserGet(MemberVO user,Model model) throws Exception{
 
 	}
+	//mypage 페이지
+    @RequestMapping(value = "/myinfo", method = RequestMethod.GET)
+	public void myinfo() throws Exception {
+	}
+
 
 	//업로드 파일의 경로 설정
 	@Resource(name="uploadPath")
@@ -363,10 +389,13 @@ public class MemberController {
 		String ssuserId =ssvo.getMemberID()+"";
 
 
-		//System.out.println("userId"+userId);
-		//System.out.println("ssuserId"+ssuserId);
+		System.out.println("userId"+userId);
+		System.out.println("ssuserId"+ssuserId);
 		
 		if(!userId.equals(ssuserId)){
+			
+			System.out.println(userId);
+			System.out.println(ssuserId);
 			rttr.addFlashAttribute("msg","비정상적인 접근입니다. 경고");
 			System.out.println("uid 다름");
 			return "redirect:/user/modifyAuthCheck";
@@ -376,6 +405,7 @@ public class MemberController {
 		String imagedefualt=user.getMemberPicture();
 		//System.out.println(imagedefualt);
 		String defualtprofile ="basic";
+		/////////////////////
 		//file 업로드 여부 확인
 		///////////////////////////////
 		if(!file.isEmpty()) {
@@ -454,24 +484,29 @@ public class MemberController {
     }
 
 
-    @RequestMapping(value = "/googleLogincallback")
+    @RequestMapping(value = "/googleSignInCallback")
     public String doSessionAssignActionPage(HttpServletRequest request, Model model)throws Exception{
-        //System.out.println("/user/googleLogincallback");
+     //System.out.println("/user/googleLogincallback");
+    System.out.println("야 왜 안되냐 뒤질래 가자1");
         String code = request.getParameter("code");
 
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
 		AccessGrant accessGrant = oauthOperations.exchangeForAccess(code , googleOAuth2Parameters.getRedirectUri(),
 				null);
-
+	    System.out.println("야 왜 안되냐 뒤질래 가자2");
 		String accessToken = accessGrant.getAccessToken();
+		System.out.println("야 왜 안되냐 뒤질래 가자22");
 		Long expireTime = accessGrant.getExpireTime();
+		System.out.println("야 왜 안되냐 뒤질래 가자33");
 		if (expireTime != null && expireTime < System.currentTimeMillis()) {
 			accessToken = accessGrant.getRefreshToken();
-			//System.out.printf("accessToken is expired. refresh token = {}", accessToken);
+			System.out.printf("accessToken is expired. refresh token = {}", accessToken);
+			
+			   System.out.println("야 왜 안되냐 뒤질래 가자3");
 		}
 		Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
 		Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
-
+		   System.out.println("야 왜 안되냐 뒤질래 가자4");
 		PlusOperations plusOperations = google.plusOperations();
 		Person person = plusOperations.getGoogleProfile();
 

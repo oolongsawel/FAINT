@@ -1,5 +1,7 @@
 package com.faint.service;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.springframework.mail.javamail.JavaMailSender;
@@ -140,6 +142,7 @@ public class MemberServiceImpl implements MemberService {
 	//구글 oauth login
     @Override
     public MemberVO googleLogin(LoginDTO dto) throws Exception {
+    	System.out.println("구글 로그인을 시작한다. ");
     	MemberVO vo =new MemberVO();
         vo=dao.naverReadUser(dto);
         if(vo==null){
@@ -222,4 +225,17 @@ public class MemberServiceImpl implements MemberService {
 	public void deleteImage(String userId) throws Exception {
 		dao.deleteImage(userId);
 	}
+	
+	@Override
+	public void keepLogin(Integer memberID, String sessionKey, Date next) throws Exception {
+		System.out.println("세션키 저장하러 오나요?service에  ");
+
+		dao.keepLogin(memberID, sessionKey, next);
+	}
+
+	public MemberVO checkLoginBefore(String value) {
+
+		return dao.checkSessionKey(value);
+	}
+
 }

@@ -54,7 +54,7 @@
     <update id="updateUser">
         UPDATE tbl_user
         SET
-            NICKNAME    = #{memberName},
+            NICKNAME     = #{memberName},
             PROFILE_PHOTO = #{memberPicture}
         WHERE ID = #{memberID}
     </update>
@@ -119,14 +119,31 @@
         WHERE ID = #{memberID}
     </update>
 
-
+	 	<!-- 로그인 유지 -->
+	<update id="keepLogin">
+	update tbl_user
+	set sessionkey = #{sessionKey}
+	   ,sessionlimit = #{next}
+	where ID = #{memberID}
+	</update>
+	
+ 	<!-- 세션키 체크 -->
+	<select id="checkSessionKey" resultType="MemberVO">
+	<![CDATA[  
+	select ID memberID,
+	SessionKey sessionKey
+	from faint.tbl_user
+	where SessionKey = #{value}
+	  and SessionLimit > now()
+	  ]]>
+	</select>
 
 
 
 
     <select id="getUserProfile" resultType="String">
         SELECT
-            PROFILE_PHOTO
+            PROFILE_PHOTO memberPicture
         from tbl_user
         where ID = #{memberID}
     </select>

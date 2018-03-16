@@ -125,7 +125,7 @@
                 <c:if test="${login eq null}">
 
                     <li class="nav-item">
-                        <button  class="btn btn-outline-primary hn " onclick="location.href='/user/login'" style="font-size: 20px ;height:50px;">로그인</button>
+                        <button  class="btn btn-outline-primary hn " onclick="location.href='/user/loginTest'" style="font-size: 20px ;height:50px;">로그인</button>
                     </li>
                     <%--<li class="nav-item">--%>
                         <%--<a  class="nav-link"><img class="rounded-circle Photo" src="/resources/images/123.png"></a>--%>

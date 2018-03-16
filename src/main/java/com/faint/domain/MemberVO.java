@@ -1,5 +1,7 @@
 package com.faint.domain;
 
+import java.sql.Date;
+
 public class MemberVO {
 	private int memberID;
 	private String memberEmail;
@@ -13,6 +15,16 @@ public class MemberVO {
 	private String sessionKey;
 	private String memberAuthKey;
 	private String snsID;
+	
+	private Date regdate;
+
+	public Date getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
 
 	public int getMemberID() {
 		return memberID;

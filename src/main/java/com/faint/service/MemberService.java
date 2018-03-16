@@ -1,5 +1,7 @@
 package com.faint.service;
 
+import java.util.Date;
+
 import com.faint.domain.MemberVO;
 import com.faint.dto.LoginDTO;
 
@@ -27,7 +29,10 @@ public interface MemberService {
 	public void findPassword(MemberVO vo) throws Exception;
 
 	public void modifypassUser(MemberVO vo) throws Exception;
+	
+	public void keepLogin(Integer memberID, String sessionKey, Date next) throws Exception;
 
+	public MemberVO checkLoginBefore(String value);
 
 
 	public void deleteImage(String memberID)throws Exception;

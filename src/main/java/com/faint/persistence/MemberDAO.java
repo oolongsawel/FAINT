@@ -1,6 +1,8 @@
 package com.faint.persistence;
 
 
+import java.util.Date;
+
 import com.faint.domain.MemberVO;
 import com.faint.dto.LoginDTO;
 
@@ -35,7 +37,11 @@ public interface MemberDAO {
 	public void updatePassword(MemberVO vo) throws Exception; //패스워드 변
 
 	public void successAuth (MemberVO vo) throws Exception;  // 인증완료로 인한인증키 삭제 
+	
+	
+	public void keepLogin(Integer memberID, String sessionKey, Date next);  // 로그인 유지  세션 에 담기 
 
+	public MemberVO checkSessionKey(String value);   // 세션 확인 
 
 
 	String getUserProfile(int memberID) throws Exception;  //유저 프로필 사진 

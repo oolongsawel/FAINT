@@ -269,7 +269,7 @@
 
     //수정 권한 확인
     var check = Boolean(${modify});
-    var socialId = Boolean(${socialID});
+    var socialId = Boolean(${snsID});
     if (!check && !socialId) {
         self.location = '/user/modifyAuthCheck';
     }
@@ -277,7 +277,6 @@
     $(document).ready(function () {
         //console.log( "ready!" );
         var imgtest;
-        var fullName = "${login.userProfile}";
         if (fullName !== "") {
             imgtest = getFileInfo(fullName);
             console.log(imgtest);
@@ -291,39 +290,39 @@
         chkName = false;
     }
     function signinchk(obj) {
-        if (!obj.userName.value || obj.userName.value.trim().length == 0) {
+        if (!obj.memberName.value || obj.memberName.value.trim().length == 0) {
             alert("이름을 입력해주세요.");
-            obj.userName.value = "";
-            obj.userName.focus();
+            obj.memberName.value = "";
+            obj.memberName.focus();
             return false;
         }
         if (!chkName) {
             alert("이름 중복체크를 실행해주세요.");
-            obj.userName.focus();
+            obj.memberName.focus();
             return false;
         }
     }
 </script>
 <script>
     $(document).on('click', '#authenticateName', function () {
-        var userName = $('#userName').val();
-        var oldName = "${login.userName}";
+        var memberName = $('#memberName').val();
+        var oldName = "${login.memberName}";
         console.log(userName);
-        if (!userName || userName.trim().length > 20) {
+        if (!memberName || memberName.trim().length > 20) {
             alert("이름을 20자 이내로 입력해 주세요.");
             return false;
         }
-        if (userName == oldName) {
+        if (memberName == oldName) {
             alert("현재 사용 중인 이름입니다.");
             return chkName = true;
-        } else if (!userName || userName.trim().length == 0) {
+        } else if (!memberName || memberName.trim().length == 0) {
             alert("유저 네임이 입력되지 않았습니다.");
             return false;
         } else {
             $.ajax({
                 url: '/user/authenticateName',
                 type: 'POST',
-                data: {'userName': userName},
+                data: {'memberName': memberName},
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 dataType: "json",
                 success: function (data) {
@@ -379,14 +378,14 @@
             </div>
 
             <div class=" mt-5" >
-                <input type="hidden" name="userId" value="${login.userId}" readonly/>
+                <input type="hidden" name="memberID" value="${login.memberID}" readonly/>
 
                 <div class=" form-group">
                     <div class="row input-group mb-3" style="margin-left: 17%" >
                         <div class=" input-group-prepend bd">
                             <span class=" input-group-text input-group-height " class="input-group-addon" style="border:0">E-mail ID</span>
                         </div>
-                        <input type="text" style="border:0" class="col-6 input-group-text input-group-height" name="userEmail" id="userEmail" value="${login.userEmail}" aria-describedby="basic-addon1" readonly/>
+                        <input type="text" style="border:0" class="col-6 input-group-text input-group-height" name="memberEmail" id="memberEmail" value="${login.memberEmail}" aria-describedby="basic-addon1" readonly/>
                     </div>
                 </div>
 
@@ -396,7 +395,7 @@
                             <span class="input-group-text input-group-height" class="input-group-addon"  style="border:0">user name</span>
                         </div>
                         <input type="text" maxlength="20" class="col-4 input-group-text input-group-height " aria-label="Amount (to the nearest dollar)"  style="border:0"
-                               name="userName" id="userName" value="${login.userName}" onkeyup="checkvalue()"/>
+                               name="memberName" id="memberName" value="${login.memberName}" onkeyup="checkvalue()"/>
                         <div class="input-group-append">
                             <%--<button type="button" class="input-group-text input-group-height" id="authenticateName">중복체크</button>--%>
                             <button type="button" class="btn btn-primary" id="authenticateName" style="font-size: 16px">중복체크</button>
@@ -411,7 +410,7 @@
                     </div>
                 </div>
                 <%--<input type="hidden" name="test" value="${login.userProfile}"/><br>--%>
-                <input type="hidden" id="userProfile" name="userProfile">
+           <!--      <input type="hidden" id="userProfile" name="userProfile"> -->
             </div>
         </form>
     </div>
@@ -458,13 +457,13 @@
         //         $("#userProfile").val(data);
         //     }
         // });
-        $('#userProfile').val("");
+        $('#memberName').val("");
     });
-    $("input[type='file']").on('change',function () {
+  /*   $("input[type='file']").on('change',function () {
         $('#userProfile').val("");
-    })
+    }) */
     $('#filecancle').click(function() {   //취소버튼눌렀을때 파일업로드칸 선택한거 비우기
-        $('#userProfile').val('basic');
+       /*  $('#userProfile').val('basic'); */
         // 파일컴포넌트에 변경 이벤트 바인딩
         str = "<div>" + "<img id='profileimg' class='img-responsive' src='/resources/images/123.png'/>" + "</div>";
         $(".uploadedList").empty();

@@ -7,7 +7,7 @@
 <script type="text/javascript">
 
 setTimeout(function(){$("body").fadeOut(300);},300);
-setTimeout(function(){location.href="login"},300);
+setTimeout(function(){location.href="loginTest"},300);
 </script>
   
   </body>

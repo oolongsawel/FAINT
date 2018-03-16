@@ -1,6 +1,10 @@
 package com.faint.persistence;
 
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -125,9 +129,25 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public void deleteImage(String memberID) throws Exception {
-		session.update(namespace+".deleteImage",memberID);
+	public void deleteImage(String memberEmail) throws Exception {
+		session.update(namespace+".deleteImage",memberEmail);
 		
 		// 프로필 사진 삭제 
+	}
+	/// 세션을 통한 로그인 유지 
+	@Override
+	public void keepLogin(Integer memberID, String sessionKey, Date next) {
+		System.out.println("세션키 저장하러 오나요?1 ");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("memberID", memberID);
+		paramMap.put("sessionKey", sessionKey);
+		paramMap.put("next", next);
+
+		session.update(namespace + ".keepLogin", paramMap);
+	}
+	
+	@Override
+	public MemberVO checkSessionKey(String value) {
+		return session.selectOne(namespace + ".checkSessionKey", value);
 	}
 }

@@ -277,7 +277,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="panel panel-7 ">
-                        <p class="hn" style="font-size: 25px" ><a >"${login.userName}" </a>님 반가워요~</p>
+                        <p class="hn" style="font-size: 25px" ><a >"${login.memberName}" </a>님 반가워요~</p>
                     </div>
                 </div>
 
@@ -294,8 +294,8 @@
 
                 </div>
                 <div class="col-12 align-content-center" style="height: 340px;">
-                    <p  class=" mt-3 bd " style="font-size: 30px">Email:<a class="ml-3" style="font-size:20px;">${login.userEmail}</a></p>
-                    <p  class=" mt-1 bd" style="font-size: 30px">Name:<a class="hn ml-3" style="font-size:20px;">${login.userName}</a></p>
+                    <p  class=" mt-3 bd " style="font-size: 30px">Email:<a class="ml-3" style="font-size:20px;">${login.memberEmail}</a></p>
+                    <p  class=" mt-1 bd" style="font-size: 30px">Name:<a class="hn ml-3" style="font-size:20px;">${login.memberName}</a></p>
                     <div class="row">
                         <button class="btn btn-primary text-white col-6 hn" onclick="location.href='/user/modifyUser'">정보변경
                         </button>
@@ -314,7 +314,7 @@
         $(document).ready(function () {
             $(".Account_information").addClass(" active");
 
-            $("#profile").attr("src", getFileInfo("${login.userProfile}"));
+            $("#profile").attr("src", getFileInfo("${login.memberPicture}"));
         });
     </script>
 </div>

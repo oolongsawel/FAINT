@@ -43,7 +43,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
            // logger.info("current user is not logined");
            // System.out.println("current user is not logined");
             saveDest(request);
-
+            System.out.println("preHandle 로그인 !!!");
             response.sendRedirect("/user/login");
             return false;
         }
