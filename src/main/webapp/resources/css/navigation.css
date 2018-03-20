@@ -1,0 +1,82 @@
+.navigation{
+    background-color: white;
+    border-bottom: 1px solid #e6e6e6;
+    height: 77px;
+    padding:0 47px;
+    box-sizing: border-box;
+}
+
+.navigation__wrapper{
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height:100%;
+    margin:0 auto;
+}
+
+.navigation__link{
+    font-size: 25px;
+    color:black;
+    margin-left:30px;
+}
+
+
+.navigation__column{
+    position: relative;
+}
+
+.navigation__column:nth-child(2) i{
+    position: absolute;
+    left:10px;
+    top:7px;
+}
+.navigation__column .explore{
+    width: 24px;
+    height: 23px;
+    margin-left: 30px;
+    display: inline-block;
+    background-size: 413px 391px;
+    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
+    background-position: -200px -342px;
+}
+
+.navigation__column .follow-list{
+    width: 24px;
+    height: 23px;
+    margin-left: 30px;
+    display: inline-block;
+    background-size: 413px 391px;
+    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
+    background-position: -192px -283px;
+}
+
+.navigation__column .account{
+    width: 24px;
+    height: 23px;
+    margin-left: 30px;
+    display: inline-block;
+    background-size: 413px 391px;
+    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
+    background-position: -275px -342px;
+}
+
+.search-form{
+    position: relative;
+    width: 215px;
+    height: 26px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navigation__column input{
+    width:215px;
+    padding:7px 0;
+    padding-left: 35px;
+    box-sizing: border-box;
+    border:0;
+    border:1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #FAFAFA;
+}
