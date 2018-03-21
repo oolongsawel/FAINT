@@ -14,8 +14,8 @@
 
 <script>
 //프로필 수정 후 로딩 될때 메시지 띄우기
-	if ('${result}' == "success") {
-		//비번 변경처리였을 경우 비번변경 활성화
+	if ('${result}' == "passwordChange") {
+		//프로필 수정일 경우 프로필 편집 활성화
 		alert("비밀번호가 저장되었습니다.");
 	}
 </script>
@@ -101,10 +101,10 @@
 			//비공개 체크 데이터 입력
 			if ($("#chkPri").is(":checked")) {
 				//비공개 체크 되어있으면 1
-				$("#prilevel").val(1);
+				$("#userlevel").val(1);
 			} else {
 				//안되있으면 0
-				$("#prilevel").val(0);
+				$("#userlevel").val(0);
 			}
 			form.submit();
 		});
