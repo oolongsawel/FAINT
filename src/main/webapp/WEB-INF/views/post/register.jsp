@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+<!--헤더-->
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>게시물 등록</title>
 </head>
 <style>
 .btncatelist li {
@@ -14,10 +16,6 @@
 </style>
 <body>
 	<form id="registerForm" role="form" method="post">
-		<div>
-			<label>userid</label> <input type="text" name='userid'
-				placeholder="Enter userid" >
-		</div>
 		<div>
 			<div>
 			<label>카테고리</label>
@@ -65,7 +63,6 @@
 {{#if fileType 'video'}}
 	<video src="{{imgsrc}}" style="width:300px;" loop="true" autoplay>
 {{/if}}
-	
 </span>
   	<small class="delbtn" data-src="{{fullName}}">X</small></div>
 </li>          
@@ -116,7 +113,6 @@
 	//form submit 처리
 	$("#registerForm").submit(function(event) {
 		event.preventDefault();
-		alert("bb");
 
 		var that = $(this);
 

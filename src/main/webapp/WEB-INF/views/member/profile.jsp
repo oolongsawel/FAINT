@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!--헤더-->
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${userVO.name}(@${userVO.nickname})</title>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <style>
 
 a{color:#000;}
@@ -17,201 +19,326 @@ a{color:#000;}
 top:50%; z-index:11; background:#fff;}
 #modalLayer .modalContent .exit{position:absolute; right:0; top:0; cursor:pointer;}
 
-
 </style>
 </head>
 <body>
 
-	<table>
-		<tr>
-			<td>${userVO.nickname}</td>
-			<td class="isFlw"></td>
-			<td><button>...</button></td>
-		</tr>
-		<tr>
-			<td id="postCnt">게시물 0</td>
-			<td id="followed">팔로워 0</td>
-			<td id="following">팔로우 0</td>
-		</tr>
-		<tr>
-			<td>${userVO.name}</td>
-			<td>${userVO.intro}</td>
-		</tr>
-		<tr>
-			<td><a href="${userVO.website}" >${userVO.website}</a></td>
-		</tr>
-	</table>
-	
-	<h1>-------------아래부터 피드---------------</h1>
-
-	<!-- 프로필피드 -->
-	<ul id="postList">
-		<!-- 포스트 li 들어올 예정 -->
-	</ul>
-	
-	<!-- 팔로우 팔로워 리스트(모달) -->
-	<div id="modalLayer">
-		<div class="modalContent">
-			<button id="exit" type="button">X</button>
-			<ul id="followList"></ul>
+<article>
+	<header>
+		<div>
+		<c:choose>
+			<c:when test="${userVO.profilephoto ne null && userVO.profilephoto != ''}">
+				<button id="btnChangePhoto"><img src="/displayFile?fileName=${userVO.profilephoto}" style="width:50px; height:50px;"/></button>
+			</c:when>
+			<c:otherwise>
+				<button id="btnChangePhoto"><img src="/../resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
+			</c:otherwise>
+		</c:choose>
 		</div>
-	</div>
+		<section>
+			<h1>${userVO.nickname}</h1>
+			<c:choose>
+				<c:when test="${userVO.id==login.id}">
+					<button id='admin'><a href="../member/profile/edit">프로필 편집</a></button>
+				</c:when>
+				<c:otherwise>
+					<c:choose>
+						<c:when test="${userVO.isFollow > 0}">
+							<span><button class='isFlw' title="${userVO.id}">팔로잉</button></span>
+						</c:when>
+						<c:otherwise>
+							<span><button class='isFlw' title="${userVO.id}">팔로우</button></span>
+						</c:otherwise>
+					</c:choose>
+					<span><button>▽</button></span>
+					<div><button>...</button></div>
+				</c:otherwise>
+			</c:choose>
+			<ul>
+				<li id="postCnt">게시물 0</li>
+				<li id="followed">팔로워 0</li>
+				<li id="following">팔로우 0</li>
+			</ul>
+			<div class="intro">
+				<h1>${userVO.nickname}</h1>
+				<span>${userVO.intro}</span>
+				<a href="${userVO.website}" >${userVO.website}</a>
+			</div>
+		</section>
+	</header>
+</article>
 
+	
+<h1>-------------아래부터 피드---------------</h1>
+
+<c:if test="${userVO.id==login.id}">
+	<div>
+		<a href="javascript:;">게시물</a>
+		<a href="/member/${userVO.nickname}/store">저장됨</a>
+	</div>
+</c:if>
+
+<!-- 팔로우 팔로워 리스트(모달) -->
+<div id="modalLayer">
+	<div class="modalContent">
+		<button id="exit" type="button">X</button>
+		<ul id="followList"></ul>
+	</div>
+</div>
+
+
+<script id="modalTemplate" type="text/x-handlebars-template">
+	<div class="_pfyik" role="dialog" onclick="callRemoveDialog(event)">
+	<div class="_23gmb"></div>
+	<div class="_o0j5z" onclick="callRemoveDialog(event)">
+	<div class="_784q7" id="modalChangeProfilePhoto" onclick="callRemoveDialog(event)">
+	<ul class="_cepxb">
+		<li class="_hql7s">프로필 사진 바꾸기</li>
+		<li class="_o2wxh"><button class="_h74gn" id="btnRemovePhoto" onclick="removePhoto(event)">현재 사진 삭제</button></li>
+		<li class="_hql7s"><button class="_h74gn" id="btnPhotoUpload" onclick="callFileUploader(event)">사진 업로드</button></li>
+		<li class="_hql7s"><button class="_h74gn" id="btnCancle" onclick="callRemoveDialog(event)">취소</button></li>
+	</ul>
+	</div>
+	</div>
+		<button class="_dcj9f"  onclick="callRemoveDialog(event)">닫기</button>
+	</div>
+	<input type="file" name="file" id="inputfile" accept="image/*"   style="display: none;">
+
+<style>
+._pfyik{background-color:rgba(0,0,0,.5);bottom:0;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;left:0;overflow-y:auto;-webkit-overflow-scrolling:touch;position:fixed;right:0;top:0;z-index:1}
+._dcj9f{background:0 0;border:0;cursor:pointer;height:36px;outline:0;overflow:hidden;position:absolute;right:0;top:0;z-index:2}
+._dcj9f::before{color:#fff;content:'\00D7';display:block;font-size:36px;font-weight:600;line-height:36px;padding:0;margin:0}
+._784q7{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;margin:auto;max-width:935px;pointer-events:auto;width:100%}
+._23gmb{bottom:0;left:0;pointer-events:none;position:fixed;right:0;top:0;z-index:0}
+._23gmb *{pointer-events:auto}
+._o0j5z{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;min-height:100%;overflow:auto;width:auto;z-index:1}
+@media (min-width:481px){._o0j5z{padding:0 40px;pointer-events:none;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
+._o0j5z::after,._o0j5z::before{content:'';display:block;-webkit-flex-basis:40px;-ms-flex-preferred-size:40px;flex-basis:40px;-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0}}
+@media (max-width:480px){._23gmb,._dcj9f{display:none}}
+
+._h74gn{background:#fff;border:0;color:#262626;cursor:pointer;font-size:16px;font-weight:400;line-height:50px;margin:0;overflow:hidden;padding:0 16px;text-align:center;text-overflow:ellipsis;white-space:nowrap;width:100%}
+._h74gn:hover{background-color:#efefef}
+._hql7s,._o2wxh{background-color:#fff;border-bottom:1px solid #dbdbdb}
+._o2wxh:last-child{border-bottom-width:0}
+._hql7s{color:#999;font-size:16px;font-weight:600;line-height:50px;text-align:center}
+@media (min-width:736px){._hql7s,._o2wxh{min-width:510px}}
+@media (min-width:414px) and (max-width:735px){._cepxb,._hql7s,._o2wxh{width:100%}}
+@media (min-width:414px){._cepxb{margin:0 auto}}
+</style>
+</script>
 
 <script>
 
-/* 각 게시물 표시 */
+//프로필 사진 버튼 클릭
+if(${userVO.id}==${login.id}){
+	$("#btnChangePhoto").on("click",function(){
+		if($("#btnChangePhoto").children("img").attr("src") != "../../resources/img/emptyProfile.jpg"){
+			var template = Handlebars.compile($("#modalTemplate").html());
+			$("body").append(template);
+			//$("body").attr("sytle","position: fixed; top: -"+$(window).scrollTop()+"px; width: 100%;");
+			$("body").attr("aria-hidden","true");
+			
+			$("._hql7s").on("click",function(event){
+		  		event.stopPropagation();
+			});
+		}else{
+			$("#inputfile").click();
+		}
+	})
+	function callRemoveDialog(event){
+		if(typeof event != "undefined"){
+		   event.stopPropagation();
+		}
+		$("body").attr("sytle","");
+		$("body").attr("aria-hidden","false");
+		$("div[role='dialog']").remove();
+	}
+	//파일탐색기에서 OK누른 후 처리
+	//파일 업로드
+	$("#inputfile").on("change", function(event) {
+		event.preventDefault();
+		uploadFiles(this.files);
+	});
+
+	//=================프로필 사진 서버에 업로드================
+	//프로필 사진 바꾸기
+	function uploadFiles(files) {
+		$(files).each(function() {
+			var file = this;
+			var formData = new FormData();
+			formData.append("file", this);
+			$.ajax({
+				url : '/uploadAjax',	
+				data : formData,
+				dataType : 'text',
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					var fileInfo = getFileInfo(data);
+					//프로필 사진 수정
+					$("#btnChangePhoto").children("img").attr("src", fileInfo.imgsrc);
+					
+					//DB업뎃
+					updatePhoto(fileInfo.fullName);
+				}
+			}); //ajax end
+		});
+	}
+	
+	//프사지우기
+	function removePhoto(){
+		var data_src = $("#btnChangePhoto").children("img").attr("src").substr(22);
+		//첨부파일 삭제
+		$.ajax({
+			url : "/deleteFile",
+			type : "post",
+			data : {
+				//data-src 첨부파일 fullname
+				fileName : data_src
+			},
+			dataType : "text",
+			success : function(result) {
+				if (result == 'deleted') {
+					$("#btnChangePhoto").children("img").attr("src", "../../resources/img/emptyProfile.jpg");
+					//DB 업뎃
+					updatePhoto("");
+				}
+			}
+		});
+	}
+
+	//파일탐색기호출
+	function callFileUploader(){
+		$("#inputfile").click();
+	}
+
+	//프로필 사진 DB업데이트
+	function updatePhoto(fullName){
+		$.ajax({
+			url : '/member/profile/edit/modifyPhoto',
+			data : {
+				"userid": ${userVO.id},
+				"fileName": fullName
+			},
+			dataType : 'text',
+			type : 'POST',
+			success : function(result) {
+					//update문, 0보다크면 업데이트 성공
+					if(result > 0) {
+						//대화창 닫기
+						callRemoveDialog();
+					}else{
+						alert("프로필 사진 수정에 실패했습니다.");
+					}
+			}
+		}); //ajax end
+	}
+}
+
+//postFeed 에러방지용 변수
+var jsonList="${jsonList}";
 var uid=${userVO.id};
 
-//게시물 피드 호출
-getPostList();
+//followList 에 followedList부여 및 팔로워 수 갱신
+$(document).ready(function(){
+	followed();
+	following();
+	follow();
+	searchFilter();
+})
 
-//게시물 피드 함수 선언
-function getPostList(){
-	$.getJSON("/post/" + uid, function(data){
-		var str="";
-		var addreply="";
-		var postCnt=0;
-		$(data).each(function(){
-			str = "<div id='feed"+this.id+"'><li>"+this.userid+ ":" +this.caption+"<ul id='post"+this.id+"'></ul></li></div><br />";
-			$("#postList").append(str);
-			postCnt++;
-			
-			//게시물마다 댓글 등록창 등록
-			var replystr="";
-			var pid=this.id; //게시물 id값
-			getReplyList();
-			
-			//getReplyList() 함수정의
-			function getReplyList(){
-				$.getJSON("/reply/post/" + pid, function(rpldata){
-					
-					var postid=pid;
-					var sid ='${login.id}'; //세션저장된 유저의 id값(로그인한 유저의 아이디 값)
-					
-					//게시물의 댓글 등록창
-					var replyRegist=
-						"<li>"
-						+"<div>"
-							+"<input type='text' id='comment"+pid+"' placeholder='댓글입력'/></div>"
-							+"<button type='submit' id='replyRegist"+pid+"'>ADD REPLY</button>" //엔터치면 처리되게 어찌하나
-						+"</div>"
-						+"</li>";
-	
-					$("#post"+postid).html(replyRegist);
-					
-					$(rpldata).each(function(){
-						
-						// 게시물에 대한 댓글리스트 + 삭제버튼(해당 유저의 게시글일 경우만)
-						var rid=this.id;
-						
-						
-						replystr +="<li id='reply"+this.id+"'>"+ this.userid +":"+this.comment;
-						if(this.userid==sid){ //댓글 작성자와 로그인 유저값이 같을때로 수정해야함
-							replystr+="<button id='replyDelete"+this.id+"'>X</button></li>";
-						}else{
-							replystr+="</li>";	
-						};
-						
-						// 각 게시물의 댓글 등록창
-						$("#post"+postid).html(replystr+replyRegist);
-
-
-						//댓글삭제 함수
-						$("#replyDelete"+rid).on("click", function(){
-							console.log("함수안: "+rid);
-							$.ajax({
-								type:"delete",
-								url:"/reply/"+rid,
-								headers:{
-									"Content-Type" : "application/json",
-									"X-HTTP-Method-Override" : "DELETE"
-								},
-								dataType:"text",
-								success:function(result){
-									if(result=="SUCCESS"){
-										console.log("삭제성공")
-										//리플리스트 초기화 및 게시물의 댓글 피드 재호출
-										replystr="";
-										getReplyList();
-									};
-								}
-							});
-						});
-						//댓글삭제 함수 end
-					});
-					
-					// 댓글 등록 함수
-					$("#replyRegist"+pid).on("click", function(){
-						var userid=sid; //나중에 입력값이 아닌 로그인한 유저정보가 들어가야함
-						var postid=pid;
-						var comment=$("#comment"+pid).val();
-						console.log('hi');
-						$.ajax({
-							type:"post",
-							url:"/reply",
-							headers:{
-								"Content-Type" : "application/json",
-								"X-HTTP-Method-Override" : "POST"
-							},
-							dataType:"text",
-							data:JSON.stringify({
-								postid:postid,
-								userid:userid,
-								comment:comment
-							}),
-							success:function(result){
-								if(result=="SUCCESS"){
-									console.log("등록성공")
-									replystr="";
-									getReplyList();
-								};
-							}
-						});
-					});//댓글 등록함수 end
-					
-					
-				});
-			}; //함수 getReplyList end
-			
-		});
-		
-		$("#postCnt").html("게시물 "+postCnt);
-		
-	});//게시물 피드 end
-};
-
-//followedCnt 입력 및 링크걸기
-followedCnt();
-
-function followedCnt(){
-	var uid = ${userVO.id};
-	$.getJSON("/member/followedCnt/" + uid, function(data){
-		console.log(data);
-		if(data!=0){
-			var followedCnt="<a href='#modalLayer' class='modalLink'>팔로워 "+data+"</a>";
-			$("#followed").html(followedCnt);
+function followed(){
+	$.getJSON("/member/followed/" + ${userVO.id}, function(data){
+		var followedList="";
+		var data=$(data)
+		if(data.length!=0){
+			$("#followed").html("<a href='javascript:;' class='modalLink'>팔로워 "+data.length+"</a>");
+			//followed onclick 메서드 적용(follow리스트뜨도록)
+			$("#followed").on("click", function(){
+				var modalLayer = $("#modalLayer");
+				modalLayer.fadeIn("slow");
+				followedList="";
+				data.each(function(){
+					if(this.isFollow>0){
+						followedList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a><button class='isFlw' title='"+this.id+"'>팔로잉</button></li>";
+					}else if(this.isFollow==0 && this.id!=${login.id}){
+						followedList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a><button class='isFlw' title='"+this.id+"'>팔로우</button></li>";
+					}else{
+						followedList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a></li>";
+					}
+				})
+				$("#followList").html(followedList);
+				follow();
+			});
 		}else{
-			var followedCnt="팔로워 "+data;
-			$("#followed").html(followedCnt);
+			$("#followed").html("팔로워 0");
 		}
 	});
 };
 
-//followingCnt 입력 및 링크걸기
-followingCnt();
-
-function followingCnt(){
-	var uid = ${userVO.id};
-	$.getJSON("/member/followingCnt/" + uid, function(data){
-		if(data!=0){
-			var followingCnt="<a href='#modalLayer' class='modalLink'>팔로우 "+data+"</a>";
-			$("#following").html(followingCnt);
-		};
+//followList 에 followingList부여 및 팔로우 수 갱신
+function following(){
+	$.getJSON("/member/following/" + ${userVO.id}, function(data){
+		var followingList="";
+		var data=$(data)
+		if(data.length!=0){
+			$("#following").html("<a href='javascript:;' class='modalLink'>팔로우 "+data.length+"</a>");
+			//following onclick 메서드 적용(follow리스트뜨도록)
+			$("#following").on("click", function(){
+				var modalLayer = $("#modalLayer");
+				modalLayer.fadeIn("slow");
+				followingList="";
+				data.each(function(){
+					if(this.isFollow>0){
+						followingList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a><button class='isFlw' title='"+this.id+"'>팔로잉</button></li>";
+					}else if(this.isFollow==0 && this.id!=${login.id}){
+						followingList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a><button class='isFlw' title='"+this.id+"'>팔로우</button></li>";
+					}else{
+						followingList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a></li>";
+					}
+				})
+				$("#followList").html(followingList);
+				follow();
+			});
+		}else{
+			$("#following").html("팔로우 0");
+		}
 	});
 };
 
-//followList modal관련 메서드
+//follow여부확인하여 팔로우/팔로우취소
+function follow(){
+	$(".isFlw").on("click", function(){
+		var userid=$(this).attr("title");
+		var isFlw=this;
+		if(($(this).html()=="팔로우")){
+			var type="post";
+			var url ="/member/follow/"+userid;
+			var header="{'X-HTTP-Method-Override' : 'POST'}";
+			$(isFlw).html("팔로잉");
+			
+		}else if(($(this).html()=="팔로잉")){
+			var type="delete";
+			var url ="/member/unfollow/"+userid;
+			var header="{'X-HTTP-Method-Override' : 'DELETE'}";
+			$(isFlw).html("팔로우");
+		}
+		$.ajax({
+			type: type,
+			url: url,
+			headers:{header},
+			dataType:"text",
+			success:function(result){
+				if(result=="SUCCESS"){
+					followed();
+				};
+			}		
+		});
+	});
+};
+
+//followedList modal관련 메서드
 $(document).ready(function() {
 	var modalLayer = $("#modalLayer");
 	var modalLink = $(".modalLink");
@@ -236,111 +363,31 @@ $(document).ready(function() {
 	});
 });
 
-//followList 에 followedList부여
-$("#followed").on("click", function(){
-	var modalLayer = $("#modalLayer");
-	modalLayer.fadeIn("slow");
-	$.getJSON("/member/followed/" + uid, function(data){
-		var followedList="";
-		$(data).each(function(){
-			console.log(this);
-			followedList+="<li>" + this.nickname + "<button>팔로우</button></li>";
-		})
-		$("#followList").html(followedList);
-	});
-});
-
-//followList 에 followingList부여
-$("#following").on("click", function(){
-	var modalLayer = $("#modalLayer");
-	modalLayer.fadeIn("slow");
-	$.getJSON("/member/following/" + uid, function(data){
-		var followingList="";
-		$(data).each(function(){
-			console.log(this);
-			followingList+="<li>" + this.nickname + "<span class='isFlw'></span></li>";
-		})
-		$("#followList").html(followingList);
-	});
-});
-
-//follow여부확인하여 팔로우/팔로잉 버튼 생성
-var relation = ${relation} ;
-relationBtn();
-
-function relationBtn(){
-//	if(relation == -1){
-//		$("#isFlw").html("<button id='admin'>프로필 편집</button>")		
-//	}else
-		if(relation == 1){
-		//언팔로우 버튼표시
-		$("#isFlw").html("<button id='unfollow'>팔로잉</button>");
-		
-		//언팔로우 함수
-		$("#unfollow").on("click", function(){
-			$.ajax({
-				type:"delete",
-				url:"/member/unfollow",
-				headers:{
-					"Content-Type" : "application/json",
-					"X-HTTP-Method-Override" : "DELETE"
-				},
-				dataType:"text",
-				data:JSON.stringify({
-					userid: ${login.id},
-					followedid: ${userVO.id},
-				}),
-				success:function(result){
-					if(result=="SUCCESS"){
-						console.log("팔로우 해제성공")
-						if($("#unfollw").val() == "팔로우"){
-							//언팔
-							$("#unfollw").val("팔로잉");
-						}else{
-							//팔로처리
-							$("#unfollw").val("팔로우");
-						}
-						//팔로워 카온트 초기화+버튼 초기화
-						relation=0;
-						relationBtn();
-						followedCnt();
-					};
-				}
-			});
-		})
-	}else if(relation == 0){
-		//팔로우 시작 버튼표시
-		$("#isFlw").html("<button id='followstart'>팔로우</button>")
-		//팔로우 시작 함수
-	 	$("#followstart").on("click", function(){
-			$.ajax({
-				type:"post",
-				url:"/member/follow",
-				headers:{
-					"Content-Type" : "application/json",
-					"X-HTTP-Method-Override" : "POST"
-				},
-				dataType:"text",
-				data:JSON.stringify({
-					userid: ${login.id},
-					followedid: ${userVO.id},
-				}),
-				success:function(result){
-					if(result=="SUCCESS"){
-						console.log("팔로우 등록성공")
-						//팔로워 카온트 초기화+버튼 초기화
-						relation=1;
-						relationBtn();
-						followedCnt();
-					};
-				}
-			});
-		})
-	}
-};
-
+function searchFilter(){
+	$(".intro").find("span").each(function(){
+	   var text =$(this).text();
+	   //console.log("text : "+text);
+	   var splitArray = text.split(' ');
+	   //console.log("splitArray : "+splitArray);
+	   var linkedContent = '';
+	   for(var word in splitArray) {
+	      word = splitArray[word];
+	         if(word.indexOf("#")==0){
+	            var hash=word.substring(word.lastIndexOf("#")+1);
+	            word = "<a href='/explore/tagInfo?name="+hash+"'>"+word+"</a>";
+	         }else if(word.indexOf("@")==0){
+	            var person=word.substring(word.lastIndexOf("@")+1);
+	               word = "<a href='/member/"+person+"'>"+word+"</a>";
+	         }
+	         linkedContent += word+' ';
+		}
+		$(this).html(linkedContent);
+   })
+}
 
 </script>
-	
+
+<jsp:include page="/WEB-INF/views/include/postFeed.jsp" flush="false" />
+
 </body>
 </html>

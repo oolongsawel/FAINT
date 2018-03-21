@@ -10,8 +10,6 @@ public interface ReplyDAO {
 	
 	public List<ReplyVO> read(Integer postid) throws Exception;
 	
-	public void update(ReplyVO vo) throws Exception;
-	
 	public void delete(Integer id) throws Exception;
 
 }

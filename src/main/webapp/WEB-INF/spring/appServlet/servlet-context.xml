@@ -33,6 +33,7 @@
 	<beans:bean id="uploadPath" class="java.lang.String">
 		<beans:constructor-arg value="C:\\zzz\\upload"></beans:constructor-arg>
 	</beans:bean>
+	
 	<context:component-scan base-package="com.faint.sns" />
 	
 	<!-- auth interceptor : 로그인 안한 유저의 경우 login창으로 이동시킴 -->
@@ -41,11 +42,11 @@
 	<beans:bean id="loginInterceptor" class="com.faint.interceptor.LoginInterceptor" ></beans:bean>
 	<interceptors>
 		<interceptor>
-			<mapping path="/member/loginPost" />
+			<mapping path="/user/loginPost" />
 			<beans:ref bean="loginInterceptor" />
 		</interceptor>
 		<interceptor>
-			<mapping path="/member/profile_main" />
+			<mapping path="/main" />
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 	</interceptors>

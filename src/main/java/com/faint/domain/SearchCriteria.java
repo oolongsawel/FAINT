@@ -3,9 +3,9 @@ package com.faint.domain;
 public class SearchCriteria {
 	
 	//305p
-	//일단 타입은 하나니깐 키워드만 필드에설정
-	//필드
-	private String keyword;
+	private String keyword;	// 검색어는 String이므로 Type 필요없음
+	private int row;				// 무한 스크롤 row
+
 
 	
 	//getter, setter
@@ -16,13 +16,28 @@ public class SearchCriteria {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
 
-	//toString
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	
+	//toString()
 	@Override
 	public String toString() {
-		return "SearchCriteria [keyword=" + keyword + "]";
+		return "SearchCriteria [keyword=" + keyword + ", row=" + row + "]";
 	}
 	
+	
+
+
+
+
 	
 	
 }

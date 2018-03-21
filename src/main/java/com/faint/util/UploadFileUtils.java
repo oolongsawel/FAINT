@@ -19,11 +19,9 @@ public class UploadFileUtils {
 	// String uploadPath 파일의 저장경로
 	// String originalName 원본 팡리 이름
 	// byte[] fileData 파일 데이터
-	public static String uploadFile(String uploadPath, String originalName, byte[] fileData) throws Exception {
+	public static String uploadFile(String uploadPath, String originalName, byte[] fileData, String userid) throws Exception {
 		UUID uid = UUID.randomUUID();
-
 		String savedName = uid.toString() + "_" + originalName;
-
 		String savedPath = calcPath(uploadPath);
 
 		File target = new File(uploadPath + savedPath, savedName);
@@ -31,7 +29,6 @@ public class UploadFileUtils {
 		FileCopyUtils.copy(fileData, target);
 
 		String formatName = originalName.substring(originalName.lastIndexOf(".") + 1);
-
 		String uploadedFileName = null;
 
 		if (MediaUtils.getMediaType(formatName) != null) {

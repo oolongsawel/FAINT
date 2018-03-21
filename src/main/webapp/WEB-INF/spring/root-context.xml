@@ -19,7 +19,7 @@
 		<property name="url"
 			value="jdbc:mysql://127.0.0.1:3306/faint?useSSL=false"></property>
 		<property name="username" value="faint"></property>
-		<property name="password" value="faint"></property>
+		<property name="password" value="1234"></property>
 	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -38,6 +38,7 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	
 	<tx:annotation-driven />
 	
 	<context:component-scan base-package="com.faint.persistence"></context:component-scan>
@@ -45,4 +46,36 @@
 	
 	<!-- 자동으로 AspectJ 라이브러리 이용해서 Proxy 생성 -->
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- 메일 보내기 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	   <property name="host" value="smtp.gmail.com" />
+	   <property name="port" value="587" />
+	   <property name="username" value="somony9292@gmail.com" />
+	   <property name="password" value="Alstjr920722!" />
+	
+	
+	   <!-- email 요청시는 SMTP -->
+	   <property name="javaMailProperties">
+	      <props>
+	         <prop key="mail.transport.protocol">smtp</prop>
+	         <prop key="mail.smtp.auth">true</prop>
+	         <prop key="mail.smtp.starttls.enable">true</prop>
+	         <prop key="mail.debug">true</prop>
+	      </props>
+	   </property>
+	</bean>
+	
+	<!-- 클라이언트ID와 보안비밀 세팅 -->
+	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+	  <constructor-arg value="34138722145-j8upnor2ujj5hmquiraaflo7au4uu1l3.apps.googleusercontent.com" />
+	  <constructor-arg value="PaD2YF9RmeH96TbdexDgI1XX" />
+	</bean>
+	
+	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+	  <property name="scope" value="https://www.googleapis.com/auth/plus.login" />
+	  <property name="redirectUri" value="http://localhost:8181/user/googleSignInCallback" />
+	</bean>
+	
 </beans>

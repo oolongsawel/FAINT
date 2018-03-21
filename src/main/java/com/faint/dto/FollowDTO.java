@@ -1,16 +1,15 @@
 package com.faint.dto;
 
 public class FollowDTO {
-	private String usernick;
+	private String nickname;
 	private int userid;
-	private int followedid;
-	private boolean isFollow;
+	private int loginid;
 	
-	public String getUsernick() {
-		return usernick;
+	public String getNickname() {
+		return nickname;
 	}
-	public void setUsernick(String usernick) {
-		this.usernick = usernick;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public int getUserid() {
 		return userid;
@@ -18,22 +17,15 @@ public class FollowDTO {
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
-	public int getFollowedid() {
-		return followedid;
+	public int getLoginid() {
+		return loginid;
 	}
-	public void setFollowedid(int followedid) {
-		this.followedid = followedid;
-	}
-	public boolean isFollow() {
-		return isFollow;
-	}
-	public void setFollow(boolean isFollow) {
-		this.isFollow = isFollow;
+	public void setLoginid(int loginid) {
+		this.loginid = loginid;
 	}
 	@Override
 	public String toString() {
-		return "followDTO [usernick=" + usernick + ", userid=" + userid + ", followedid=" + followedid + ", isFollow="
-				+ isFollow + "]";
+		return "FollowDTO [nickname=" + nickname + ", userid=" + userid + ", loginid=" + loginid + "]";
 	}
 	
 }

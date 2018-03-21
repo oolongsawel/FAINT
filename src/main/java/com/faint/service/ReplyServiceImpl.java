@@ -28,11 +28,6 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 	
 	@Override
-	public void modify(ReplyVO vo) throws Exception{
-		dao.update(vo);
-	}
-	
-	@Override
 	public void remove(Integer id) throws Exception{
 		dao.delete(id);
 	}

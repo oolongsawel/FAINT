@@ -1,5 +1,7 @@
 package com.faint.domain;
 
+import java.sql.Date;
+
 public class UserVO {
 	
 	private int id;
@@ -8,13 +10,20 @@ public class UserVO {
 	private String name;
 	private String nickname;
 	private String phonenumber;
+	private String profilephoto; //memberPicture
 	private int sex;
 	private String website;
 	private String intro;
-	private int prilevel;
+	
+	private int prilevel; //userState
+	private int userlevel; //비공개여부
 	private String sessionkey;
 	private int sessionlimit;
-
+	private String memberAuthKey;
+	
+	private Date regdate;
+	private int isFollow; //로그인한 유저가 팔로우할경우 해당 유저의 id값 반환 아닐경우 null(0)반환
+	
 	public int getId() {
 		return id;
 	}
@@ -23,6 +32,12 @@ public class UserVO {
 	}
 	public String getEmail() {
 		return email;
+	}
+	public int getUserlevel() {
+		return userlevel;
+	}
+	public void setUserlevel(int userlevel) {
+		this.userlevel = userlevel;
 	}
 	public void setEmail(String email) {
 		this.email = email;
@@ -50,6 +65,12 @@ public class UserVO {
 	}
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
+	}
+	public String getProfilephoto() {
+		return profilephoto;
+	}
+	public void setProfilephoto(String profilephoto) {
+		this.profilephoto = profilephoto;
 	}
 	public int getSex() {
 		return sex;
@@ -87,12 +108,32 @@ public class UserVO {
 	public void setSessionlimit(int sessionlimit) {
 		this.sessionlimit = sessionlimit;
 	}
+	public String getMemberAuthKey() {
+		return memberAuthKey;
+	}
+	public void setMemberAuthKey(String memberAuthKey) {
+		this.memberAuthKey = memberAuthKey;
+	}
+	public Date getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
+	public int getIsFollow() {
+		return isFollow;
+	}
+	public void setIsFollow(int isFollow) {
+		this.isFollow = isFollow;
+	}
+	
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", nickname="
-				+ nickname + ", phonenumber=" + phonenumber + ", sex=" + sex + ", website=" + website + ", intro="
-				+ intro + ", prilevel=" + prilevel + ", sessionkey=" + sessionkey + ", sessionlimit=" + sessionlimit
-				+ "]";
+				+ nickname + ", phonenumber=" + phonenumber + ", profilephoto=" + profilephoto + ", sex=" + sex
+				+ ", website=" + website + ", intro=" + intro + ", prilevel=" + prilevel + ", userlevel=" + userlevel
+				+ ", sessionkey=" + sessionkey + ", sessionlimit=" + sessionlimit + ", memberAuthKey=" + memberAuthKey
+				+ ", regdate=" + regdate + ", isFollow=" + isFollow + "]";
 	}
-	
+
 }

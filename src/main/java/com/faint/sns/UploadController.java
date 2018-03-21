@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -13,13 +14,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.faint.domain.UserVO;
 import com.faint.util.MediaUtils;
 import com.faint.util.UploadFileUtils;
 
@@ -38,12 +39,14 @@ public class UploadController {
 	//서버에 파일 업로드
 	@ResponseBody
 	@RequestMapping(value ="/uploadAjax", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception{
+	public ResponseEntity<String> uploadAjax(MultipartFile file, HttpSession session) throws Exception{
 		logger.info("originalName: " + file.getOriginalFilename());
 		logger.info("size : " +  file.getSize());
 		logger.info("contentType : " + file.getContentType());
+		UserVO vo = (UserVO)session.getAttribute("login");
+		String userid = vo.getNickname();
 		return new ResponseEntity<>(
-				UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes()),
+				UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes(), userid),
 				HttpStatus.CREATED);
 	}
 	

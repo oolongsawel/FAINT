@@ -6,8 +6,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 <title>프로필 편집</title>
-<body>
 </head>
+
+<script>
+//프로필 수정 후 로딩 될때 메시지 띄우기
+	if ('${result}' == "passwordChange") {
+		//프로필 수정일 경우 프로필 편집 활성화
+		alert("프로필이 저장되었습니다.");
+	}else{
+		alert("${result}");
+	}
+</script>
+<body>
 <div>
 	<ul>
 		<!-- 프로필 편집 -->
@@ -75,7 +85,7 @@
 				if (!lengthCheck(obj, maxLen)) return;
 				
 				$("#"+obj.id).siblings("p").text(emptyStr);
-				//적어도 소문자 하나, 대문자 하나, 숫자 하나가 포함되어 있는 문자열(8글자 이상 15글자 이하) 
+				//적어도 소문자 하나,  숫자 하나가 포함되어 있는 문자열(8글자 이상 15글자 이하) 
 				chkStr = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}/;
 
 				errMsg= "적어도 소문자 하나, 대문자 하나, 숫자 하나를 입력하시오.";

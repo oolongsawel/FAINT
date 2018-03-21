@@ -10,8 +10,6 @@ public interface ReplyService{
 	
 	public List<ReplyVO> read(Integer postid) throws Exception;
 	
-	public void modify(ReplyVO vo) throws Exception;
-	
 	public void remove(Integer id) throws Exception;
 	
 }

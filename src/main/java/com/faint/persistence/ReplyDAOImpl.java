@@ -28,11 +28,6 @@ public class ReplyDAOImpl implements ReplyDAO{
 	}
 	
 	@Override
-	public void update(ReplyVO vo) throws Exception{
-		session.update(namespace+".update", vo);
-	}
-	
-	@Override
 	public void delete(Integer id) throws Exception{
 		session.delete(namespace+".delete", id);
 	}

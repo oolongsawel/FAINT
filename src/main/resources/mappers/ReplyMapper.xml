@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="read" resultType="com.faint.domain.ReplyVO">
 		SELECT *
 		FROM
-			faint.tbl_reply
+			faint.vw_user_reply
 		WHERE postid=#{postid}
 		order by regdate asc
 	</select>

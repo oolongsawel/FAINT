@@ -3,46 +3,31 @@
 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.faint.mapper.userMapper">
-	<!-- 가입 -->
-	<insert id="create">
-		INSERT INTO tbl_user
-		(
-		email
-		,password
-		,name
-		,nickname
-		,phonenumber
-		,website
-		,intro
-		,sessionkey
-		)
-
-		VALUES
-
-		(
-		#{email}
-		,#{password}
-		,#{name}
-		,#{nickname}
-		,#{phonenumber}
-		,#{website}
-		,#{intro}
-		,#{sessionkey}
-		)
-	</insert>
-
+	
 	<!-- 특정 유저데이터 읽기 -->
-	<select id="read" resultType="com.faint.domain.UserVO">
-		SELECT *
+	<select id="userRead" resultType="com.faint.domain.UserVO">
+		select * from
+        (SELECT *
 		FROM
 		tbl_user
-		WHERE id=#{id}
+		WHERE nickname=#{nickname}) u
+        left join
+        (SELECT followedid as isFollow
+		FROM
+		tbl_follow
+		WHERE userid=#{loginid}) lf
+        on lf.isFollow=u.id;
 	</select>
 
 	<!-- 유저데이터 수정 -->
 	<update id="update">
-		UPDATE tbl_user
-		SET intro=#{intro}
+		UPDATE tbl_user SET name=#{name}
+		, nickname=#{nickname}
+		, phonenumber=#{phonenumber}
+		, sex=#{sex}
+		, website=#{website}
+		, intro=#{intro}
+		, userlevel=#{userlevel}
 		WHERE id=#{id}
 	</update>
 
@@ -60,7 +45,7 @@
 		FROM
 			tbl_user
 		WHERE id>0
-		ORDER BY id DESC
+		ORDER BY id ASC
 	]]>
 	</select>
 
@@ -74,8 +59,8 @@
 		)
 		VALUES
 		(
-		#{userid}
-		,#{followedid}
+		#{loginid}
+		,#{userid}
 		)
 	</insert>
 
@@ -83,75 +68,182 @@
 	<delete id="flwDelete">
 		DELETE
 		FROM tbl_follow
-		WHERE userid=#{userid}
+		WHERE userid=#{loginid}
 		AND
-		followedid=#{followedid}
+		followedid=#{userid}
 	</delete>
-
-	<!-- 팔로잉 여부 -->
-	<select id="isFlw" resultType="java.lang.Integer">
-		SELECT count(*)
-		FROM
-		tbl_follow
-		WHERE userid=#{userid}
-		AND followedid=#{followedid}
-	</select>
 
 	<!-- 해당 유저가 팔로우하는 사람 리스트 -->
 	<select id="flwnList" resultType="com.faint.domain.UserVO">
-		SELECT *
-		FROM
-		tbl_user
-		WHERE id in
-		(SELECT followedid
+		SELECT DISTINCT * from
+		(SELECT u.*
+		FROM tbl_user u join tbl_follow f
+		ON f.followedid=u.id and f.userid=#{userid}) uf
+        left join
+        (SELECT followedid as isFollow
 		FROM
 		tbl_follow
-		WHERE userid=#{userid})
+		WHERE userid=#{loginid}) lf
+        on lf.isFollow=uf.id;
 	</select>
 
 	<!-- 해당 유저를 팔로우 중인 사람 리스트 -->
 	<select id="flwdList" resultType="com.faint.domain.UserVO">
+		select DISTINCT * from
+		(SELECT DISTINCT u.*
+		FROM tbl_user u join tbl_follow f
+		ON f.userid=u.id and f.followedid=#{userid}) uf
+        left join
+        (SELECT followedid as isFollow
+		FROM
+		tbl_follow
+		WHERE userid=#{loginid}) lf
+        on lf.isFollow=uf.id;
+	</select>
+	
+	<!-- PageRank 필터링을 위한 follow 및 user리스트 추출 -->
+	<select id="rank" resultType="java.lang.String">
+		select concat(u.ID, '-', ifnull(followedid, '')) as follow from tbl_user u left join tbl_follow f on id=f.USERID
+	</select>
+
+	<!-- =================회원가입 및 정보수정================== -->
+	<insert id="insertUser">
+        INSERT INTO tbl_user (EMAIL, PASSWORD, NICKNAME)
+        VALUES (#{email}, #{password}, #{nickname})
+    </insert>
+
+    <!-- email중복 확인 -->
+    <select id="checkdupl" resultType="com.faint.domain.UserVO">
+        SELECT
+            ID,
+            PRILEVEL
+        FROM tbl_user
+        WHERE EMAIL = #{email}
+    </select>
+    
+    <!-- 닉네임 중복 확인 -->
+    <select id="checkduplName" resultType="com.faint.domain.UserVO">
+        SELECT
+            ID,
+            PRILEVEL
+        FROM tbl_user
+        WHERE NICKNAME = #{nickname}
+    </select>
+	
+	<!-- =================로그인================== -->
+    <select id="login" resultType="com.faint.domain.UserVO">
+        SELECT
+            EMAIL,
+            ID,
+            NICKNAME,
+            PROFILEPHOTO,
+            PRILEVEL
+        FROM tbl_user
+        WHERE EMAIL = #{email}
+              AND PASSWORD = #{password}
+    </select>
+    
+	<!-- 암호화비밀번호 가져오기 -->
+    <select id="getUserPassword" resultType="com.faint.domain.UserVO">
+	    select PASSWORD
+	    FROM  tbl_user
+	    WHERE EMAIL = #{email}
+    </select>
+    
+    <!-- 인증키 생성 -->
+    <update id="createAuthKey">
+        UPDATE tbl_user
+        SET AUTHKEY = #{memberAuthKey}
+        WHERE EMAIL = #{email}
+    </update>
+    
+    <!-- 인증키 업데이트 -->
+    <update id="userAuth">
+        UPDATE tbl_user
+        SET
+            PRILEVEL = 1
+        where EMAIL = #{email}
+    </update>
+    
+    <!-- 인증키 확인여부 -->
+    <select id="chkAuth" resultType="com.faint.domain.UserVO">
+        SELECT
+            ID,
+            NICKNAME,
+            EMAIL
+        FROM tbl_user
+        WHERE AUTHKEY = #{memberAuthKey}
+    </select>
+    
+    <!-- 비밀번호 변경 -->
+   	<update id="updatePassword">
+        UPDATE tbl_user
+        SET
+            PASSWORD = #{password}
+        WHERE ID = #{id}
+    </update>
+	
+	<!-- 사용자가 인증키 확인시 -->
+	<update id="successAuth">
+        UPDATE tbl_user
+        SET
+            AUTHKEY = NULL,
+            prilevel =1
+        WHERE ID = #{id}
+    </update>
+	
+	<!-- 세션키 확인 로그인 유지 -->
+	<update id="keepLogin">
+		update tbl_user
+		set sessionkey = #{sessionKey}
+		   ,sessionlimit = #{next}
+		where ID = #{id}
+	</update>
+	
+ 	<!-- 세션키 체크 -->
+	<select id="checkSessionKey" resultType="com.faint.domain.UserVO">
+	<![CDATA[  
+	select
+		ID,
+		SessionKey
+	from faint.tbl_user
+	where SessionKey = #{value}
+	  and SessionLimit > now()
+	  ]]>
+	</select>
+	
+	<!-- 특정 유저데이터 읽기 -->
+	<select id="read" resultType="com.faint.domain.UserVO">
 		SELECT *
 		FROM
 		tbl_user
-		WHERE id in
-		(SELECT userid
-		FROM
-		tbl_follow
-		WHERE followedid=#{userid})
+		WHERE id=#{id}
 	</select>
-
-	<!-- 해당 유저가 팔로우하는 사람count -->
-	<select id="flwnCnt" resultType="java.lang.Integer">
+	
+	<!-- 닉네임 중복 여부 -->
+	<select id="chkNick" resultType="java.lang.Integer">
 		SELECT count(*)
 		FROM
-		tbl_follow
-		WHERE userid=#{userid}
+		tbl_user
+		WHERE BINARY nickname=#{nickname}
 	</select>
-
-	<!-- 해당 유저를 팔로우 중인 사람count -->
-	<select id="flwdCnt" resultType="java.lang.Integer">
+	
+	<!-- 프로필 사진 수정 -->
+	<update id="updatePhoto">
+		UPDATE tbl_user
+		SET
+		profilephoto=#{profilephoto}
+		WHERE id=#{id}
+	</update>
+	
+	<!-- 이전 비번 확인 -->
+	<select id="checkPassWord" resultType="java.lang.Integer">
 		SELECT count(*)
 		FROM
-		tbl_follow
-		WHERE followedid=#{userid}
+		tbl_user
+		WHERE id=#{id}
+		AND BINARY password=#{password}
 	</select>
+	
 
-	<!-- login -->
-	<select id="login" resultType="com.faint.domain.UserVO">
-		SELECT *
-		FROM tbl_user
-		WHERE
-		email=#{email}
-		AND password=#{password}
-	</select>
-
-	<!-- <insert id="create"> insert into tbl_user (email, nickname, password) 
-		values(#{email},#{nickname},#{password}) </insert> 회원전체목록 <select id="listAll" 
-		resultType="com.faint.domain.UserVO"> <![CDATA[ select name, nickname, profilephoto 
-		from tbl_user where id > 0 ]]> </select> 회원키워드목록 nickname 또는 name이 키워드랑 부분일치하면 
-		검색됨 <select id="listKeyword" resultType="com.faint.domain.UserVO"> <![CDATA[ 
-		select name, nickname, profilephoto from tbl_user where nickname like CONCAT(#{keyword},'%') 
-		or name like CONCAT(#{keyword},'%') order by id desc, nickname desc limit 
-		0,30 ]]> </select> -->
 </mapper>
