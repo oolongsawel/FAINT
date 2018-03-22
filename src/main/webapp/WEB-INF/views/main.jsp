@@ -11,6 +11,9 @@
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <style>
+pre :not(pre) {
+
+}
 .post{
 	padding-top:60px;
 	max-width:600px;
@@ -70,7 +73,6 @@ article{
 </style>
 
 <body>
-<h1>123</h1>
 
 <ul id="categoryList">
 	<li><a href="javascript:;" data-filter="all" tabindex="-1">ALL</a></li>
@@ -230,7 +232,8 @@ function reply(){
 function registReply(thisTag, key){
 	var enter=key.keyCode||key.which;
 	var comment=$(thisTag).val();
-	if(enter==13&&comment.trim().length>0){
+	//enter친 순간 앞뒤 공백 제거된 value값의 길이확인 
+	if(enter==13 && comment.trim().length>0){
 		var userid=${login.id};
 		var postid=$(thisTag).parent().attr("title");
 		$.ajax({
@@ -357,8 +360,8 @@ function likerList(){
 				}else{
 					likerList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a></li>";
 				}
-				console.log(likerList);
 			})
+			
 			if($(data).length>0){
 				$(likeContainer).children("span").html($(data).length);
 				$(likeContainer).on("click", function(){
@@ -368,6 +371,9 @@ function likerList(){
 					var likersModal=likers(data);
 					$("body").append(likersModal);
 					$("#likersContainer").html(likerList);
+					
+					//팔로우 + 언팔로우
+					follow();
 					
 					//modal창 보이기
 					$("#myModal").css("display","block");
@@ -394,25 +400,62 @@ function likerList(){
 	});
 };
 
+//follow여부확인하여 팔로우/팔로우취소
+function follow(){
+	$(".isFlw").on("click", function(){
+		var userid=$(this).attr("title");
+		var isFlw=this;
+		if(($(this).html()=="팔로우")){
+			var type="post";
+			var url ="/member/follow/"+userid;
+			var header="{'X-HTTP-Method-Override' : 'POST'}";
+			$(isFlw).html("팔로잉");
+			
+		}else if(($(this).html()=="팔로잉")){
+			var type="delete";
+			var url ="/member/unfollow/"+userid;
+			var header="{'X-HTTP-Method-Override' : 'DELETE'}";
+			$(isFlw).html("팔로우");
+		}
+		$.ajax({
+			type: type,
+			url: url,
+			headers:{header},
+			dataType:"text",
+			success:function(result){
+				if(result=="SUCCESS"){
+					console.log("팔로우/언팔 성공")
+				};
+			}		
+		});
+	});
+};
+
 //댓글내용 및 글내용 검색처리
 function searchFilter(){
-	$(".captionContainer").find("span").each(function(){
-	   var text =$(this).text();
-	   //console.log("text : "+text);
-	   var splitArray = text.split(' ');
-	   //console.log("splitArray : "+splitArray);
-	   var linkedContent = '';
-	   for(var word in splitArray) {
-	      word = splitArray[word];
-	         if(word.indexOf("#")==0){
-	            var hash=word.substring(word.lastIndexOf("#")+1);
-	            word = "<a href='/search/tags?name="+hash+"'>"+word+"</a>";
-	         }else if(word.indexOf("@")==0){
-	            var person=word.substring(word.lastIndexOf("@")+1);
-	               word = "<a href='/member/"+person+"'>"+word+"</a>";
-	         }
-	         linkedContent += word+' ';
+	$(".intro, .captionContainer").find("span").each(function(){
+		var text =$(this).text();
+		var splitArray = text.split(" ");
+
+		for(var i in splitArray){
+			word = splitArray[i];
+			if(word.indexOf("#")==0){
+				var hash=word.substring(word.lastIndexOf("#")+1);
+				splitArray[i] = "<a href='/search/tags?name="+hash+"'>"+splitArray[i]+"</a>";
+				
+			}else if(word.indexOf("@")==0){
+				var person=word.substring(word.lastIndexOf("@")+1);
+				splitArray[i] = "<a href='/member/"+person+"'>"+splitArray[i]+"</a>";
+			
+			}
+ 			else if(splitArray[i]==""){
+				splitArray[i] = splitArray[i].replace("", "&nbsp;"); 
+			}
 		}
+		
+		var linkedContent = "";
+		linkedContent=splitArray.join(" ");
+		
 		$(this).html(linkedContent);
    })
 }

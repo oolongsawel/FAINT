@@ -3,6 +3,7 @@ package com.faint.sns;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.print.attribute.standard.Media;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.faint.domain.PostVO;
@@ -56,6 +56,7 @@ public class ExploreController {
 		
 		JSONArray jsonArray=new JSONArray();
 		model.addAttribute("jsonList", jsonArray.fromObject(vo));
+		
 	}
 
 	

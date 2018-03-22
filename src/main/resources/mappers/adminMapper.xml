@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.faint.mapper.AdminMapper">
+
+
+
+
+	<!-- 관리자페이지 회원 리스트 가져오기 -->
+	<select id="getSearchMemberList" resultType="UserVO">
+
+
+        SELECT
+        		ID	,
+            nickname,
+            EMAIL,
+            Profilephoto,
+            prilevel,
+            regdate
+      
+        FROM tbl_user
+        
+      
+		
+
+	</select>
+
+
+
+
+	<!-- 페이징 처리용 total count -->
+	<select id="getTotalMemberCount" resultType="Integer">
+	
+	<![CDATA[  
+	   select count(*) from faint.tbl_user
+		  where id > 0
+	]]>
+
+
+
+	</select>
+	
+		<delete id="deleteMember">
+ 	DELETE  from faint.tbl_user WHERE Email  =#{email}
+ 	</delete>
+	
+
+
+</mapper>

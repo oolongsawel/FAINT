@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	public List<String> rank() throws Exception{
 		return dao.rank();
 	}
-	
+
 	//=================회원가입 및 정보수정=================
 	@Override
 	public void regist(UserVO vo) throws Exception{
@@ -249,6 +249,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void modifypassUser(UserVO vo) throws Exception{
 		System.out.println("여기 모디 파이 패스 실행 ");
+		System.out.println("dao.vo 입력 값"+vo);
+		String encPassword = passwordEncoder.encode(vo.getPassword());
+		System.out.println(vo.getPassword().toString()+"입력받은 비밀번호 ");
+		
+		vo.setPassword(encPassword);
+		System.out.println("암호화된 비밀번호 : "+vo.getPassword());
 		try {
 			System.out.println("실행실행 실행 ");
 			dao.successAuth(vo);

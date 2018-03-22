@@ -21,7 +21,9 @@ public class UploadFileUtils {
 	// byte[] fileData 파일 데이터
 	public static String uploadFile(String uploadPath, String originalName, byte[] fileData, String userid) throws Exception {
 		UUID uid = UUID.randomUUID();
+
 		String savedName = uid.toString() + "_" + originalName;
+
 		String savedPath = calcPath(uploadPath);
 
 		File target = new File(uploadPath + savedPath, savedName);
@@ -29,6 +31,7 @@ public class UploadFileUtils {
 		FileCopyUtils.copy(fileData, target);
 
 		String formatName = originalName.substring(originalName.lastIndexOf(".") + 1);
+
 		String uploadedFileName = null;
 
 		if (MediaUtils.getMediaType(formatName) != null) {
@@ -91,9 +94,8 @@ public class UploadFileUtils {
 	private static String makeThumbnail(String uploadPath, String path, String fileName) throws Exception {
 
 		BufferedImage sourceImg = ImageIO.read(new File(uploadPath + path, fileName));
-
-		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
-
+	
+		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH, 600);
 		String thumbnailName = uploadPath + path + File.separator + "s_" + fileName;
 
 		File newFile = new File(thumbnailName);

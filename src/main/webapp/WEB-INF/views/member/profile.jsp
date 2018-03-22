@@ -8,6 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${userVO.name}(@${userVO.nickname})</title>
+<!-- 프로필 사진 변경 공통 처리 -->
+<script type="text/javascript" src="../../resources/js/upload.js"></script>
 <style>
 
 a{color:#000;}
@@ -20,6 +22,8 @@ top:50%; z-index:11; background:#fff;}
 #modalLayer .modalContent .exit{position:absolute; right:0; top:0; cursor:pointer;}
 
 </style>
+
+
 </head>
 <body>
 
@@ -60,7 +64,7 @@ top:50%; z-index:11; background:#fff;}
 				<li id="following">팔로우 0</li>
 			</ul>
 			<div class="intro">
-				<h1>${userVO.nickname}</h1>
+				<h1>${userVO.name}</h1>
 				<span>${userVO.intro}</span>
 				<a href="${userVO.website}" >${userVO.website}</a>
 			</div>
@@ -86,6 +90,7 @@ top:50%; z-index:11; background:#fff;}
 	</div>
 </div>
 
+<input type="file" name="file" id="inputfile" accept="image/*" style="display:none;">
 
 <script id="modalTemplate" type="text/x-handlebars-template">
 	<div class="_pfyik" role="dialog" onclick="callRemoveDialog(event)">
@@ -102,8 +107,6 @@ top:50%; z-index:11; background:#fff;}
 	</div>
 		<button class="_dcj9f"  onclick="callRemoveDialog(event)">닫기</button>
 	</div>
-	<input type="file" name="file" id="inputfile" accept="image/*"   style="display: none;">
-
 <style>
 ._pfyik{background-color:rgba(0,0,0,.5);bottom:0;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;left:0;overflow-y:auto;-webkit-overflow-scrolling:touch;position:fixed;right:0;top:0;z-index:1}
 ._dcj9f{background:0 0;border:0;cursor:pointer;height:36px;outline:0;overflow:hidden;position:absolute;right:0;top:0;z-index:2}
@@ -130,8 +133,9 @@ top:50%; z-index:11; background:#fff;}
 <script>
 
 //프로필 사진 버튼 클릭
-if(${userVO.id}==${login.id}){
-	$("#btnChangePhoto").on("click",function(){
+
+$("#btnChangePhoto").on("click",function(){
+	if(${userVO.id}==${login.id}){
 		if($("#btnChangePhoto").children("img").attr("src") != "../../resources/img/emptyProfile.jpg"){
 			var template = Handlebars.compile($("#modalTemplate").html());
 			$("body").append(template);
@@ -144,97 +148,103 @@ if(${userVO.id}==${login.id}){
 		}else{
 			$("#inputfile").click();
 		}
-	})
-	function callRemoveDialog(event){
-		if(typeof event != "undefined"){
-		   event.stopPropagation();
-		}
-		$("body").attr("sytle","");
-		$("body").attr("aria-hidden","false");
-		$("div[role='dialog']").remove();
 	}
-	//파일탐색기에서 OK누른 후 처리
-	//파일 업로드
-	$("#inputfile").on("change", function(event) {
-		event.preventDefault();
-		uploadFiles(this.files);
-	});
-
-	//=================프로필 사진 서버에 업로드================
-	//프로필 사진 바꾸기
-	function uploadFiles(files) {
-		$(files).each(function() {
-			var file = this;
-			var formData = new FormData();
-			formData.append("file", this);
-			$.ajax({
-				url : '/uploadAjax',	
-				data : formData,
-				dataType : 'text',
-				processData : false,
-				contentType : false,
-				type : 'POST',
-				success : function(data) {
-					var fileInfo = getFileInfo(data);
-					//프로필 사진 수정
-					$("#btnChangePhoto").children("img").attr("src", fileInfo.imgsrc);
-					
-					//DB업뎃
-					updatePhoto(fileInfo.fullName);
-				}
-			}); //ajax end
-		});
-	}
+})
 	
-	//프사지우기
-	function removePhoto(){
-		var data_src = $("#btnChangePhoto").children("img").attr("src").substr(22);
-		//첨부파일 삭제
-		$.ajax({
-			url : "/deleteFile",
-			type : "post",
-			data : {
-				//data-src 첨부파일 fullname
-				fileName : data_src
-			},
-			dataType : "text",
-			success : function(result) {
-				if (result == 'deleted') {
-					$("#btnChangePhoto").children("img").attr("src", "../../resources/img/emptyProfile.jpg");
-					//DB 업뎃
-					updatePhoto("");
-				}
-			}
-		});
+function callRemoveDialog(event){
+	if(typeof event != "undefined"){
+	   event.stopPropagation();
 	}
+	$("body").attr("sytle","");
+	$("body").attr("aria-hidden","false");
+	$("div[role='dialog']").remove();
+}
 
-	//파일탐색기호출
-	function callFileUploader(){
-		$("#inputfile").click();
-	}
+//파일탐색기에서 OK누른 후 처리
+//파일 업로드
+$("#inputfile").on("change", function(event) {
+	console.log("change");
+	event.preventDefault();
+	uploadFiles(this.files);
+});
 
-	//프로필 사진 DB업데이트
-	function updatePhoto(fullName){
+
+//=================프로필 사진 서버에 업로드================
+//프로필 사진 바꾸기
+function uploadFiles(files) {
+	$(files).each(function() {
+		var file = this;
+		var formData = new FormData();
+		console.log("method");
+		formData.append("file", this);
 		$.ajax({
-			url : '/member/profile/edit/modifyPhoto',
-			data : {
-				"userid": ${userVO.id},
-				"fileName": fullName
-			},
+			url : '/uploadAjax',	
+			data : formData,
 			dataType : 'text',
+			processData : false,
+			contentType : false,
 			type : 'POST',
-			success : function(result) {
-					//update문, 0보다크면 업데이트 성공
-					if(result > 0) {
-						//대화창 닫기
-						callRemoveDialog();
-					}else{
-						alert("프로필 사진 수정에 실패했습니다.");
-					}
+			success : function(data) {
+				var fileInfo = getFileInfo(data);
+				//프로필 사진 수정
+				$("#btnChangePhoto").children("img").attr("src", fileInfo.imgsrc);
+				
+				//DB업뎃
+				updatePhoto(fileInfo.fullName);
 			}
 		}); //ajax end
-	}
+	});
 }
+
+//프사지우기
+function removePhoto(){
+	var data_src = $("#btnChangePhoto").children("img").attr("src").substr(22);
+	//첨부파일 삭제
+	$.ajax({
+		url : "/deleteFile",
+		type : "post",
+		data : {
+			//data-src 첨부파일 fullname
+			fileName : data_src
+		},
+		dataType : "text",
+		success : function(result) {
+			if (result == 'deleted') {
+				$("#btnChangePhoto").children("img").attr("src", "../../resources/img/emptyProfile.jpg");
+				//DB 업뎃
+				updatePhoto("");
+			}
+		}
+	});
+}
+
+//파일탐색기호출
+function callFileUploader(){
+	$("#inputfile").click();
+}
+
+//프로필 사진 DB업데이트
+function updatePhoto(fullName){
+	$.ajax({
+		url : '/member/profile/edit/modifyPhoto',
+		data : {
+			"userid": ${userVO.id},
+			"fileName": fullName
+		},
+		dataType : 'text',
+		type : 'POST',
+		success : function(result) {
+				//update문, 0보다크면 업데이트 성공
+				if(result > 0) {
+					//대화창 닫기
+					callRemoveDialog();
+				}else{
+					alert("프로필 사진 수정에 실패했습니다.");
+				}
+		}
+	}); //ajax end
+}
+
 
 //postFeed 에러방지용 변수
 var jsonList="${jsonList}";
@@ -362,28 +372,6 @@ $(document).ready(function() {
 		modalLink.focus();
 	});
 });
-
-function searchFilter(){
-	$(".intro").find("span").each(function(){
-	   var text =$(this).text();
-	   //console.log("text : "+text);
-	   var splitArray = text.split(' ');
-	   //console.log("splitArray : "+splitArray);
-	   var linkedContent = '';
-	   for(var word in splitArray) {
-	      word = splitArray[word];
-	         if(word.indexOf("#")==0){
-	            var hash=word.substring(word.lastIndexOf("#")+1);
-	            word = "<a href='/explore/tagInfo?name="+hash+"'>"+word+"</a>";
-	         }else if(word.indexOf("@")==0){
-	            var person=word.substring(word.lastIndexOf("@")+1);
-	               word = "<a href='/member/"+person+"'>"+word+"</a>";
-	         }
-	         linkedContent += word+' ';
-		}
-		$(this).html(linkedContent);
-   })
-}
 
 </script>
 

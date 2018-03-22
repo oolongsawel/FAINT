@@ -179,7 +179,11 @@ public class UserDAOImpl implements UserDAO {
 	public void updatePassword(UserVO vo) throws Exception{
 		System.out.println("////////////패스워드변경");
 		System.out.println("비밀번호 변경이 되냐 ");
+		System.out.println(vo.getPassword());
+		System.out.println(vo.getId());
+		
 		session.update(namespace+".updatePassword",vo);
+		System.out.println("변경 된듯 !!!!!!");
 	}
 	
 	//회원정보읽기

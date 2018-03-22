@@ -39,7 +39,7 @@ top:50%; z-index:11; background:#fff;}
 			<h1>${userVO.nickname}</h1>
 			<c:choose>
 				<c:when test="${userVO.id==login.id}">
-					<button id='admin'><a href="/profile/edit">프로필 편집</a></button>
+					<button id='admin'><a href="../member/profile/edit">프로필 편집</a></button>
 				</c:when>
 				<c:otherwise>
 					<c:choose>
@@ -60,7 +60,7 @@ top:50%; z-index:11; background:#fff;}
 				<li id="following">팔로우 0</li>
 			</ul>
 			<div class="intro">
-				<h1>${userVO.nickname}</h1>
+				<h1>${userVO.name}</h1>
 				<span>${userVO.intro}</span>
 				<a href="${userVO.website}" >${userVO.website}</a>
 			</div>

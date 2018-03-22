@@ -125,13 +125,13 @@ public class UserController {
 	//비밀번호 찾기 기능
     @RequestMapping(value = "/findPassword", method = RequestMethod.GET)
     public void findPasswordGET(UserVO user, Model model) throws Exception {
-        //System.out.println("password 찾기 GET 진입");
+        System.out.println("password 찾기 GET 진입");
 
     }
 	//이메일 확인 후
     @RequestMapping(value = "/findPassword", method = RequestMethod.POST)
     public String findPasswordPost(UserVO user,Model model,RedirectAttributes rttr) throws Exception{
-        //System.out.println("find passwordPost 진입 ");
+        System.out.println("find passwordPost 진입 ");
 		//userEmail 값으로 회원 여부 확인 requestparam 으로 변경??
         String str= user.getEmail();
 		String msg = service.authenticate(str);
@@ -150,21 +150,24 @@ public class UserController {
     //비밀번호 찾기 이메일 인증 코드 검증
     @RequestMapping(value = "/findPasswordConfirm", method = RequestMethod.GET)
     public String passwordSetConfirm(UserVO user, Model model, RedirectAttributes rttr) throws Exception { // 이메일인증
-       // System.out.println("컨트롤러 입력 정보: "+user);
+        System.out.println("컨트롤러 입력 정보: "+user);
     	UserVO vo=service.userAuthFindPassword(user);
-        //System.out.println("controller 서비스에서 받은: "+vo);
+        System.out.println("controller 서비스에서 받은: "+vo);
 		if(vo == null) {
 			rttr.addFlashAttribute("msg" , "비정상적인 접근 입니다. 다시 인증해 주세요");
 			return "redirect:/";
 		}
 		int id=vo.getId();
+		System.out.println("아이디 ? "+id);
+		
         rttr.addFlashAttribute("setPassword",true);
-		rttr.addFlashAttribute("userId",id);
+        rttr.addAttribute("userId", id);
 
 		//model.addAttribute("userId",id);
+	   // model.addAttribute("user",vo);
 		//rttr.addAttribute("login",vo);
-		//System.out.println("Confirm VO : "+vo);
-
+		System.out.println("Confirm VO : "+vo);
+		System.out.println("아이디 ? "+id);
         return "redirect:setPassword";
     }
 
@@ -178,7 +181,8 @@ public class UserController {
         //System.out.println(dto);
     	System.out.println("===============setPassAuthCHeck===POST");
     	UserVO vo = service.login(dto);
-       // System.out.println(vo);
+       
+    	System.out.println(vo);
     		
         if(vo == null) {
             return "user/setPassAuthCheck";
@@ -189,6 +193,7 @@ public class UserController {
         int id=vo.getId();
         rttr.addFlashAttribute("userId",id);
         //패스워드 권한 인증 코드 전송
+        System.out.println("aoaoooaoosdoaidousadsadasadsd!!!");
         rttr.addFlashAttribute("setPassword",true);
         return "redirect:/user/setPassword";
 
@@ -197,6 +202,9 @@ public class UserController {
 	@RequestMapping(value = "/setPassword", method = RequestMethod.GET)
 	public void setPassword(UserVO user, Model model, RedirectAttributes rttr) throws Exception {
 		System.out.println("setPassword GET");
+		 
+		   System.out.println(user);
+		   System.out.println("왜 null 값이 나올까"+user.toString());
 
 	}
 	
@@ -209,11 +217,14 @@ public class UserController {
     	try{
     			System.out.println("aaaaaa");
 			service.modifypassUser(user);
+			System.out.println("변경완료 ?? 인가 ");
 			rttr.addFlashAttribute("msg" , "변경되었습니다. 변경된 패스워드로 로그인해 주세요");
 		}catch (Exception e){
 			System.out.println("왜 안되니?? ");
 			rttr.addFlashAttribute("msg" , "오류가 발생했습니다. 관리자에게 문의 주세요");
 		}
+    	
+    		System.out.println("에러가 안남 ");
 		return "redirect:/";
 	}
 
@@ -228,7 +239,7 @@ public class UserController {
 		System.out.println("////////////////");
 		System.out.println(" 로그인포스트  ");
 		UserVO vo = service.login(dto);
-		System.out.println("어디로가니");
+		System.out.println(vo);
 		//System.out.println("usercontroller vo =" +vo);
 		if(vo == null) {
 			rttr.addFlashAttribute("msg" , "아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -353,6 +364,9 @@ public class UserController {
 
 	@RequestMapping(value = "/modifyUser", method = RequestMethod.POST, produces = "text/plane;charset=UTF-8")
 	public String ModifyUserPost(UserVO user,Model model,RedirectAttributes rttr,HttpSession session, MultipartFile file) throws Exception{
+		
+		
+		System.out.println("바꾸러 왔다 ");
 		//profile 정보 확인
         String test=user.getProfilephoto();
         //user 정보 저장
@@ -376,11 +390,12 @@ public class UserController {
 
 		if(userId.equals(ssuserId)){
 		String imagedefualt=user.getProfilephoto();
-		//System.out.println(imagedefualt);
+		System.out.println(imagedefualt);
 		String defualtprofile ="basic";
 		/////////////////////
 		//file 업로드 여부 확인
 		///////////////////////////////
+		System.out.println("file 업로드 여부 확인 ");
 		if(!file.isEmpty()) {
             String uploadedFileName = UploadFileUtils.uploadFile(uploadPath,
                     file.getOriginalFilename(),
@@ -389,24 +404,25 @@ public class UserController {
            System.out.println("파일 업로드 완료");
             user.setProfilephoto(uploadedFileName);
         }else{
-			//System.out.println("imagedefualt: "+imagedefualt);
-			if(imagedefualt.equals("basic")){
-				user.setProfilephoto(null);
-				//System.out.println("basic"+user.getUserProfile());
-			}else {
-
-				//프로필 업로드 하지 않을 때 원래 정보를 저장
-				UserVO vot = (UserVO) session.getAttribute("login");
-				user.setProfilephoto(vot.getProfilephoto());
-				//System.out.println("no basic"+user.getUserProfile());
-			}
+				System.out.println("imagedefualt: "+imagedefualt);
+        			System.out.println("ㅁㄴㅇㅁㄴㅇㄴㅁ");
+//			if(imagedefualt.equals("basic")){
+//				user.setProfilephoto(null);
+//				System.out.println("basic"+user.getProfilephoto());
+//			}else {
+//					System.out.println("//프로필 업로드 하지 않을 때 원래 정보를 저장");
+//				//프로필 업로드 하지 않을 때 원래 정보를 저장
+//				UserVO vot = (UserVO) session.getAttribute("login");
+//				user.setProfilephoto(vot.getProfilephoto());
+//				System.out.println("no basic"+user.getProfilephoto());
+//				}
 		    }
 
-
+		System.out.println("실행 직전 ");
 		//UserVO vo=service.modifyUser(user);
 
-		//session.setAttribute("login",vo);
-		
+		//session.setAttribute("login",vo);  // 여기서 부터 수정 
+		System.out.println("asdasdasdas");
 		rttr.addFlashAttribute("msg" , "회원 정보가 변경되었습니다.");
 		}
 		return "redirect:/user/myinfo";

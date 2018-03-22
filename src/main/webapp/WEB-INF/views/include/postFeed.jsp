@@ -484,23 +484,29 @@ function likerList(){
 
 //댓글내용 및 글내용 검색처리
 function searchFilter(){
-	$(".captionContainer").find("span").each(function(){
-	   var text =$(this).text();
-	   //console.log("text : "+text);
-	   var splitArray = text.split(' ');
-	   //console.log("splitArray : "+splitArray);
-	   var linkedContent = '';
-	   for(var word in splitArray) {
-	      word = splitArray[word];
-	         if(word.indexOf("#")==0){
-	            var hash=word.substring(word.lastIndexOf("#")+1);
-	            word = "<a href='/search/tags?name="+hash+"'>"+word+"</a>";
-	         }else if(word.indexOf("@")==0){
-	            var person=word.substring(word.lastIndexOf("@")+1);
-	               word = "<a href='/member/"+person+"'>"+word+"</a>";
-	         }
-	         linkedContent += word+' ';
+	$(".intro, .captionContainer").find("span").each(function(){
+		var text =$(this).text();
+		var splitArray = text.split(" ");
+
+		for(var i in splitArray){
+			word = splitArray[i];
+			if(word.indexOf("#")==0){
+				var hash=word.substring(word.lastIndexOf("#")+1);
+				splitArray[i] = "<a href='/search/tags?name="+hash+"'>"+splitArray[i]+"</a>";
+				
+			}else if(word.indexOf("@")==0){
+				var person=word.substring(word.lastIndexOf("@")+1);
+				splitArray[i] = "<a href='/member/"+person+"'>"+splitArray[i]+"</a>";
+			
+			}
+ 			else if(splitArray[i]==""){
+				splitArray[i] = splitArray[i].replace("", "&nbsp;"); 
+			}
 		}
+		
+		var linkedContent = "";
+		linkedContent=splitArray.join(" ");
+		
 		$(this).html(linkedContent);
    })
 }

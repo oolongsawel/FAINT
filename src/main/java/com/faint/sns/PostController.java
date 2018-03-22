@@ -1,11 +1,15 @@
 package com.faint.sns;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,7 +39,7 @@ public class PostController {
 	
 	/*게시물 등록창 읽기*/
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public void registerGET(Model model, HttpServletRequest request) throws Exception {
+	public String registerGET(Model model, HttpServletRequest request) throws Exception {
 		logger.info("register get..............");
 		
 		HttpSession session = request.getSession();
@@ -44,32 +48,63 @@ public class PostController {
 			logger.info(user.toString());
 			model.addAttribute("userVO", user);
 		}
+		
+		return "forward:/post/uploader";
+	}
+
+	/*게시물 등록 - model방식*/
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public void registerPOST(Model model, HttpServletRequest request) throws Exception {
+		logger.info("register post..............");
+		
+		HttpSession session = request.getSession();
+		if(session !=null){
+			UserVO user = (UserVO)session.getAttribute("login");
+			logger.info(user.toString());
+			model.addAttribute("userVO", user);
+		}
+		
+		String[] files = request.getParameterValues("files");
+
+		if(files != null){
+			JSONArray jArray = new JSONArray();
+
+			for(int i=0; i<files.length;i++){
+				JSONParser jsonParser = new JSONParser();
+				JSONObject jsonObject = (JSONObject) jsonParser.parse(files[i]);
+				jArray.add(jsonObject);
+			}
+			logger.info(jArray.toJSONString());
+			model.addAttribute("files", jArray);
+		}
+		logger.info(Arrays.toString(files));
 	}
 	
-	/*게시물 등록창 읽기*/
+	/*파일 첨부*/
 	@RequestMapping(value = "/uploader", method = RequestMethod.GET)
 	public void uploader() throws Exception {
 		logger.info("uploader get..............");
 		
 	}
-
+	
 	/*게시물 등록 - model방식*/
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registerPOST(PostVO post, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
-		logger.info("regist POST..............");
+	@RequestMapping(value = "/register/submit", method = RequestMethod.POST)
+	public String registerSubmit(PostVO post, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		logger.info("regist submit POST..............");
 		logger.info(post.toString());
 		
-		HttpSession session=request.getSession();
-		UserVO vo=(UserVO)session.getAttribute("login");
-		post.setUserid(vo.getId());
-
-		rttr.addFlashAttribute("msg", "SUCCESS");
+		HttpSession session = request.getSession();
+		
+		UserVO user = (UserVO)session.getAttribute("login");
+		post.setUserid(user.getId());
 		
 		service.regist(post);
 
+		rttr.addFlashAttribute("msg", "SUCCESS");
 
 		return "redirect:/";
 	}
+	
 	
 	/*게시물 URI*/
 	@ResponseBody
