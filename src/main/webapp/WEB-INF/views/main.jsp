@@ -70,7 +70,6 @@ article{
 </style>
 
 <body>
-<h1>asdf</h1>
 
 <ul id="categoryList">
 	<li><a href="javascript:;" data-filter="all" tabindex="-1">ALL</a></li>
