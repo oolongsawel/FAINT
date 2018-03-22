@@ -166,8 +166,10 @@ public class UserServiceImpl implements UserService {
 		if(vo!=null){
 			try{
 				System.out.println("패스워드 찾기 이메일 인증성공 !!!");
-				dao.successAuth(user);
+				dao.successAuth(vo);
+				System.out.println("인증키좀 지워 새끼야 ");
 			}catch (Exception e) {
+				System.out.println("인증키좀 지워 새끼야2 여기 돌면 안됨 !! ");
 				e.printStackTrace();
 			}}
 		return vo;
@@ -236,6 +238,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void modifypassUser(UserVO vo) throws Exception{
 		System.out.println("여기 모디 파이 패스 실행 ");
+		System.out.println("dao.vo 입력 값"+vo);
+		String encPassword = passwordEncoder.encode(vo.getPassword());
+		System.out.println(vo.getPassword().toString()+"입력받은 비밀번호 ");
+		
+		vo.setPassword(encPassword);
+		System.out.println("암호화된 비밀번호 : "+vo.getPassword());
 		try {
 			System.out.println("실행실행 실행 ");
 			dao.successAuth(vo);

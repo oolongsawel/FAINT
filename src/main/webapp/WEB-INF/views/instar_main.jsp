@@ -78,6 +78,7 @@
                     <span class="photo__likes"><span class="photo__likes-number">175</span> likes</span>
 
                     <ul class="photo__comments">
+                    <P>  The time on the server is ${serverTime}. </P>
                     <p>#사진#포토그래퍼#하늘공원#서울#나들이#맞팔#일반인모델#출사#</p>
                         <p class="photo__comment">
                             <span class="photo__comment-author"></span> 사진 쩔어

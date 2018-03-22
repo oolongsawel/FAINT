@@ -126,6 +126,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	// 인증키 확인 
 	public UserVO chkAuth(UserVO vo) throws Exception{
+		System.out.println("chk인증키 여부 확인 !!!");
 		return session.selectOne(namespace + ".chkAuth", vo);
 	}
 	
@@ -157,7 +158,11 @@ public class UserDAOImpl implements UserDAO {
 	public void updatePassword(UserVO vo) throws Exception{
 		System.out.println("////////////패스워드변경");
 		System.out.println("비밀번호 변경이 되냐 ");
+		System.out.println(vo.getPassword());
+		System.out.println(vo.getId());
+		
 		session.update(namespace+".updatePassword",vo);
+		System.out.println("변경 된듯 !!!!!!");
 	}
 	
 	// 인증완료로 인한인증키 삭제 
