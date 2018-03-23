@@ -66,7 +66,7 @@ top:50%; z-index:11; background:#fff;}
 			<div class="intro">
 				<h1>${userVO.name}</h1>
 				<span>${userVO.intro}</span>
-				<a href="${userVO.website}" >${userVO.website}</a>
+				<a href='https://${userVO.website}' >${userVO.website}</a>
 			</div>
 		</section>
 	</header>

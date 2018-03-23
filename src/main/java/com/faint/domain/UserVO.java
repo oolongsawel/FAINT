@@ -18,7 +18,6 @@ public class UserVO {
 	private int prilevel; //userState
 	private int userlevel; //비공개여부
 	private String sessionkey;
-	private int sessionlimit;
 	private String memberAuthKey;
 	
 	private Date regdate;
@@ -102,12 +101,6 @@ public class UserVO {
 	public void setSessionkey(String sessionkey) {
 		this.sessionkey = sessionkey;
 	}
-	public int getSessionlimit() {
-		return sessionlimit;
-	}
-	public void setSessionlimit(int sessionlimit) {
-		this.sessionlimit = sessionlimit;
-	}
 	public String getMemberAuthKey() {
 		return memberAuthKey;
 	}
@@ -132,8 +125,8 @@ public class UserVO {
 		return "UserVO [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", nickname="
 				+ nickname + ", phonenumber=" + phonenumber + ", profilephoto=" + profilephoto + ", sex=" + sex
 				+ ", website=" + website + ", intro=" + intro + ", prilevel=" + prilevel + ", userlevel=" + userlevel
-				+ ", sessionkey=" + sessionkey + ", sessionlimit=" + sessionlimit + ", memberAuthKey=" + memberAuthKey
-				+ ", regdate=" + regdate + ", isFollow=" + isFollow + "]";
+				+ ", sessionkey=" + sessionkey + ", memberAuthKey=" + memberAuthKey + ", regdate=" + regdate
+				+ ", isFollow=" + isFollow + "]";
 	}
 
 }

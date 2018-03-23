@@ -136,7 +136,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				loginCookie.setMaxAge(60 * 60 * 24);
 				response.addCookie(loginCookie);
 			}
-			if(dest=="/user/login"||dest==""||dest==null){
+			if(dest=="/user/loginTest"||dest==""||dest==null){
 				System.out.println("기본회원인듯요 ");
 				session.setAttribute("dest","/main");
 				
