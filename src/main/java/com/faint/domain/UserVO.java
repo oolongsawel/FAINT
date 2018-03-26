@@ -22,6 +22,7 @@ public class UserVO {
 	
 	private Date regdate;
 	private int isFollow; //로그인한 유저가 팔로우할경우 해당 유저의 id값 반환 아닐경우 null(0)반환
+	private int postCount;
 	
 	public int getId() {
 		return id;
@@ -119,6 +120,12 @@ public class UserVO {
 	public void setIsFollow(int isFollow) {
 		this.isFollow = isFollow;
 	}
+	public int getPostCount() {
+		return postCount;
+	}
+	public void setPostCount(int postCount) {
+		this.postCount = postCount;
+	}
 	
 	@Override
 	public String toString() {
@@ -126,7 +133,15 @@ public class UserVO {
 				+ nickname + ", phonenumber=" + phonenumber + ", profilephoto=" + profilephoto + ", sex=" + sex
 				+ ", website=" + website + ", intro=" + intro + ", prilevel=" + prilevel + ", userlevel=" + userlevel
 				+ ", sessionkey=" + sessionkey + ", memberAuthKey=" + memberAuthKey + ", regdate=" + regdate
-				+ ", isFollow=" + isFollow + "]";
+				+ ", isFollow=" + isFollow + ", postCount=" + postCount + ", getId()=" + getId() + ", getEmail()="
+				+ getEmail() + ", getUserlevel()=" + getUserlevel() + ", getPassword()=" + getPassword()
+				+ ", getName()=" + getName() + ", getNickname()=" + getNickname() + ", getPhonenumber()="
+				+ getPhonenumber() + ", getProfilephoto()=" + getProfilephoto() + ", getSex()=" + getSex()
+				+ ", getWebsite()=" + getWebsite() + ", getIntro()=" + getIntro() + ", getPrilevel()=" + getPrilevel()
+				+ ", getSessionkey()=" + getSessionkey() + ", getMemberAuthKey()=" + getMemberAuthKey()
+				+ ", getRegdate()=" + getRegdate() + ", getIsFollow()=" + getIsFollow() + ", getPostCount()="
+				+ getPostCount() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
 	}
 
 }

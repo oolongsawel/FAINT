@@ -31,7 +31,7 @@ top:50%; z-index:11; background:#fff;}
 				<button id="btnChangePhoto"><img src="/displayFile?fileName=${userVO.profilephoto}" style="width:50px; height:50px;"/></button>
 			</c:when>
 			<c:otherwise>
-				<button id="btnChangePhoto"><img src="/../resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
+				<button id="btnChangePhoto"><img src="/resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
 			</c:otherwise>
 		</c:choose>
 		</div>
@@ -55,14 +55,14 @@ top:50%; z-index:11; background:#fff;}
 				</c:otherwise>
 			</c:choose>
 			<ul>
-				<li id="postCnt">게시물 0</li>
+				<li id="postCnt">게시물 ${userVO.postCount}</li>
 				<li id="followed">팔로워 0</li>
 				<li id="following">팔로우 0</li>
 			</ul>
 			<div class="intro">
 				<h1>${userVO.name}</h1>
 				<span>${userVO.intro}</span>
-				<a href="/movepage/${userVO.website}" >${userVO.website}</a>
+				<a href='https://${userVO.website}' >${userVO.website}</a>
 			</div>
 		</section>
 	</header>

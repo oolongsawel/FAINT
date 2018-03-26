@@ -34,7 +34,7 @@ h1, h5 {
 <script type="text/javascript">
 	//postFeed로 전달될 데이터
 	var jsonList = ${jsonList};
-	var uid="";
+	var uid=null;
 </script>
 
 <!-- 메인피드 -->

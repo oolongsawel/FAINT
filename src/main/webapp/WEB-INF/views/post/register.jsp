@@ -268,7 +268,7 @@
       </section>
 	  		<section class="_km7ip _ti7l3" style="display:inline-block">
                <div class="_b6i0l" >
-               		<textarea aria-label="설명 입력..." placeholder="설명 입력..." class="_bilrf" name="caption" autocomplete="off" autocorrect="off" style="height:36px; width:100%"></textarea>
+               		<textarea aria-label="설명 입력..." placeholder="설명 입력..." class="_bilrf" name="caption" autocomplete="off" autocorrect="off" style="height:36px; width:100%" maxlength="250"></textarea>
                </div>
                <button type="button" class="btn btn-default btn-circle" id="btnSubmit" style="position:  absolute;top: 10px;right:  0;">
 	       			<i class="glyphicon glyphicon-floppy-disk"></i>
@@ -347,6 +347,13 @@
 <script>
 	$(document).ready(function() {
 		
+		//게시물 글자수 제한
+		$("._bilrf").first().keyup(function(){
+	        if ($(this).val().length > $(this).attr('maxlength')) {
+	            alert('글자수는 ' + $(this).attr('maxlength') + '자까지만 가능합니다.');
+	            $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+	        }
+		})
 		
 		$("#btnSubmit").on("click",function(event){
 			event.preventDefault();
@@ -602,6 +609,8 @@
 			}
 		});
 	}
+	
+	
 	
 	
 </script>

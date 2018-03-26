@@ -112,7 +112,7 @@
 						</ul>
 					</div>
 					<section class="btnContainer" title="{{postid}}">
-						<button class="replyBtn">댓글(미구현)</button>
+						<button class="replyBtn" onclick="replyCursor(this)">댓글달기</button>
 					</section>
 				
 					<section>
@@ -143,8 +143,7 @@ $(document).ready(function(){
 		var elseList=jsonList;
 		
 		//태그 or 지역검색이 아니고 user정보를 가져올때(user프로필 페이지)
-		if(elseList.length==0){
-			jsonList="{}";
+		if(elseList=="profile"){
 			
 			$.ajax({
 				url:"/post/" + uid,
@@ -158,13 +157,14 @@ $(document).ready(function(){
 			console.log(data);
 			//게시물이 없을 때
 			if($(data).length==0 && uid!=${login.id}){
-				$(".postContainer").html("<div>이 유저는 아직 게시글이 없어요 ㅠㅠ</div>");
+				$(".postContainer").html("<div>아직 등록된 게시글이 없어요 ㅠㅠ</div>");
 				return;
 			}else if($(data).length==0 && uid==${login.id}){
 				$(".postContainer").html("<div>소중한 순간들을 포착하여 공유해보세요</div>");
 				return;
 			}
-			
+		}else if(elseList.length==0 && typeof(uid)=="number"){
+			$(".postContainer").html("<div>아직 저장된 게시글이 없어요 ㅠㅠ</div>");
 		}else{
 			try{
 				data = elseList;
@@ -268,9 +268,6 @@ $(document).ready(function(){
 				})
 			})
 		})
-		
-			
-		$("#postCnt").html("게시물 "+$(data).length);
 	};
 })
 
@@ -531,6 +528,12 @@ $("#categoryList li a").click(function(){
 		return $(this).data("filter") === customType || customType==="all";
 		}).show();
 })
+
+//css - 댓글달기 버튼 클릭시 커서 포커스
+function replyCursor(thisBtn){
+	var postid=$(thisBtn).parent().attr("title");
+	$("._replyRegister[title="+postid+"]").children("input").focus();
+}
 
 </script>
 

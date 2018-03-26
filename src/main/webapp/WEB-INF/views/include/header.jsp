@@ -280,9 +280,16 @@ function searchAjax(){
                  		else if(result[i].type==1 && result[i].nickname!=null) {
                  			console.log("이름이다");
                  		   str+="<a class='_ndl3t _4jr79' href='/member/"+result[i].nickname.substring(1)+"'>"
-                 		         +"<div class='_o92vn'>"
-                 		         +"<span class='_po4xn coreSpriteHashtag'><img src='/displayFile?fileName="+result[i].profilephoto+"'; style='height:24px; width:24px;'></span>"
-                 		         +"<div class='_poxna'>"
+                 		         +"<div class='_o92vn'>";
+                 		         
+                 		         //프로필사진
+                 		         if(result[i].profilephoto.length==0 || result[i].profilephoto == null ){
+                 		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/resources/img/emptyProfile.jpg'; style='height:24px; width:24px;'></span>";
+                 		         }else{
+                 		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/displayFile?fileName="+result[i].profilephoto+"'; style='height:24px; width:24px;'></span>";
+                 		         }
+                 		         
+                 		   str+="<div class='_poxna'>"
 
                  		         +"<div class='_lv0uf'>"
                  		         +"<span class='_b01op'>"+result[i].nickname+"</span>"

@@ -67,7 +67,7 @@
 				<button id="btnChangePhoto"><img src="/displayFile?fileName=${userVO.profilephoto}" style="width:50px; height:50px;"/></button>
 			</c:when>
 			<c:otherwise>
-				<button id="btnChangePhoto"><img src="../resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
+				<button id="btnChangePhoto"><img src="/resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
 			</c:otherwise>
 		</c:choose>
 		</div>
@@ -91,7 +91,7 @@
 				</c:otherwise>
 			</c:choose>
 			<ul>
-				<li id="postCnt">게시물 0</li>
+				<li id="postCnt">게시물 ${userVO.postCount}</li>
 				<li id="followed">팔로워 0</li>
 				<li id="following">팔로우 0</li>
 			</ul>
@@ -284,7 +284,7 @@ function updatePhoto(fullName){
 
 
 //postFeed 에러방지용 변수
-var jsonList="${jsonList}";
+var jsonList="profile";
 var uid=${userVO.id};
 
 //followList 에 followedList부여 및 팔로워 수 갱신
@@ -300,9 +300,9 @@ function followed(){
 		var followedList="";
 		var data=$(data)
 		if(data.length!=0){
-			$("#followed").html("<a href='javascript:;' class='modalLink'>팔로워 "+data.length+"</a>");
+			$("#followed").html("<a href='javascript:;' id='flwr'>팔로워 "+data.length+"</a>");
 			//followed onclick 메서드 적용(follow리스트뜨도록)
-			$("#followed").on("click", function(){
+			$("#flwr").on("click", function(){
 				followedList="";
 				data.each(function(){
 					if(this.isFollow>0){
@@ -354,9 +354,9 @@ function following(){
 		var followingList="";
 		var data=$(data)
 		if(data.length!=0){
-			$("#following").html("<a href='javascript:;' class='modalLink'>팔로우 "+data.length+"</a>");
+			$("#following").html("<a href='javascript:;' id='flw'>팔로우 "+data.length+"</a>");
 			//following onclick 메서드 적용(follow리스트뜨도록)
-			$("#following").on("click", function(){
+			$("#flw").on("click", function(){
 				followingList="";
 				data.each(function(){
 					if(this.isFollow>0){
@@ -426,7 +426,7 @@ function follow(){
 			dataType:"text",
 			success:function(result){
 				if(result=="SUCCESS"){
-					followed();
+					following();
 				};
 			}		
 		});

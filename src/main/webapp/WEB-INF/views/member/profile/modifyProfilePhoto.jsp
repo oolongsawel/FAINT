@@ -25,7 +25,7 @@
 	</div>
 		<div class="_ax54t">
 			<h1 class="_gvhl0" title="${userVO.nickname}">${userVO.nickname}</h1> 
-			<a class="_5aav8 linkChangeProfilePotho" href="#">프로필
+			<a class="_5aav8 linkChangeProfilePotho" href="javascript:;">프로필
 				사진 수정</a>
 		</div>
 	</div>

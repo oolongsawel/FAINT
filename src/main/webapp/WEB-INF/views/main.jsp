@@ -84,7 +84,14 @@ article{
 			<div>
 				<a class="_profileImageContainer" href="/member/${postDTO.usernickname}">
 					<!-- 프로필 이미지 -->
-					<img class="_profileImage" src="/displayFile?fileName=${postDTO.profilephoto}" style="width:30px; height:30px;"/>
+					<c:choose>
+						<c:when test="${postDTO.profilephoto ne null && postDTO.profilephoto != ''}">
+							<img class="_postImage" src="/displayFile?fileName=${postDTO.profilephoto}" style="width:30px; height:30px;"/>
+						</c:when>
+						<c:otherwise>
+							<img class="_postImage" src="/resources/img/emptyProfile.jpg" style="width:30px; height:30px;"/>
+						</c:otherwise>
+					</c:choose>
 				</a>
 			</div>
 			<div class="_writerContainer">
@@ -123,7 +130,7 @@ article{
 						<button class="likeBtn">♥</button>
 				    </c:otherwise>
 			    </c:choose>
-				<button class="replyBtn">댓글(미구현)</button>
+				<button class="replyBtn" onclick="replyCursor(this)">댓글달기</button>
 				<c:choose>
 				    <c:when test="${postDTO.isStore eq '0'}">
 				    	<button class="storeBtn">□</button>
@@ -182,7 +189,7 @@ function reply(){
 			//게시물의 댓글 등록창
 			var replyRegist=
 				"<div class='_replyRegister' title="+pid+">"
-					+"<input type='textarea' onkeypress='registReply(this, event);' class='replyRegist' placeholder='댓글입력'/>"
+				+"<input type='textarea' onkeypress='registReply(this, event);' class='replyRegist' placeholder='댓글입력'/>"
 				+"</div>";
 			$(replyContainer).html(replyRegist);
 			
@@ -467,6 +474,13 @@ $("#categoryList li a").click(function(){
 		return $(this).data("filter") === customType || customType==="all";
 		}).show();
 })
+	
+//css - 댓글달기 버튼 클릭시 커서 포커스
+function replyCursor(thisBtn){
+	var postid=$(thisBtn).parent().attr("title");
+	$("._replyRegister[title="+postid+"]").children("input").focus();
+}
+
 </script>
 
 </body>
