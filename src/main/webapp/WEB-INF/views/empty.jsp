@@ -23,7 +23,6 @@
 <body>
 	<div id="center">
 		<h2>존재하지 않는 페이지 혹은 잘못된 접근입니다.</h2>
-		<h1></h1>
 	</div>
 </body>
 </html>
