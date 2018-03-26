@@ -30,25 +30,6 @@
     overflow: auto;
 }
 
-/* The Close Button */
-.close {
-    color: #fefefe;
-    float: right;
-    font-size: 50px;
-    font-weight: bold;
-    right:1.5%;
-    top:0%;
-    cursor: pointer;
-    
-    background: 0 0;
-    border: 0;
-    cursor: pointer;
-    height: 36px;
-    outline: 0;
-    position: absolute;
-    z-index: 2;
-}
-
 .postContainer{
 	text-align: center;
 }
@@ -117,7 +98,7 @@
 								</a>
 							</div>
 							<div>
-								<a class="_postLocation" href="">지역명(미구현)</a>
+								<a class="_postLocation" href="/search/locations?location={{location}}">{{location}}</a>
 							</div>
 						</div>
 					</header>
@@ -247,17 +228,17 @@ $(document).ready(function(){
 							$(".popPostImage:eq(0)").css("display", "block");
 							
 							//좋아요버튼 삽입
-							if(data.isLike=='1'){
-								$(".btnContainer").prepend("<button class='likeBtn'>♥</button>")
-							}else{
+							if(data.isLike=='0'){
 								$(".btnContainer").prepend("<button class='likeBtn'>♡</button>")
+							}else{
+								$(".btnContainer").prepend("<button class='likeBtn'>♥</button>")
 							}
 							
 							//저장하기 버튼 삽입
-							if(data.isStore=='1'){
-								$(".btnContainer").append("<button class='storeBtn'>■</button>")
-							}else{
+							if(data.isStore=='0'){
 								$(".btnContainer").append("<button class='storeBtn'>□</button>")
+							}else{
+								$(".btnContainer").append("<button class='storeBtn'>■</button>")
 							}
 							
 							//modal창 보이기
@@ -490,11 +471,11 @@ function searchFilter(){
 
 		for(var i in splitArray){
 			word = splitArray[i];
-			if(word.indexOf("#")==0){
+			if(word.indexOf("#")==0 && word.length > 1){
 				var hash=word.substring(word.lastIndexOf("#")+1);
 				splitArray[i] = "<a href='/search/tags?name="+hash+"'>"+splitArray[i]+"</a>";
 				
-			}else if(word.indexOf("@")==0){
+			}else if(word.indexOf("@")==0 && word.length > 1){
 				var person=word.substring(word.lastIndexOf("@")+1);
 				splitArray[i] = "<a href='/member/"+person+"'>"+splitArray[i]+"</a>";
 			

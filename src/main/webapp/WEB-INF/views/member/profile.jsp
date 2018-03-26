@@ -12,14 +12,46 @@
 <script type="text/javascript" src="../../resources/js/upload.js"></script>
 <style>
 
-a{color:#000;}
- 
-.mask{width:100%; height:100%; position:fixed; left:0; top:0; z-index:10; background:#000; opacity:.5; filter:alpha(opacity=50);}
- 
-#modalLayer{display:none; position:relative;}
-#modalLayer .modalContent{width:440px; height:200px; padding:20px; border:1px solid #ccc; position:fixed; left:50%; 
-top:50%; z-index:11; background:#fff;}
-#modalLayer .modalContent .exit{position:absolute; right:0; top:0; cursor:pointer;}
+.followModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+.followModal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 30%;
+    height: 70%;
+    overflow: auto;
+}
+/* The Close Button */
+.close {
+    color: #fefefe;
+    float: right;
+    font-size: 50px;
+    font-weight: bold;
+    right:1.5%;
+    top:0%;
+    cursor: pointer;
+    
+    background: 0 0;
+    border: 0;
+    cursor: pointer;
+    height: 36px;
+    outline: 0;
+    position: absolute;
+    z-index: 2;
+}
 
 </style>
 
@@ -35,7 +67,7 @@ top:50%; z-index:11; background:#fff;}
 				<button id="btnChangePhoto"><img src="/displayFile?fileName=${userVO.profilephoto}" style="width:50px; height:50px;"/></button>
 			</c:when>
 			<c:otherwise>
-				<button id="btnChangePhoto"><img src="/../resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
+				<button id="btnChangePhoto"><img src="../resources/img/emptyProfile.jpg" style="width:50px; height:50px;"/></button>
 			</c:otherwise>
 		</c:choose>
 		</div>
@@ -82,15 +114,20 @@ top:50%; z-index:11; background:#fff;}
 	</div>
 </c:if>
 
-<!-- 팔로우 팔로워 리스트(모달) -->
-<div id="modalLayer">
-	<div class="modalContent">
-		<button id="exit" type="button">X</button>
-		<ul id="followList"></ul>
+
+<!-- 프로필 이미지 input -->
+<input type="file" name="file" id="inputfile" accept="image/*" style="display:none;">
+
+<!-- 팔로워 팔로잉 list Modal -->
+<script id="modalFollow" type="text/x-handlebars-template">
+<div id="myFollowModal" class="followModal">
+	<span class="close">&times;</span>
+	<div class="followModal-content">
+		<ul id="followsContainer">
+		</ul>
 	</div>
 </div>
-
-<input type="file" name="file" id="inputfile" accept="image/*" style="display:none;">
+</script>
 
 <script id="modalTemplate" type="text/x-handlebars-template">
 	<div class="_pfyik" role="dialog" onclick="callRemoveDialog(event)">
@@ -266,8 +303,6 @@ function followed(){
 			$("#followed").html("<a href='javascript:;' class='modalLink'>팔로워 "+data.length+"</a>");
 			//followed onclick 메서드 적용(follow리스트뜨도록)
 			$("#followed").on("click", function(){
-				var modalLayer = $("#modalLayer");
-				modalLayer.fadeIn("slow");
 				followedList="";
 				data.each(function(){
 					if(this.isFollow>0){
@@ -278,8 +313,34 @@ function followed(){
 						followedList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a></li>";
 					}
 				})
-				$("#followList").html(followedList);
+				
+				//모달창 불러오기
+				var source=$("#modalFollow").html();
+				var likers=Handlebars.compile(source);
+				var likersModal=likers(data);
+				$("body").append(likersModal);
+				$("#followsContainer").html(followedList);
+				
+				//팔로우 + 언팔로우
 				follow();
+				
+				//modal창 보이기
+				$("#myFollowModal").css("display","block");
+				
+				//modal끄기 메서드-바깥부분
+				$("#myFollowModal").click(function(event){
+					if(event.target==this){
+						$("#myFollowModal").css("display","none");
+						$("#myFollowModal").remove();	
+					}
+				})
+				
+				//modal끄기 메서드-버튼부분
+				$(".close:eq(0)").on("click", function(){
+					$("#myFollowModal").css("display","none");
+					$("#myFollowModal").remove();
+				})
+				
 			});
 		}else{
 			$("#followed").html("팔로워 0");
@@ -296,8 +357,6 @@ function following(){
 			$("#following").html("<a href='javascript:;' class='modalLink'>팔로우 "+data.length+"</a>");
 			//following onclick 메서드 적용(follow리스트뜨도록)
 			$("#following").on("click", function(){
-				var modalLayer = $("#modalLayer");
-				modalLayer.fadeIn("slow");
 				followingList="";
 				data.each(function(){
 					if(this.isFollow>0){
@@ -308,8 +367,34 @@ function following(){
 						followingList+="<li><a href='/member/"+this.nickname+"'>" + this.nickname + "</a></li>";
 					}
 				})
-				$("#followList").html(followingList);
+				
+				//모달창 불러오기
+				var source=$("#modalFollow").html();
+				var likers=Handlebars.compile(source);
+				var likersModal=likers(data);
+				$("body").append(likersModal);
+				$("#followsContainer").html(followingList);
+				
+				//팔로우 + 언팔로우
 				follow();
+				
+				//modal창 보이기
+				$("#myFollowModal").css("display","block");
+				
+				//modal끄기 메서드-바깥부분
+				$("#myFollowModal").click(function(event){
+					if(event.target==this){
+						$("#myFollowModal").css("display","none");
+						$("#myFollowModal").remove();	
+					}
+				})
+				
+				//modal끄기 메서드-버튼부분
+				$(".close:eq(0)").on("click", function(){
+					$("#myFollowModal").css("display","none");
+					$("#myFollowModal").remove();
+				})
+				
 			});
 		}else{
 			$("#following").html("팔로우 0");
@@ -348,30 +433,6 @@ function follow(){
 	});
 };
 
-//followedList modal관련 메서드
-$(document).ready(function() {
-	var modalLayer = $("#modalLayer");
-	var modalLink = $(".modalLink");
-	var modalCont = $(".modalContent");
-	var marginLeft = modalCont.outerWidth() / 2;
-	var marginTop = modalCont.outerHeight() / 2;
-
-	modalLink.click(function() {
-		modalLayer.fadeIn("slow");
-		modalCont.css({
-			"margin-top" : -marginTop,
-			"margin-left" : -marginLeft
-		});
-		$(this).blur();
-		$(".modalContent > a").focus();
-		return false;
-	});
-
-	$(".modalContent > button").click(function() {
-		modalLayer.fadeOut("slow");
-		modalLink.focus();
-	});
-});
 
 </script>
 

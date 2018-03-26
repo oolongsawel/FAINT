@@ -41,5 +41,10 @@ public class MainController {
 				model.addAttribute("list", service.mainRead(vo.getId())); //세션 아이디값을 통해 현재 팔로우중인 유저들의 게시물정보 및 유저정보 등을 받아옴
 		}
 	}
+	
+	@RequestMapping(value = "/empty", method = RequestMethod.GET)
+	public void empty(Model model)throws Exception{
+
+	}
 
 }

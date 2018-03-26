@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.faint.domain.SearchCriteria;
+import com.faint.dto.SearchDTO;
 
 @Repository
 public class SearchDAOImpl implements SearchDAO {
@@ -19,7 +20,7 @@ public class SearchDAOImpl implements SearchDAO {
 	private static String namespace = "com.faint.mapper.SearchMapper";
 
 	@Override
-	public List<String> listKeyword(SearchCriteria cri) throws Exception {
+	public List<SearchDTO> listKeyword(SearchCriteria cri) throws Exception {
 		return session.selectList(namespace+".listKeyword", cri);
 	}
 

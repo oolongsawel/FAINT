@@ -28,6 +28,10 @@
 
 <style>
 
+/* .tit {
+	text-overflow: ellipsis;
+} */
+
 /* 인기 검색어 스타일 */
 h2 {
 	text-align: center;
@@ -104,7 +108,7 @@ span {
 <c:forEach items="${toptag}" var="tagVO">
 <ol>
 <li style="list-style-type:none;">
-	<a href='/search/tags?name=${tagVO.name}'>
+	<a class="tagname" href='/search/tags?name=${tagVO.name}'>
 	<span class="keyword">
 	<em class="num"></em>
 	<span class="tit">${tagVO.name}</span>

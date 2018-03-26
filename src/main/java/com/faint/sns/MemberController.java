@@ -54,8 +54,17 @@ public class MemberController {
 		FollowDTO dto=new FollowDTO();
 		dto.setLoginid(vo.getId());
 		dto.setNickname(nickname);
-		model.addAttribute("userVO", service.userRead(dto));
-		return "forward:/member/profile";
+		UserVO user=(UserVO)service.userRead(dto);
+		System.out.println(user);
+		
+		if(user!=null){
+			model.addAttribute("userVO", user);
+			return "forward:/member/profile";
+		}else{
+			return "forward:/empty";
+		}
+		
+		
 	}
 	
 	@RequestMapping(value="/profile", method=RequestMethod.GET)

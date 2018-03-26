@@ -9,12 +9,13 @@ public class FollowinPostDTO {
 	private int userid;
 	private String caption;
 	private int cateid;
+	private String location;
 	private String url; //모든 첨부파일 통합 String '|'로 파일명 구분
 	private String usernickname;
 	private String profilephoto;
 	private Date regdate;
-	private int isLike; //1 or null(=0)
-	private int isStore; //1 or null(=0)
+	private int isLike; //userid or null(=0)
+	private int isStore; //userid or null(=0)
 	
 	public int getPostid() {
 		return postid;
@@ -39,6 +40,12 @@ public class FollowinPostDTO {
 	}
 	public void setCateid(int cateid) {
 		this.cateid = cateid;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	public String getUrl() {
 		return url;
@@ -80,8 +87,9 @@ public class FollowinPostDTO {
 	@Override
 	public String toString() {
 		return "FollowinPostDTO [postid=" + postid + ", userid=" + userid + ", caption=" + caption + ", cateid="
-				+ cateid + ", url=" + url + ", usernickname=" + usernickname + ", profilephoto=" + profilephoto
-				+ ", regdate=" + regdate + ", isLike=" + isLike + ", isStore=" + isStore + "]";
+				+ cateid + ", location=" + location + ", url=" + url + ", usernickname=" + usernickname
+				+ ", profilephoto=" + profilephoto + ", regdate=" + regdate + ", isLike=" + isLike + ", isStore="
+				+ isStore + "]";
 	}
 	
 }

@@ -41,7 +41,7 @@ article{
     background-color: #fefefe;
     margin: auto;
     border: 1px solid #888;
-    width: 80%;
+    width: 30%;
     height: 70%;
     overflow: auto;
 }
@@ -69,9 +69,11 @@ article{
 
 <ul id="categoryList">
 	<li><a href="javascript:;" data-filter="all" tabindex="-1">ALL</a></li>
-	<li><a href="javascript:;" data-filter="1" tabindex="-1">1</a></li>
-	<li><a href="javascript:;" data-filter="2" tabindex="-1">2</a></li>
-	<li><a href="javascript:;" data-filter="3" tabindex="-1">3</a></li>
+	<li><a href="javascript:;" data-filter="1" tabindex="-1">여행</a></li>
+	<li><a href="javascript:;" data-filter="2" tabindex="-1">영화</a></li>
+	<li><a href="javascript:;" data-filter="3" tabindex="-1">음악</a></li>
+	<li><a href="javascript:;" data-filter="4" tabindex="-1">음식</a></li>
+	<li><a href="javascript:;" data-filter="5" tabindex="-1">글귀</a></li>
 </ul>
 
 <section>
@@ -92,7 +94,9 @@ article{
 					</a>
 				</div>
 				<div>
-					<a class="_postLocation" href="">지역명(미구현)</a>
+					<c:if test = "${postDTO.location ne null}">
+						<a class="_postLocation" href="/search/locations?location=${postDTO.location}">${postDTO.location}</a>
+					</c:if>
 				</div>
 			</div>
 		</header>
@@ -112,20 +116,20 @@ article{
 		<div>
 			<section title="${postDTO.postid}">
 				<c:choose>
-				    <c:when test="${postDTO.isLike=='1'}">
-				    	<button class="likeBtn">♥</button>
+				    <c:when test="${postDTO.isLike eq '0'}">
+				    	<button class="likeBtn">♡</button>
 				    </c:when>
 				    <c:otherwise>
-						<button class="likeBtn">♡</button>
+						<button class="likeBtn">♥</button>
 				    </c:otherwise>
 			    </c:choose>
 				<button class="replyBtn">댓글(미구현)</button>
 				<c:choose>
-				    <c:when test="${postDTO.isStore=='1'}">
-				    	<button class="storeBtn">■</button>
+				    <c:when test="${postDTO.isStore eq '0'}">
+				    	<button class="storeBtn">□</button>
 				    </c:when>
 				    <c:otherwise>
-						<button class="storeBtn">□</button>
+						<button class="storeBtn">■</button>
 				    </c:otherwise>
 			    </c:choose>
 			</section>
@@ -420,13 +424,14 @@ function searchFilter(){
 	$(".intro, .captionContainer").find("span").each(function(){
 		var text =$(this).text();
 		var splitArray = text.split(" ");
+		
 		for(var i in splitArray){
 			word = splitArray[i];
-			if(word.indexOf("#")==0){
+			if(word.indexOf("#")==0 && word.length > 1){
 				var hash=word.substring(word.lastIndexOf("#")+1);
 				splitArray[i] = "<a href='/search/tags?name="+hash+"'>"+splitArray[i]+"</a>";
 				
-			}else if(word.indexOf("@")==0){
+			}else if(word.indexOf("@")==0 && word.length > 1){
 				var person=word.substring(word.lastIndexOf("@")+1);
 				splitArray[i] = "<a href='/member/"+person+"'>"+splitArray[i]+"</a>";
 			
@@ -463,7 +468,6 @@ $("#categoryList li a").click(function(){
 		}).show();
 })
 </script>
-</div>
 
 </body>
 </html>

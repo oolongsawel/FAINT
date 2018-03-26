@@ -1,93 +1,80 @@
 package com.faint.dto;
 
-// 검색창 검색
 public class SearchDTO {
+
+	private int type;
+	private int score;
+
+	private String tagname;		
+	private int postedtagCnt;		
 	
-	/*태그*/
-	private int tagid;				// 태그 id
-	private String tagname;		// 태그 이름
-	private int postedtagCnt;		// 태그와 연결된 게시글 갯수
+	private String nickname;		
+	private String name;	
+	private String profilephoto;
 	
-	/*사용자*/
-	private String nickname;		// 사용자 nick
-	private String name;			// 사용자 이름
-	private int userid;				// 사용자 id
+	private String location;
+
+	// getter, setter
+	public int getType() {
+		return type;
+	}
 	
-	/*위치*/
-	private int postid;				// 게시글 번호
-	private int cateid;				// 게시글 카테고리 번호
-	private String location;		// 위치
+	public void setType(int type) {
+		this.type = type;
+	}
 	
-	
-	//getter, setter
-	public int getTagid() {
-		return tagid;
+	public int getScore() {
+		return score;
 	}
 
-	public void setTagid(int tagid) {
-		this.tagid = tagid;
+	public void setScore(int score) {
+		this.score = score;
 	}
-	
+
 	public String getTagname() {
 		return tagname;
 	}
-	
+
 	public void setTagname(String tagname) {
 		this.tagname = tagname;
 	}
-	
+
+	public String getProfilephoto() {
+		return profilephoto;
+	}
+
+	public void setProfilephoto(String profilephoto) {
+		this.profilephoto = profilephoto;
+	}
+
 	public int getPostedtagCnt() {
 		return postedtagCnt;
 	}
-	
+
 	public void setPostedtagCnt(int postedtagCnt) {
 		this.postedtagCnt = postedtagCnt;
 	}
-	
+
 	public String getNickname() {
 		return nickname;
 	}
-	
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public int getUserid() {
-		return userid;
-	}
-	
-	public void setUserid(int userid) {
-		this.userid = userid;
-	}
-	
-	public int getPostid() {
-		return postid;
-	}
 
-	public void setPostid(int postid) {
-		this.postid = postid;
-	}
-
-	public int getCateid() {
-		return cateid;
-	}
-
-	public void setCateid(int cateid) {
-		this.cateid = cateid;
-	}
-	
 	public String getLocation() {
 		return location;
 	}
-	
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
@@ -95,12 +82,10 @@ public class SearchDTO {
 	//toString
 	@Override
 	public String toString() {
-		return "SearchDTO [tagid=" + tagid + ", tagname=" + tagname + ", postedtagCnt=" + postedtagCnt + ", nickname="
-				+ nickname + ", name=" + name + ", userid=" + userid + ", postid=" + postid + ", cateid=" + cateid
+		return "SearchDTO [type=" + type + ", score=" + score + ", tagname=" + tagname + ", postedtagCnt="
+				+ postedtagCnt + ", nickname=" + nickname + ", name=" + name + ", profilephoto=" + profilephoto
 				+ ", location=" + location + "]";
 	}
 
-	
-	
-	
+
 }

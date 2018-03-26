@@ -3,7 +3,6 @@ package com.faint.sns;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.print.attribute.standard.Media;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.faint.domain.PostVO;
 import com.faint.domain.SearchCriteria;
+import com.faint.dto.SearchDTO;
 import com.faint.dto.TopPostDTO;
 import com.faint.service.PostService;
 import com.faint.service.SearchService;
@@ -56,36 +56,32 @@ public class ExploreController {
 		
 		JSONArray jsonArray=new JSONArray();
 		model.addAttribute("jsonList", jsonArray.fromObject(vo));
-		
 	}
 
 	
 	// 실시간으로 keyword값 받아서 띄우기 => 이름, 닉네임, 태그 모두 다
 	@ResponseBody
 	@RequestMapping(value = "/searchData", method = RequestMethod.POST)
-	public ResponseEntity<List<String>> searchList(@RequestBody String words) throws Exception {
+	public ResponseEntity<List<SearchDTO>> searchList(@RequestBody String words) throws Exception {
 		
 		SearchCriteria cri = new SearchCriteria();
-		ResponseEntity<List<String>> entity = null;
+		ResponseEntity<List<SearchDTO>> entity = null;
 		
-		// 입력받은 값이 #, @, %로 시작할 경우 단어를 잘라서 검색
+		// 입력받은 값이 #, @로 시작할 경우 단어를 잘라서 검색
 		if(words.substring(0, 1).equals("#") && words.length()>1) {
 			cri.setKeyword(words.substring(1, words.length()));
 			}
 		else if(words.substring(0, 1).equals("@") && words.length()>1) {
 			cri.setKeyword(words.substring(1, words.length()));
 		}
-		else if(words.substring(0, 1).equals("%") && words.length()>1) {
-			cri.setKeyword(words.substring(1, words.length()));
-		}
-		
+
 		// 아닌 경우 그냥 검색
 		else {
 			cri.setKeyword(words);
 		}
 		
 		try {
-			entity = new ResponseEntity<List<String>>(searchservice.listKeyword(cri), HttpStatus.OK);
+			entity = new ResponseEntity<List<SearchDTO>>(searchservice.listKeyword(cri), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);

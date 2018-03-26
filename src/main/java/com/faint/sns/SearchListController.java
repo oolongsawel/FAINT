@@ -94,10 +94,15 @@ public class SearchListController {
 		cri.setKeyword(name);
 		JSONArray jsonArray=new JSONArray();
 		List<PostVO> taglist=postService.tagsAjax(cri);
-		model.addAttribute("tagList", taglist);
-		model.addAttribute("jsonList", jsonArray.fromObject(taglist));
-		model.addAttribute("keyword", "#"+name);
-		return "/search/tags";
+		if(taglist.size()>0){
+			model.addAttribute("tagList", taglist);
+			model.addAttribute("jsonList", jsonArray.fromObject(taglist));
+			model.addAttribute("keyword", "#"+name);
+			return "/search/tags";
+		}else{
+			return "forward:/empty";
+		}
+		
 	}
 
 	
