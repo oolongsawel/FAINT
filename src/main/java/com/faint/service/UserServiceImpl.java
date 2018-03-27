@@ -287,7 +287,7 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 	}
-	
+	//asdf
 	//회원정보읽기
 	@Override
 	public UserVO read(Integer id) throws Exception{
