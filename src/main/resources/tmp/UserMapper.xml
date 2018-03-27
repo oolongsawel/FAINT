@@ -6,15 +6,11 @@
 	
 	<!-- 특정 유저데이터 읽기 -->
 	<select id="userRead" resultType="com.faint.domain.UserVO">
-        select u.id, u.email, u.name, u.nickname, u.website, u.profilephoto, u.intro, p.postCount, lf.isFollow from
-        (SELECT id, email, name, nickname, website, profilephoto, intro
+		select * from
+        (SELECT *
 		FROM
 		tbl_user
 		WHERE nickname=#{nickname}) u
-        left join
-        (select count(*) as postCount, userid from tbl_post group by userid) p
-        on
-        u.id=p.userid
         left join
         (SELECT followedid as isFollow
 		FROM
@@ -56,9 +52,16 @@
 	<!-- follow -->
 	<!-- 팔로우등록 -->
 	<insert id="flwCreate">
-		INSERT INTO tbl_follow (userid, followedid)
-		SELECT #{loginid}, #{userid} from DUAL
-        WHERE NOT EXISTS(select * from tbl_follow where userid=#{loginid} and followedid=#{userid});
+		INSERT INTO tbl_follow
+		(
+		userid
+		,followedid
+		)
+		VALUES
+		(
+		#{loginid}
+		,#{userid}
+		)
 	</insert>
 
 	<!-- 팔로우해제 -->
@@ -109,23 +112,20 @@
         VALUES (#{email}, #{password}, #{nickname})
     </insert>
 	
-	<!-- 네이버 -->
-	<insert id="naverInsertUser">
-		INSERT INTO tbl_user (EMAIL, SNSID, NICKNAME)
-		VALUES (#{email}, #{snsID}, #{nickname})
-	</insert>
-	
-	<!-- 네이버 -->
-	<select id="naverReadUser" resultType="com.faint.domain.UserVO">
-		SELECT
-		ID ,
-		NICKNAME ,
-		EMAIL ,
-		PROFILEPHOTO
-		FROM tbl_user
-		WHERE SNSID = #{snsID}
-	</select>
+	    <insert id="naverInsertUser">
+        INSERT INTO tbl_user (EMAIL, SNSID, NICKNAME)
+        VALUES (#{email}, #{snsID}, #{nickname})
+    </insert>
 
+    <select id="naverReadUser" resultType="com.faint.domain.UserVO">
+        SELECT
+            ID      ,
+            NICKNAME    ,
+            EMAIL   ,
+            PROFILEPHOTO 
+        FROM tbl_user
+        WHERE SNSID = #{snsID}
+    </select>
     <!-- email중복 확인 -->
     <select id="checkdupl" resultType="com.faint.domain.UserVO">
         SELECT
@@ -163,12 +163,12 @@
 	    FROM  tbl_user
 	    WHERE EMAIL = #{email}
     </select>
-
-	<!-- 비밀번호 찾기 임시 비밀번호 생성 -->
+    
+    	<!-- 비밀번호 찾기 임시 비밀번호 생성 -->
 	<update id="createTempPassword">
-		update tbl_user
-		set password = #{password}
-		where email = #{email}
+	update tbl_user
+	set password = #{password}
+	where email = #{email}
 	</update>
     
     <!-- 인증키 생성 -->

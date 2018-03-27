@@ -108,6 +108,23 @@
         INSERT INTO tbl_user (EMAIL, PASSWORD, NICKNAME)
         VALUES (#{email}, #{password}, #{nickname})
     </insert>
+	
+	<!-- 네이버 -->
+	<insert id="naverInsertUser">
+		INSERT INTO tbl_user (EMAIL, SNSID, NICKNAME)
+		VALUES (#{email}, #{snsID}, #{nickname})
+	</insert>
+	
+	<!-- 네이버 -->
+	<select id="naverReadUser" resultType="com.faint.domain.UserVO">
+		SELECT
+		ID ,
+		NICKNAME ,
+		EMAIL ,
+		PROFILEPHOTO
+		FROM tbl_user
+		WHERE SNSID = #{snsID}
+	</select>
 
     <!-- email중복 확인 -->
     <select id="checkdupl" resultType="com.faint.domain.UserVO">
@@ -146,6 +163,13 @@
 	    FROM  tbl_user
 	    WHERE EMAIL = #{email}
     </select>
+
+	<!-- 비밀번호 찾기 임시 비밀번호 생성 -->
+	<update id="createTempPassword">
+		update tbl_user
+		set password = #{password}
+		where email = #{email}
+	</update>
     
     <!-- 인증키 생성 -->
     <update id="createAuthKey">

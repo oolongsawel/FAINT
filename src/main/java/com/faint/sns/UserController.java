@@ -1,5 +1,6 @@
 package com.faint.sns;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
 
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
@@ -35,8 +39,11 @@ import com.faint.domain.UserVO;
 import com.faint.dto.LoginDTO;
 import com.faint.service.UserService;
 import com.faint.util.UploadFileUtils;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 
+import common.JsonStringParse;
 import common.TempKey;
+import naver.NaverLoginBO;
 
 
 
@@ -135,13 +142,14 @@ public class UserController {
 		//userEmail 값으로 회원 여부 확인 requestparam 으로 변경??
         String str= user.getEmail();
 		String msg = service.authenticate(str);
-		//System.out.println("/authenticate 진입"+msg);
+		System.out.println("/authenticate 진입"+msg);
         //계정 상태에 따른 메시지
 		if(msg == "T") {
 			rttr.addFlashAttribute("msg" , "이메일이 없습니다. 회원가입을 해주세요");
 		}else if(msg == "F"){
 			rttr.addFlashAttribute("msg" , "인증 대기중인 이메일 입니다. 인증해주세요.");
 		}else{
+			System.out.println("올소 ");
 			service.findPassword(user);
 			rttr.addFlashAttribute("msg" , "이메일 인증 후 비밀번호를 변경해 주세요");
 		}
@@ -272,6 +280,8 @@ public class UserController {
 			Date sessionLimit = new Date(System.currentTimeMillis() + (1000 * amount));
 
 			service.keepLogin(vo.getId(), session.getId(), sessionLimit);
+			System.out.println(vo.getId()+"아이디"+session.getId()+"ㅅㅔ션"+sessionLimit);
+			System.out.println("세션에 값좀 넣어주셈 ");
 		}
 
 		
@@ -427,7 +437,102 @@ public class UserController {
 		}
 		return "redirect:/user/myinfo";
 	}
+	/* GoogleLogin */
+	@Inject
+	private GoogleConnectionFactory googleConnectionFactory;
+	@Inject
+	private OAuth2Parameters googleOAuth2Parameters;
 
+
+
+	@RequestMapping(value = "/googleLogin", method = { RequestMethod.GET, RequestMethod.POST })
+    public String doGoogleSignInActionPage(HttpServletResponse response, Model model) throws Exception{
+        OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+
+//		googleOAuth2Parameters.setRedirectUri("http://localhost:8080/user/googleLogincallback");
+        String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+       // System.out.println("/user/googleLogincallback, url : " + url);
+        model.addAttribute("url",url);
+
+        return "user/googleLogin";
+
+    }
+
+
+    @RequestMapping(value = "/googleSignInCallback")
+    public String doSessionAssignActionPage(HttpServletRequest request, Model model)throws Exception{
+     //System.out.println("/user/googleLogincallback");
+    System.out.println("야 왜 안되냐 뒤질래 가자1");
+        String code = request.getParameter("code");
+
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		AccessGrant accessGrant = oauthOperations.exchangeForAccess(code , googleOAuth2Parameters.getRedirectUri(),
+				null);
+	    System.out.println("야 왜 안되냐 뒤질래 가자2");
+		String accessToken = accessGrant.getAccessToken();
+		System.out.println("야 왜 안되냐 뒤질래 가자22");
+		Long expireTime = accessGrant.getExpireTime();
+		System.out.println("야 왜 안되냐 뒤질래 가자33");
+		if (expireTime != null && expireTime < System.currentTimeMillis()) {
+			accessToken = accessGrant.getRefreshToken();
+			System.out.printf("accessToken is expired. refresh token = {}", accessToken);
+			
+			   System.out.println("야 왜 안되냐 뒤질래 가자3");
+		}
+		Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+		Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
+		   System.out.println("야 왜 안되냐 뒤질래 가자4");
+		PlusOperations plusOperations = google.plusOperations();
+		Person person = plusOperations.getGoogleProfile();
+
+//		System.out.println("UserVO 전");
+//		System.out.println("person getId: "+person.getId());
+
+
+        LoginDTO dto = new LoginDTO();
+		TempKey TK = new TempKey();
+
+  //      System.out.println(person.getDisplayName());
+        dto.setEmail("google"+"_"+TK.generateNumber(6));
+        dto.setNickname(person.getDisplayName()+"_"+TK.generateNumber(5));
+        dto.setSnsID("g"+person.getId());
+        HttpSession session = request.getSession();
+//		System.out.println("controller dto: "+dto);
+
+		UserVO vo = new UserVO();
+
+		try {
+			vo = service.googleLogin(dto);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			//username이 겹칠 시 userName 변경 페이지로 이동하는 기능 필요
+		}
+
+
+		if(vo != null) {
+			session.setAttribute("login", vo );
+			//response.sendRedirect("/");
+			//System.out.println(userVO);
+			Object dest = session.getAttribute("dest");
+			if(dest=="user/socialLoginPost"){
+				session.setAttribute("dest","/");
+			}
+			//System.out.println("postHandle dest: "+dest);
+			if(dest==null){
+				session.setAttribute("dest","/");
+			}
+		}else{
+			session.setAttribute("dest","/user/loginTest");
+		}
+
+
+
+//        session.setAttribute("login", vo );
+//		model.addAttribute("userVO",vo);
+		//System.out.println("getAattributeNames"+session.getAttribute(savedest));
+        return "redirect:/user/socialLoginPost";
+    }
 
 //	// GoogleLogin
 //	@Inject
@@ -520,96 +625,98 @@ public class UserController {
 
 //oauth2 로그인 방식
 //	//Login Api======================================================================
-//	private NaverLoginBO naverLoginBo;
-//	private String apiResult = null;
-//	/* NaverLoginBO */
-//	@Inject
-//	private void setNaverLoginBO(NaverLoginBO naverLoginBo) {
-//		this.naverLoginBo = naverLoginBo;
-//	}
-//
-//	//JSON과 STRING 분석 메서드 사용
-//	@Autowired
-//	private JsonStringParse jsonparse;
-//
-//	@RequestMapping(value="/naverLogin", method = RequestMethod.GET)
-//	public ModelAndView login(HttpSession session) {
-//		/* 네아로 인증 URL을 생성하기 위하여 getAuthorizationUrl을 호출 */
-//		String naverAuthUrl = naverLoginBo.getAuthorizationUrl(session);
-//		//System.out.println("naverLogin controller 호출");
-//		//System.out.println(naverAuthUrl);
-//		return new ModelAndView("user/naverLogin", "url", naverAuthUrl);
-//	}
-//	//API 에서 토큰을 받을 콜백 주소
-//	@RequestMapping(value="/callback",method = RequestMethod.GET)
-//	public ModelAndView callback(@RequestParam String code, @RequestParam String state, HttpSession session,Model model) throws IOException {
-//		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
-//	/*	System.out.println("/callback 진입 토튼 발급 전 ");
-//		System.out.println("session : "+session);
-//		System.out.println("state : "+state);
-//		System.out.println("code : "+code);*/
-//
-//		OAuth2AccessToken oauthToken = naverLoginBo.getAccessToken(session, code, state);
-//		apiResult = naverLoginBo.getUserProfile(oauthToken);
-//
-//		JSONObject jsonobj = jsonparse.stringToJson(apiResult, "response");
-//
-//		String userSocialId = jsonparse.JsonToString(jsonobj, "id");
-//		String name = jsonparse.JsonToString(jsonobj, "nickname");
-//
-//		UserVO vo =new UserVO();
-//		LoginDTO dto = new LoginDTO();
-//		TempKey TK = new TempKey();
-//
-//
-//		dto.setMemberEmail("naver"+"#"+TK.generateNumber(6));
-//		dto.setSnsID("n"+userSocialId);
-//		dto.setMemberName(name+"#"+TK.generateNumber(5));
-//
-////		System.out.println("======================JSON 파싱값================");
-////		System.out.println("name: "+name);
-////		System.out.println("id: "+userSocialId );
-////		System.out.println("UserVO "+vo);
-////		System.out.println("UserVO "+dto);
-//		try {
-//			vo = service.naverLogin(dto);
-//
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			//username이 겹칠 시 userName 변경 페이지로 이동하는 기능 필요
-//		}
-//
-//
-//
-//		//소셜아이디로 uid를 찾는 로직 추가 해야함
-//
-//
-//		if(vo != null) {
-//			session.setAttribute("login", vo );
-//			//response.sendRedirect("/");
-//			//System.out.println(userVO);
-//			Object dest = session.getAttribute("dest");
-//			if(dest=="/user/socialLoginPost"){
-//				session.setAttribute("dest","/");
-//			}
-//			//System.out.println("postHandle dest: "+dest);
-//			if(dest==null){
-//				session.setAttribute("dest","/");
-//			}
-//
-//		}else{
-//			session.setAttribute("dest","/user/login");
-//		}
-//
-//		return new ModelAndView("redirect:/user/socialLoginPost", "result", vo);
-//	}
+	private NaverLoginBO naverLoginBo;
+	private String apiResult = null;
+	/* NaverLoginBO */
+	@Inject
+	private void setNaverLoginBO(NaverLoginBO naverLoginBo) {
+		this.naverLoginBo = naverLoginBo;
+	}
+
+	//JSON과 STRING 분석 메서드 사용
+	@Autowired
+	private JsonStringParse jsonparse;
+
+	@RequestMapping(value="/naverLogin", method = RequestMethod.GET)
+	public ModelAndView login(HttpSession session) {
+		/* 네아로 인증 URL을 생성하기 위하여 getAuthorizationUrl을 호출 */
+		String naverAuthUrl = naverLoginBo.getAuthorizationUrl(session);
+		//System.out.println("naverLogin controller 호출");
+		//System.out.println(naverAuthUrl);
+		return new ModelAndView("user/naverLogin", "url", naverAuthUrl);
+	}
+	//API 에서 토큰을 받을 콜백 주소
+	@RequestMapping(value="/callback",method = RequestMethod.GET)
+	public ModelAndView callback(@RequestParam String code, @RequestParam String state, HttpSession session,Model model) throws IOException{
+		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
+	/*	System.out.println("/callback 진입 토튼 발급 전 ");
+		System.out.println("session : "+session);
+		System.out.println("state : "+state);
+		System.out.println("code : "+code);*/
+
+		OAuth2AccessToken oauthToken = naverLoginBo.getAccessToken(session, code, state);
+		apiResult = naverLoginBo.getUserProfile(oauthToken);
+
+		JSONObject jsonobj = jsonparse.stringToJson(apiResult, "response");
+
+		String userSocialId = jsonparse.JsonToString(jsonobj, "id");
+		String name = jsonparse.JsonToString(jsonobj, "name");
+
+		UserVO vo =new UserVO();
+		LoginDTO dto = new LoginDTO();
+		TempKey TK = new TempKey();
+
+
+		dto.setEmail("naver"+"@"+TK.generateNumber(6));
+		dto.setSnsID("naver"+userSocialId);
+		dto.setNickname("naver"+name+TK.generateNumber(5));
+
+		System.out.println("======================JSON 파싱값================");
+
+		System.out.println("name: "+name);
+		System.out.println("id: "+userSocialId );
+		System.out.println("UserVO "+vo);
+		System.out.println("UserVO "+dto);
+		try {
+			vo = service.naverLogin(dto);
+
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+			//username이 겹칠 시 userName 변경 페이지로 이동하는 기능 필요
+		
+		}
+
+
+
+		//소셜아이디로 uid를 찾는 로직 추가 해야함
+
+
+		if(vo != null) {
+			session.setAttribute("login", vo );
+			//response.sendRedirect("/");
+			//System.out.println(userVO);
+			Object dest = session.getAttribute("dest");
+			if(dest=="/user/socialLoginPost"){
+				session.setAttribute("dest","/");
+			}
+			//System.out.println("postHandle dest: "+dest);
+			if(dest==null){
+			session.setAttribute("dest","/");
+		}
+
+		}else{
+			session.setAttribute("dest","/user/loginTest");
+		}
+
+	return new ModelAndView("redirect:/user/socialLoginPost", "result", vo);
+	}
 
 ////////////////
-//	@RequestMapping(value = "/naverSuccess", method = RequestMethod.GET)
-//	public void naverSuccess (HttpSession session, UserVO user,Model model) throws Exception{
-//
-//	}
+	@RequestMapping(value = "/naverSuccess", method = RequestMethod.GET)
+	public void naverSuccess (HttpSession session, UserVO user,Model model) throws Exception{
+
+}
 
     //google 로그인 컨트롤러
 

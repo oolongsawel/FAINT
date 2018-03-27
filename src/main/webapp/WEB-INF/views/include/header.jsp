@@ -37,7 +37,6 @@
 		url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
 	background-position: -200px -342px;
 }
-
 .navbar-default .new-post {
 	width: 24px;
 	height: 23px;
@@ -48,7 +47,6 @@
 		url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
 	background-position: -201px -111px;
 }
-
 .navbar-default .follow-list {
 	width: 24px;
 	height: 23px;
@@ -59,7 +57,6 @@
 		url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
 	background-position: -192px -283px;
 }
-
 .navbar-default .account {
 	width: 24px;
 	height: 23px;
@@ -70,7 +67,6 @@
 		url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
 	background-position: -275px -342px;
 }
-
 .navbar-default .nav-wrap {
 	max-width: 1010px;
 	width: 100%;
@@ -131,12 +127,12 @@ $(".search-form").submit(function(event) {
 </script>
 
 	<script>
-
 searchAjax();
 function searchAjax(){
 	
 	if($("#keywordInput").val()=="") {
-		$("#results").html("<div class='_oznku'>검색 결과가 없습니다.</div>");
+		$("#results").html("<div class='_oznku'><div class='noresult'>검색 결과가 없습니다.</div></div>");
+		
 	}
 	
    $("#keywordInput").keyup(function(){
@@ -155,7 +151,6 @@ function searchAjax(){
          }
          searchwords += chgwords;
       }
-
       console.log("searchwords : -----------" + searchwords);
       
       /* 검색 단어가 있으면 일치하는 것 출력 */
@@ -266,14 +261,12 @@ function searchAjax(){
                  		         +"<div class='_o92vn'>"
                  		         +"<span class='_po4xn coreSpriteHashtag'><img src='/resources/image/hashtag.jpg' style='height:23px; width:23px;'></span>"
                  		         +"<div class='_poxna'>"
-
                  		         +"<div class='_lv0uf'>"
                  		         +"<span class='_b01op'>"+result[i].tagname+"</span>"
                  		         +"</div>"
-
                  		         +"<div class='_2ph7c'>"
                  		         +"<span class=''>게시물 <span class=''>"+result[i].postedtagCnt+"개</span></span>"
-                 		         +"</div></div></div></a><br/>";
+                 		         +"</div></div></div></a>";
              		    }
                  		                  
                  		// 사람 검색
@@ -290,14 +283,12 @@ function searchAjax(){
                  		         }
                  		         
                  		   str+="<div class='_poxna'>"
-
                  		         +"<div class='_lv0uf'>"
                  		         +"<span class='_b01op'>"+result[i].nickname+"</span>"
                  		         +"</div>"
-
                  		         +"<div class='_2ph7c'>"
                  		         +"<span class=''><span class=''>"+result[i].name.substring(1)+"</span></span>"
-                 		         +"</div></div></div></a><br/>";
+                 		         +"</div></div></div></a>";
                  		}
                  		                  
                  		 // 로케이션 검색
@@ -307,13 +298,11 @@ function searchAjax(){
                  		         +"<div class='_o92vn'>"
                  		         +"<span class='_po4xn coreSpriteHashtag'><img src='/resources/image/location.jpg' style='height:23px; width:23px;'></span>"
                  		         +"<div class='_poxna'>"
-
                  		         +"<div class='_lv0uf'>"
                  		         +"<span class='_b01op'>"+result[i].location.substring(1)+"</span>"
                  		         +"</div>"
-
                  		         +"<div class='_2ph7c'>"
-                 		         +"</div></div></div></a><br/>";
+                 		         +"</div></div></div></a>";
                  		} 
                 		 
                  		else if(result[i].score==0){
@@ -325,15 +314,13 @@ function searchAjax(){
                 		 }
                 		 
                 		 if(count>=3) {
-                			 $("#results").html("<div class='_oznku'>검색 결과가 없습니다.</div>");
+                			 $("#results").html("<div class='_oznku'><div class='noresult'>검색 결과가 없습니다.</div></div>");
                 		 } else {
                 		 	$("#results").html(str);
                 		 }
-
                 	}/* for문 끝 */
                 	
                 } /* 문자 검색 끝 */
-
                 // 검색 문자 첫 글자가 #인 경우
                else if(searchwords[0]=="#") {
             	   var count = 0;
@@ -345,29 +332,25 @@ function searchAjax(){
                    		         +"<div class='_o92vn'>"
                    		         +"<span class='_po4xn coreSpriteHashtag'><img src='/resources/image/hashtag.jpg' style='height:23px; width:23px;'></span>"
                    		         +"<div class='_poxna'>"
-
                    		         +"<div class='_lv0uf'>"
                    		         +"<span class='_b01op'>"+result[i].tagname+"</span>"
                    		         +"</div>"
-
                    		         +"<div class='_2ph7c'>"
                    		         +"<span class=''>게시물 <span class=''>"+result[i].postedtagCnt+"개</span></span>"
-                   		         +"</div></div></div></a><br/>"
+                   		         +"</div></div></div></a>"
                    		         }
                     		 
                   			else if(result[i].score==0){
                  				result[i] = null;
                  				count ++;
                  			}
-
                 		 if(count>=3) {
-                			 $("#results").html("<div class='_oznku'>검색 결과가 없습니다.</div>");
+                			 $("#results").html("<div class='_oznku'><div class='noresult'>검색 결과가 없습니다.</div></div>");
                 		 } else {
                 		 	$("#results").html(str);
                 		 }
             	   }
                } /* #검색 끝 */
-
                 // 검색 첫 글자가 @인 경우
                else if(searchwords[0]=="@") {
             	  var count = 0;
@@ -379,14 +362,12 @@ function searchAjax(){
                  		         +"<div class='_o92vn'>"
                  		         +"<span class='_po4xn coreSpriteHashtag'></span>"
                  		         +"<div class='_poxna'>"
-
                  		         +"<div class='_lv0uf'>"
                  		         +"<span class='_b01op'>"+result[i].nickname+"</span>"
                  		         +"</div>"
-
                  		         +"<div class='_2ph7c'>"
                  		         +"<span class=''><span class=''>"+result[i].name.substring(1)+"</span></span>"
-                 		         +"</div></div></div></a><br/>";
+                 		         +"</div></div></div></a>";
                  		         }
                   	   
             			else if(result[i].score==0){
@@ -395,10 +376,9 @@ function searchAjax(){
             				console.log("여기갔지?");
             				console.log(count);
              			}
-
             		 if(count>=3) {
             			 console.log("총카운트:"+count);
-            			 $("#results").html("<div class='_oznku'>검색 결과가 없습니다.</div>");
+            			 $("#results").html("<div class='_oznku'><div class='noresult'>검색 결과가 없습니다.</div></div>");
             		 } else {
             		 	$("#results").html(str);
             		 }
@@ -407,14 +387,14 @@ function searchAjax(){
                 
                else {
             	   console.log("검색문else로왔다");
-            	   $("#results").html("<div class='_oznku'>검색 결과가 없습니다.</div>");
+            	   $("#results").html("<div class='_oznku'><div class='noresult'>검색 결과가 없습니다.</div></div>");
                }
                
             }, /* success  끝 */
             error: function(e){
             	if(e.status==500) {
             		console.log("에러로갓니?");
-            		$("#results").html("<div class='_oznku'>검색 결과가 없습니다.</div>");
+            		$("#results").html("<div class='_oznku'><div class='noresult'>검색 결과가 없습니다.</div></div>");
             	//throw e.responseText;
             	}
             }/* error 끝 */
@@ -431,13 +411,11 @@ function searchAjax(){
       
    }) /* keyup() 끝 */
 }		/* searchAjax() 끝 */
-
 function show(str){
 	searchAjax();
     $("#searchModal").modal('show');
 }
   
-
 </script>
 
 

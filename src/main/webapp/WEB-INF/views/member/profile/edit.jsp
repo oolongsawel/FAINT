@@ -84,7 +84,7 @@
 				<div class="_cd2n1">
 					<textarea id="intro" name="intro" onkeyup="validCheck(this)"
 						class="_jlcqs"
-						style="width: 500px; resize: vertical; overflow: hidden;">${userVO.intro }</textarea>
+						style="width: 500px; height: 150px; resize: none; overflow: hidden; overflow-y: scroll;">${userVO.intro }</textarea>
 				</div>
 			</div>
 			<!-- 개인정보 -->

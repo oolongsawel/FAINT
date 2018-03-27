@@ -1,67 +1,24 @@
 @CHARSET "UTF-8";
 
-/* .navbar-default .explore{
-	    width: 24px;
-	    
-	    height: 23px;
-	    margin-left: 30px;
-	    display: inline-block;
-	    background-size: 413px 391px;
-	    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
-	    background-position: -200px -342px;
-	}
-
-
-.navbar-default .new-post{
-    width: 24px;
-    height: 23px;
-    margin-left: 30px;
-    display: inline-block;
-    background-size: 413px 391px;
-    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
-    background-position: -201px -111px;
-} 
-
-.navbar-default .follow-list{
-    width: 24px;
-    height: 23px;
-    margin-left: 30px;
-    display: inline-block;
-    background-size: 413px 391px;
-    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
-    background-position: -192px -283px;
-}
-
-.navbar-default .account{
-    width: 24px;
-    height: 23px;
-    margin-left: 30px;
-    display: inline-block;
-    background-size: 413px 391px;
-    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
-    background-position: -275px -342px;
-}
- 
- 
-
- .navbar-default .nav-wrap{
-    max-width: 1010px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 30px; 
-}  */
-
 /* 검색창 스타일 */
-
-
 #header-modal {
+	padding: 0px;
     overflow-y: auto;
     height: 220px;
 } /* 모달 스크롤 창 */
 
 ._ndl3t _4jr79, ._ndl3t _4jr79:visited {
     color: #003569;
+    background-color : #efefef;
     text-decoration: none; ! important
+}
+
+._4jr79:hover {
+    background: #efefef;
+}
+
+._4jr79:active {
+	text-decoration: none; ! important
 }
 
 ._ndl3t _4jr79:-webkit-any-link {
@@ -71,7 +28,7 @@
 }
 
 ._4jr79 {
-    background: #fafafa;
+    background: white;
 }
 
 ._ndl3t {
@@ -92,7 +49,7 @@
     -webkit-flex-shrink: 0;
     -ms-flex-negative: 0;
     flex-shrink: 0;
-    height: 50px;
+    height: 65px;
     padding: 8px 14px;
 }
 
@@ -231,10 +188,29 @@
 
 }
 
-._oznku{
+.noresult {
     color: #999;
     font-size: 14px;
     padding: 15px;
+    text-align: center;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    border: 0 solid #000;
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+     flex-direction: column;
+     flex-shrink: 0;
+    margin: 0;
+    position: relative;
+	
+}
+
+._oznku{
+    color: #999;
+    font-size: 14px;
+/*     padding: 15px; */
     text-align: center;
     -webkit-box-align: stretch;
     align-items: stretch;
@@ -265,4 +241,3 @@ span {
 .modal-backdrop{
 	background-color: transparent !important;
 }
-

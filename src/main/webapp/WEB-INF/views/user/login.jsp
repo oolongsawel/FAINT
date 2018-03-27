@@ -26,22 +26,11 @@
 
 <body>
     <main class="login">
-        <div id="phone-image">
-            <img 
-                src="/resources/images/phoneImage.png"
-                alt="Phone image"
-                title="Phone image" 
-            />
-        </div>
         <section id="login">
             <div class="login__box login__box--form">
-                <img
-                    src="/resources/images/logoLogin.png" 
-                    alt="Logo login"
-                    title="Logo login"
-                    class="login__logo"
-                />
-                <form name="login" action="/user/loginPost" method="post">
+            
+            
+                <form name="login" action="j_spring_security_check" method="post">
                 <input type="hidden" name="command" value="main_form">
                     <input type="text" id="email" name="email" placeholder="전화번호 또는 이메일 " class="login__input" />
                     <div class="form-control">
@@ -49,13 +38,13 @@
                         <a href="/user/findPassword">Forgot?</a>
                     </div>
                     <input type="submit" value="Log in" class="form-control btn btn-primary" >
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </form>
+                
+                
                 <span class="login__form-divider">or</span>
            	<a class="btn btn-block btn-social btn-google" href="/user/googleLogin" onclick="_gaq.push(['_trackEvent', 'btn-social', 'click', 'btn-google']);">
                         <span class="fa fa-google mt-1 ml-2"></span> Sign in with Google
-                    </a>
-                    <a class="btn btn-block btn-social btn-google naver"  href="/user/naverLogin" onclick="_gaq.push(['_trackEvent', 'btn-social', 'click', 'btn-google']);">
-                        <img class="naverImg ml-2" src="/resources/images/naver.png"/> Sign in with Naver
                     </a>
             </div>
             <div class="login__box login__box--account">
@@ -65,39 +54,17 @@
                 <a href="/user/register" class="login__link">Sign up</a>
             </div>
             <div class="login__box--transparent">
-            <div style="text-align: left; margin: 5px; margin-bottom: 30px;">
-				<%-- <input type="checkbox" name="id_rem" <%if(id.length()>1)out.println("checked") ;%> value="1">아이디 저장 --%>
-			</div>
-                <span class="login__text">Get the app.</span>
-                <div class="login__appstores">
-                    <img src="/resources/images/ios.png" />
-                    <img src="/resources/images/android.png" />
-                                        
-                </div>
+	            <div style="text-align: left; margin: 5px; margin-bottom: 30px;">
+					<%-- <input type="checkbox" name="id_rem" <%if(id.length()>1)out.println("checked") ;%> value="1">아이디 저장 --%>
+				</div>
             </div>
         </section>
     </main>
-    <footer>
-        <nav class="footer__nav">
-            <ul class="footer__list">
-                <li class="footer__item"><a href="#" class="footer__link">about us</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">support</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">blog</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">press</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">api</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">jobs</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">privacy</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">terms</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">directory</a></li>
-                <li class="footer__item"><a href="#" class="footer__link">language</a></li>
-		        <span class="footer__copyright">© 2018 instagram</span>
-            </ul>
-        </nav>
-    </footer>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
   			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   			crossorigin="anonymous"></script>
     <script src="js/app.js"></script>
+
 
 
 </body>

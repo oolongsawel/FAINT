@@ -37,7 +37,7 @@ public interface UserService {
 
 	public UserVO userAuthFindPassword(UserVO vo) throws Exception; //패스워드 찾기 이메일 인증 검증
 	
-	//public UserVO googleLogin(LoginDTO dto) throws Exception; //구글 oauth login 사용예정
+	public UserVO googleLogin(LoginDTO dto) throws Exception; //구글 oauth login 사용예정
 	
 	public String authenticate(String email) throws Exception; //이메일 아이디 중복 관련 코드 전송
 
@@ -48,6 +48,8 @@ public interface UserService {
 	public void keepLogin(Integer userid, String sessionKey, Date next) throws Exception; //로그인 유지
 
 	public UserVO checkLoginBefore(String value); //세션키 확인
+	
+	public UserVO naverLogin(LoginDTO dto) throws Exception;  // 네이버 로그인
 	
 	//=================회원정보변경=================
 	public int checkPassWord(int id, String pw) throws Exception; //비밀번호 체크
