@@ -100,7 +100,7 @@ public class UploadController {
                 in = uCon.getInputStream();
             }
 
-
+            												// 여기
             entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in),
             headers,
             HttpStatus.CREATED);

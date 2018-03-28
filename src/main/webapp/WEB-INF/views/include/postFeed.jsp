@@ -577,13 +577,14 @@ $("#categoryList li a").click(function(){
 	var customType=$(this).data("filter");
 	$(".post").hide().filter(function(){
 		return $(this).data("filter") === customType || customType==="all";
-		}).show();
+	}).show();
 })
 //css - 댓글달기 버튼 클릭시 커서 포커스
 function replyCursor(thisBtn){
 	var postid=$(this).parents(".btnContainer").attr("title");
 	$(".s2_4_1[title="+postid+"]").children("input").focus();
 }
+
 </script>
 
 </body>
