@@ -314,6 +314,10 @@
 	        </label>
  <label class="btn btn-default btn-circle" id="confirm_button" >
 	       			<i class="glyphicon glyphicon-ok"></i>
+data={
+"hi":1234,
+"adsf":123234
+}
 	        </label>
 </div>
 		<div id="map" style="width:500px; height:500px; display: block;"></div>

@@ -19,17 +19,14 @@
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-
 /* Modal Content */
 .postModal-content {
     background-color: #fefefe;
     margin: auto;
     border: 1px solid #888;
-    width: 80%;
-    height: 70%;
-    overflow: auto;
+    width: 940px;
+    height: 600px;
 }
-
 .postContainer{
 	text-align: center;
 }
@@ -49,7 +46,6 @@
 .imageContainer > img{
 	overflow:hidden;
 }
-
 ._header > div{
 	display: inline-block;
 }
@@ -63,8 +59,6 @@
 ._sideSeparator:eq(2){
 	overflow:auto;
 }
-
-
 </style>
 
 <body>
@@ -73,62 +67,105 @@
 <div id="myModal" class="postModal">
 	<span class="close">&times;</span>
 	<div class="postModal-content">
-		<article class="post" data-filter="{{cateid}}">
-				<div class="_sideSeparator">
-					<div class="popImageContainer" >
-					</div>
-					<div style="display:inline">
-						<!-- 사진바꾸기 버튼 -->
-       					<a class="btn-left" onclick="plusDivs(-1)">&#10094;</a>
-       					<a class="btn-right" onclick="plusDivs(+1)">&#10095;</a>
-					</div>
-				</div>
-				<div class="_sideSeparator">
-					<header class="_header">
-						<div>
-							<a class="_profileImageContainer" href="/member/{{usernickname}}">
-								<!-- 프로필 이미지 -->
-								<img class="_profileImage" src="/displayFile?fileName={{profilephoto}}" style="width:30px; height:30px;"/>
-							</a>
-						</div>
-						<div class="_writerContainer">
-							<div>
-								<a class="_writerName" href="/member/{{usernickname}}">
-								{{usernickname}}
-								</a>
-							</div>
-							<div>
-								<a class="_postLocation" href="/search/locations?location={{location}}">{{location}}</a>
-							</div>
-						</div>
-					</header>
-					<div class="captionContainer">
-						<ul class="_captionContainer" id="post{{postid}}" >
-							<li><a href="/member/{{usernickname}}">{{usernickname}}</a>	<span>{{caption}}</span></li>
-							<li class="moreReply"><a href="javascript:;">댓글더보기</a></li>
-							<div class="replyContainer" title="{{postid}}" data-limit=0>
-							</div>
-							<time datetime=""+{{regdate}}>{{regdate}}</time>
-						</ul>
-					</div>
-					<section class="btnContainer" title="{{postid}}">
-						<button class="replyBtn" onclick="replyCursor(this)">댓글달기</button>
-					</section>
-				
-					<section>
-						<a class="likeContainer" title="{{postid}}">좋아요 <span>0</span>개(링크미구현)</a>
-					</section>
+		
+		<!--사진 및 동영상 -->    
+		<section class="section1">
+			<!-- 화살표 (사진변경) -->
+			<input class="leftBtn" type="button">
+			<input class="rightBtn" type="button">
+				<img class="popImageContainer">
+        </section>
+
+		<section class="section2">
+			<div class="s2_1">
+				<div class="s2_1_1">
+					<a href="/member/{{usernickname}}">
+						<img class="s2_1_1_1" src="/displayFile?fileName={{profilephoto}}">   <!-- 프사 -->
+					</a>
+					<span class="s2_1_1_2">
+						<a href="/member/{{usernickname}}">
+							<p class="nickname">{{usernickname}}</p>  <!-- 닉네임 -->
+						</a>
+						<a class="_postLocation" href="/search/locations?location={{location}}">
+							<p class="location">{{location}}</p> <!-- 위치 -->
+						</a>
+					</span>
 				</div>
 			</div>
-		</article>
+
+            <hr/>
+            
+			<div class="s2_2">
+				<div class="s2_2_1" id="post{{postid}}">
+					<a href="/member/{{usernickname}}"><span class="nickname">{{usernickname}}</span></a>  <!-- 닉네임 -->
+					<span class="caption">{{caption}}</span>
+					<div class="replyContainer" title="{{postid}}" data-limit=0>
+					</div>
+					<time datetime=""+{{regdate}}>{{regdate}}</time>
+				</div> 
+			</div>
+
+            <hr/>
+ 
+			<div class="s2_3">
+				<div class="s2_3_1">
+					<div class="btnContainer" title="{{postid}}">
+						<button class="replyBtn" onclick="replyCursor(this)">댓글달기</button>
+					</div>
+					<a class="likeContainer" title="{{postid}}">좋아요 <span>0</span>개(링크미구현)</a>
+				</div>
+			</div>
+
+            <hr/>
+
+			<div class="s2_4">
+				<div class="s2_4_1" title="{{postid}}">
+					<!-- 댓글달기 -->
+					<input class="replyRegist" onkeypress="registReply(this, event);" type="textarea" placeholder="댓글 달기..." name="replyCaption">
+				</div>
+			</div>
+        </section>
 	</div>
 </div>
+<style>
+
+hr{margin: 0;}
+
+.section1{width: 600px; height: 600px; display: inline-block; float: left; position: relative; }
+
+.leftBtn{ height: 25px; width: 25px; border-radius: 150px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -324px -40px; border: none; margin: 8px 8px 8px 0; left:0; margin-top: 50%; position: absolute; }
+.rightBtn{ height: 25px; width: 25px; border-radius: 150px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -324px -72px; border: none; margin: 8px 8px 8px 0; right:0; margin-top: 50%; position: absolute; }    
+.popImageContainer{ width: 100%; max-height: 600px; }
+.section2{ width: 335px; height: 600px; display: inline-block; }
+
+.s2_1{ width: 335px; height: 78px; }
+.s2_1_1{ padding: 10px; }
+.s2_1_1_1{ width: 50px; height: 50px; display: inline-block; float: left; border-radius: 150px;}
+.s2_1_1_2{ width: 235px; height: 50px; margin-left: 10px; display: inline-block; }
+
+.nickname{ font-weight: bold; }
+
+
+.s2_2{ width: 335px; height: 372px; }
+.s2_2_1{ width: 315px; height: 352px; overflow-y:scroll; padding: 10px; }
+.replyContainer{ margin-top: 70px; bottom: 0; }
+.reply{ margin-bottom: 4px; }
+
+.s2_3{ width: 335px; height: 88px; }
+.s2_3_1{ padding: 10px; }
+.likeBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); border: none; background-color: #fff; margin: 8px 8px 8px 0; font-size: 0;}
+.replyBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -306px -289px; background-color: #fff; margin: 8px; margin-left: 4px; border: none; font-size: 0;}
+.storeBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-color: #fff; margin: 8px; margin-left: 4px; border: none; float: right; font-size: 0;}   
+
+.s2_4{ width: 335px; height: 56px; }
+.s2_4_1{ padding: 10px; }
+.replyRegist{ font-size: 15px; border: none; width: 261px; height: 23px; }
+
+</style>
 </script>
 
 <script>
-
 console.log(jsonList);
-
 $(document).ready(function(){
 	getPostList();
 	function getPostList(){
@@ -138,7 +175,6 @@ $(document).ready(function(){
 		
 		//데이터 담을 변수
 		var data="";
-
 		//태그 or 지역 검색 일때
 		var elseList=jsonList;
 		
@@ -177,7 +213,6 @@ $(document).ready(function(){
 		
 		$("#keywordTitle").after("<h5>게시물 "+data.length+" 개</h5>")
 		
-
 		//게시물이 있을 때
 		if(data.length%3==0){
 			for (i = 0; i < data.length/3; i++) {
@@ -194,7 +229,6 @@ $(document).ready(function(){
 				$(".postLiner:eq("+i+")").append("<div class='imageContainer' style='height:100%; width:auto;'>")
 			}
 		}
-
 		$(data).each(function(index){
 			var url=this.url.split('|');
 			var img = "<img class='postImage' title='"+this.id+"' style='height:100%; width:100%;' src='/displayFile?fileName="+url[0]+"' />";
@@ -222,23 +256,25 @@ $(document).ready(function(){
 							$("body").append(postmodal);
 							//이미지 잘라서 삽입
 							for (var i in data.urlList) {
-								$(".popImageContainer").append("<img class='popPostImage' src='/displayFile?fileName="+data.urlList[i]+"' style='display:none;' />")
+								//$(".popImageContainer").append("<img class='popPostImage' src='/displayFile?fileName="+data.urlList[i]+"' style='display:none;' />")
+								$(".popImageContainer").attr("src", "/displayFile?fileName="+data.urlList[i])
+								if(i!=0){
+									$(".popImageContainer").css("display", "none");	
+								}
 							}
-							//처음 이미지만 보이도록
-							$(".popPostImage:eq(0)").css("display", "block");
 							
 							//좋아요버튼 삽입
 							if(data.isLike=='0'){
-								$(".btnContainer").prepend("<button class='likeBtn'>♡</button>")
+								$(".btnContainer").prepend("<span><button class='likeBtn' style='background-position: -26px -349px;'>♡</button></span>")
 							}else{
-								$(".btnContainer").prepend("<button class='likeBtn'>♥</button>")
+								$(".btnContainer").prepend("<span><button class='likeBtn' style='background-position: 0 -349px;'>♥</button></span>")
 							}
 							
 							//저장하기 버튼 삽입
 							if(data.isStore=='0'){
-								$(".btnContainer").append("<button class='storeBtn'>□</button>")
+								$(".btnContainer").append("<span><button class='storeBtn' style='background-position: -78px -349px;'>□</button></span>")
 							}else{
-								$(".btnContainer").append("<button class='storeBtn'>■</button>")
+								$(".btnContainer").append("<span><button class='storeBtn' style='background-position: -182px -349px;'>■</button></span>")
 							}
 							
 							//modal창 보이기
@@ -270,53 +306,45 @@ $(document).ready(function(){
 		})
 	};
 })
-
-
-
 //각 게시물에 댓글리스트 등록 처음 4개 이후 +20개씩('댓글 더보기' 기능이 수행)
 function reply(){
 	$(".replyContainer").each(function(){
-		var moreReply=$(this).children("#moreReply");
 		var pid=$(this).attr("title"); //게시물 id값 title에 넣어서 이동
 		var limit = $(this).data("limit"); //댓글 출력제한자
 		var replyContainer = this;
 		
 		$.getJSON("/reply/post/" + pid, function(rpldata){
-			//게시물의 댓글 등록창
-			var replyRegist=
-				"<div class='_replyRegister' title="+pid+">"
-					+"<input type='textarea' onkeypress='registReply(this, event);' class='replyRegist' placeholder='댓글입력'/>"
-				+"</div>";
-			$(replyContainer).html(replyRegist);
-			
-			//전체 댓글 수가 4개 이하 or 제한자*20+4개면 댓글더보기 삭제
-		 	if(rpldata.length<=4+5*limit){ //20개씩 더 출력
-		 		$(replyContainer).siblings(".moreReply").remove();
-			}else if($(replyContainer).siblings(".moreReply")[0]==undefined){
-				$(replyContainer).before("<li class='moreReply' data-limit='0'><a href='javascript:;'>댓글더보기</a></li>");
+			if(rpldata.length==0){
+				$(replyContainer).html("");
 			}
 			
 			// 게시물에 대한 댓글리스트 + 삭제버튼(해당 유저의 게시글일 경우만)
 			var replystr="";
 			$(rpldata).each(function(index){
-
 				//댓글 최신 4개까지만 우선 출력 및 제한자에 따른 댓글 출력
 				if( $(rpldata).length-(4+5*limit) <= index && index < $(rpldata).length ){ //20개씩 더 출력
-					replystr +="<li title='"+this.id+"'>"+
-						"<a href='/member/"+this.username+"'>" + this.username +"</a>	<span>"+this.comment+"</span>";
+					replystr +="<div class='reply' title='"+this.id+"'>"+
+						"<a href='/member/"+this.username+"'><span class='nickname'>" + this.username +"</span></a>"+this.comment;
 					
 					if(this.userid==${login.id}){
-						replystr+="<button class='replyDelete' onclick='deleteReply(this);' ><strong>Ｘ</strong></button></li>";
+						replystr+="<a class='replyDelete' onclick='javascript:deleteReply(this);' ><strong>Ｘ</strong></a></li>";
 					}else{
-						replystr+="</li>";
+						replystr+="</div>";
 					};
 					
-					$(replyContainer).html(replystr+replyRegist);
+					$(replyContainer).html(replystr);
 				}
 			});
 			
+			//전체 댓글 수가 4개 이하 or 제한자*20+4개면 댓글더보기 삭제
+		 	if(rpldata.length<=4+5*limit){ //20개씩 더 출력
+		 		$(replyContainer).children(".moreReply").remove();
+			}else if($(replyContainer).siblings(".moreReply")[0]==undefined){
+				$(replyContainer).prepend("<div class='moreReply'><a href='javascript:;'>댓글더보기</a></div>");
+			}
+			
 			//댓글더보기 클릭시 제한자 +1 및 댓글 목록 재출력
-			$(replyContainer).siblings(".moreReply").children().on("click", function(){
+			$(replyContainer).children(".moreReply").on("click", function(){
 				$(replyContainer).data("limit", limit+1);
 				reply();
 			})
@@ -325,7 +353,6 @@ function reply(){
 		});
 	});
 }
-
 //댓글등록함수 = 댓글입력창에서 onkeypress로 작동 (태그 객체와 event키값 매개변수로 받음)
 function registReply(thisTag, key){
 	var enter=key.keyCode||key.which;
@@ -354,7 +381,6 @@ function registReply(thisTag, key){
 		});
 	}
 }
-
 //댓글 삭제함수 = 댓글 삭제버튼에서 사용(태그객체 받음)
 function deleteReply(thisTag){
 	var rid=$(thisTag).parent().attr("title");
@@ -374,23 +400,22 @@ function deleteReply(thisTag){
 		}
 	});
 }
-
 //게시물 저장하기 + 저장하기 취소 
 function store(){
 	$(".storeBtn").on("click", function(){
-		var postid=$(this).parent().attr("title");
+		var postid=$(this).parents(".btnContainer").attr("title");
 		var storeBtn=this;
-		if($(this).html()=="□"){
+		if($(this).css("background-position")=="-78px -349px"){
 			var type="post";
 			var url ="/post/"+postid+"/store";
 			var headers="{'X-HTTP-Method-Override' : 'POST'}";
-			var val="■";
+			var val="-182px -349px";
 			
-		}else if($(this).html()=="■"){
+		}else if($(this).css("background-position")=="-182px -349px"){
 			var type="delete";
 			var url ="/post/"+postid+"/takeaway";
 			var headers="{'X-HTTP-Method-Override' : 'DELETE'}";
-			var val="□";
+			var val="-78px -349px";
 		}
 		$.ajax({
 			type: type,
@@ -399,30 +424,29 @@ function store(){
 			dataType:"text",
 			success:function(result){
 				if(result=="SUCCESS"){
-					$(storeBtn).html(val);
+					$(storeBtn).css("background-position", val);
 				};
 			}
 		});
 	});
 };
-
 //게시물 좋아요 + 좋아요 취소
 function like(){
 	$(".likeBtn").on("click", function(){
-		var postid=$(this).parent().attr("title");
+		var postid=$(this).parents(".btnContainer").attr("title");
 		var likeBtn=this;
 		
-		if($(this).html()=="♡"){
+		if($(this).css("background-position")=="-26px -349px"){
 			var type="post";
 			var url ="/post/"+postid+"/like";
 			var headers="{'X-HTTP-Method-Override' : 'POST'}";
-			var val="♥";
+			var val="0px -349px";
 			
-		}else if($(this).html()=="♥"){
+		}else if($(this).css("background-position")=="0px -349px"){
 			var type="delete";
 			var url ="/post/"+postid+"/unlike";
 			var headers="{'X-HTTP-Method-Override' : 'DELETE'}";
-			var val="♡";
+			var val="-26px -349px";
 		}
 		$.ajax({
 			type: type,
@@ -431,14 +455,13 @@ function like(){
 			dataType:"text",
 			success:function(result){
 				if(result=="SUCCESS"){
-					$(likeBtn).html(val);
+					$(likeBtn).css("background-position", val);
 					likerList();
 				};
 			}		
 		});
 	});
 };
-
 //좋아요 count+list
 function likerList(){
 	$(".likeContainer").each(function(){
@@ -458,7 +481,6 @@ function likerList(){
 		}); 
 	});
 };
-
 //searchFilter - 포스트 내용, 프로필 intro, 댓글 해쉬태그 및 인물태그 링크처리
 function searchFilter(){
    $(".intro, .captionContainer").find("span").each(function(){
@@ -498,7 +520,6 @@ function searchFilter(){
       $(this).html(splitMerge);
    });
 }
-
 //searchFilter메서드의 보조 사용 함수
 function split(text){
     
@@ -521,14 +542,12 @@ function split(text){
     var splitMerge = splitArray.join(" ");
     return splitMerge;
 }
-
 //css - 사진클릭시 이동
  var slideIndex = 1;
 /* showDivs(slideIndex); */
 function plusDivs(n) {
     showDivs(slideIndex += n);
 }
-
 function showDivs(n) {
     var i;
     var x = document.getElementsByClassName("popPostImage");
@@ -539,7 +558,6 @@ function showDivs(n) {
     }
      x[slideIndex-1].style.display = "block";
 }
-
 /* function changePic(){
 	$(".popImageContainer").children().on("click", function(event){
 		if($(this).parent().children(":first")==$(this).parent().children(":last")){
@@ -553,7 +571,6 @@ function showDivs(n) {
 		}
 	})
 } */
-
 //css - 카테고리별 게시물 필터링
 $("#categoryList li a").click(function(){
 	var customType=$(this).data("filter");
@@ -561,13 +578,11 @@ $("#categoryList li a").click(function(){
 		return $(this).data("filter") === customType || customType==="all";
 		}).show();
 })
-
 //css - 댓글달기 버튼 클릭시 커서 포커스
 function replyCursor(thisBtn){
-	var postid=$(thisBtn).parent().attr("title");
-	$("._replyRegister[title="+postid+"]").children("input").focus();
+	var postid=$(this).parents(".btnContainer").attr("title");
+	$(".s2_4_1[title="+postid+"]").children("input").focus();
 }
-
 </script>
 
 </body>

@@ -81,7 +81,7 @@
 
 	<nav class="navbar navbar-default">
 	<div class="nav-wrap">
-		<a class="logo pull-left" href="/main"></a>
+		<a class="logo pull-left" href="/"></a>
 		<form class="search-form" action="/search/search" method="get">
 			<input class="textInput" type="text" name='inputKeyword'
 				id='keywordInput' value="${keyword}" placeholder="검색"
