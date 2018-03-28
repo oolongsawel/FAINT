@@ -376,6 +376,7 @@ function registReply(thisTag, key){
 			success:function(result){
 				if(result=="SUCCESS"){
 					reply();
+					$(thisTag).val("");
 				};
 			}
 		});
