@@ -2,7 +2,10 @@ package com.faint.sns;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -22,10 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.faint.domain.UserVO;
 import com.faint.util.MediaUtils;
+import com.faint.util.S3Util;
 import com.faint.util.UploadFileUtils;
 
 @Controller
 public class UploadController {
+	
+    S3Util s3 = new S3Util();
+    String bucketName = "faint1122";
 	
 	@Resource(name="uploadPath")
 	private String uploadPath;
@@ -51,43 +58,111 @@ public class UploadController {
 	}
 	
 	//파일 표시
-	@ResponseBody
-	@RequestMapping("/displayFile")
-	public ResponseEntity<byte[]> displayFile(String fileName)throws Exception{
-		
-		InputStream in =null;
-		ResponseEntity<byte[]> entity = null;
-		
-		logger.info("FILE NAME : " + fileName);
-		
-		try {
-			String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
-			//확장자 이름 추출
-			MediaType mType = MediaUtils.getMediaType(formatName);
-			HttpHeaders headers = new HttpHeaders();
-			in = new FileInputStream(uploadPath+fileName);
-			//이미지파일인경우
-			if(mType != null) {
-				headers.setContentType(mType);
-			}else{
-				//이미지파일아닌경우
-				fileName = fileName.substring(fileName.indexOf("_")+1);
-				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-				//headers.setContentLength(IOUtils.toByteArray(in).length);
-				headers.add("Content-Disposition", "attachment; filename=\""+
-				new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");
-			}
-			
-			logger.info("headers : " + headers);
-			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-		}finally{
-			in.close();
-		}
-		return entity;
-	}
+    @ResponseBody
+    @RequestMapping("/displayFile")
+    public ResponseEntity<byte[]> displayFile(String fileName)throws Exception{
+
+        InputStream in = null;
+        ResponseEntity<byte[]> entity = null;
+        HttpURLConnection uCon = null;
+        System.out.println("FILE NAME: " + fileName);
+
+        //System.out.println("FileName : "+fileName);
+
+        try{
+            String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
+
+            MediaType mType = MediaUtils.getMediaType(formatName);
+            HttpHeaders headers = new HttpHeaders();
+
+            String inputDirectory = "faint1122";
+            URL url;
+
+            //in = new FileInputStream(uploadPath+fileName);
+            //System.out.println("in : "+in);
+//            if(mType != null){
+//                headers.setContentType(mType);
+//            }else{
+//
+//                fileName = fileName.substring(fileName.indexOf("_")+1);
+//                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//                headers.add("Content-Disposition","attachment; filename=\""+new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");
+//            }
+
+            try {
+                url = new URL(s3.getFileURL(bucketName, inputDirectory+fileName));
+                System.out.println(url);
+                uCon = (HttpURLConnection) url.openConnection();
+                in = uCon.getInputStream(); // 이미지를 불러옴
+            } catch (Exception e) {
+                url = new URL(s3.getFileURL(bucketName, "default.jpg"));
+                uCon = (HttpURLConnection) url.openConnection();
+                in = uCon.getInputStream();
+            }
+
+
+            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in),
+            headers,
+            HttpStatus.CREATED);
+        }catch (FileNotFoundException effe){
+            System.out.println("File Not found Exception");
+            String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
+            MediaType mType = MediaUtils.getMediaType(formatName);
+            HttpHeaders headers = new HttpHeaders();
+            in = new FileInputStream(uploadPath+"/noimage.jpeg");
+
+                headers.setContentType(mType);
+
+            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in),
+                    headers,
+                    HttpStatus.CREATED);
+        }catch (Exception e){
+            e.printStackTrace();
+            entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+        }finally {
+            in.close();
+        }
+        return entity;
+    }
+//	@ResponseBody
+//	@RequestMapping("/displayFile")
+//	public ResponseEntity<byte[]> displayFile(String fileName)throws Exception{
+//		
+//		InputStream in =null;
+//		ResponseEntity<byte[]> entity = null;
+//		
+//		logger.info("FILE NAME : " + fileName);
+//		
+//		try {
+//			String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
+//			//확장자 이름 추출
+//			MediaType mType = MediaUtils.getMediaType(formatName);
+//			HttpHeaders headers = new HttpHeaders();
+//			in = new FileInputStream(uploadPath+fileName);
+//			
+//			
+//			//이미지파일인경우
+//			if(mType != null) {
+//				headers.setContentType(mType);
+//			}else{
+//				//이미지파일아닌경우
+//				fileName = fileName.substring(fileName.indexOf("_")+1);
+//				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//				//headers.setContentLength(IOUtils.toByteArray(in).length);
+//				headers.add("Content-Disposition", "attachment; filename=\""+
+//				new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");
+//			}
+//			
+//			logger.info("headers : " + headers);
+//			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+//		}finally{
+//			in.close();
+//		}
+//		return entity;
+//	}
 	
 	//파일 삭제
 	@ResponseBody

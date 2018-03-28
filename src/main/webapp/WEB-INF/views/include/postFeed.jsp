@@ -327,7 +327,7 @@ function reply(){
 						"<a href='/member/"+this.username+"'><span class='nickname'>" + this.username +"</span></a>"+this.comment;
 					
 					if(this.userid==${login.id}){
-						replystr+="<a class='replyDelete' onclick='javascript:deleteReply(this);' ><strong>Ｘ</strong></a></li>";
+						replystr+="<a href='javascript:;' class='replyDelete' onclick='javascript:deleteReply(this);' ><strong>Ｘ</strong></a></li>";
 					}else{
 						replystr+="</div>";
 					};

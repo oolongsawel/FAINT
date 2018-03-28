@@ -20,25 +20,40 @@ public class UploadFileUtils {
 	// String originalName 원본 팡리 이름
 	// byte[] fileData 파일 데이터
 	public static String uploadFile(String uploadPath, String originalName, byte[] fileData, String userid) throws Exception {
+		
+	      //S3 서버 관련 설정   // 3/28
+		
+		   S3Util s3 = new S3Util();
+	        String bucketName = "faint1122";
+	        
+	        
 		UUID uid = UUID.randomUUID();
 
 		String savedName = uid.toString() + "_" + originalName;
 
 		String savedPath = calcPath(uploadPath);
+		
+		 String imagepath = "profile/"+ uploadPath;  //이미패스 
 
-		File target = new File(uploadPath + savedPath, savedName);
-
-		FileCopyUtils.copy(fileData, target);
+//		File target = new File(uploadPath + savedPath, savedName);
+//
+//		FileCopyUtils.copy(fileData, target);
+		
+		
 
 		String formatName = originalName.substring(originalName.lastIndexOf(".") + 1);
+		
+		 String uploadedFileName =(savedPath+savedName).replace(File.separatorChar, '/');
 
-		String uploadedFileName = null;
+	//	String uploadedFileName = null;
 
-		if (MediaUtils.getMediaType(formatName) != null) {
-			uploadedFileName = makeThumbnail(uploadPath, savedPath, savedName);
-		} else {
-			uploadedFileName = makeIcon(uploadPath, savedPath, savedName);
-		}
+//		if (MediaUtils.getMediaType(formatName) != null) {
+//			uploadedFileName = makeThumbnail(uploadPath, savedPath, savedName);
+//		} else {
+//			uploadedFileName = makeIcon(uploadPath, savedPath, savedName);
+//		}
+		
+		   s3.fileUpload(bucketName, uploadPath+uploadedFileName, fileData);  //  추가 
 
 		return uploadedFileName;
 	}
@@ -63,11 +78,15 @@ public class UploadFileUtils {
 
 		// 날짜 ㄱ설정
 		String datePath = monthPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE));
+		
+	       S3Util s3 = new S3Util();
+	        String bucketName = "faint1122";
+
 
 		// 폴더 생성 호출
-		makeDir(uploadPath, yearPath, monthPath, datePath);
-
-		logger.info(datePath);
+//		makeDir(uploadPath, yearPath, monthPath, datePath);
+//
+//		logger.info(datePath);
 
 		return datePath;
 	}
