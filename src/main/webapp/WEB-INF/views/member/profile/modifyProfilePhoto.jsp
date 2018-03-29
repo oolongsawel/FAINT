@@ -126,7 +126,12 @@ $(document).ready(function(){
 
 			console.log(this);
 			var formData = new FormData();
-
+			
+			if(this.type.indexOf('image') ==-1 ) {
+        		console.log("이상한 파일");
+        		alert("이미지 파일을 다시 선택하세요.");
+        		return false;
+        	}
 			formData.append("file", this);
 
 			$.ajax({

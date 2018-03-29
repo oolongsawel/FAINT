@@ -272,6 +272,11 @@ $("#inputfile").on("change", function(event) {
 function uploadFiles(files) {
    $(files).each(function() {
       var file = this;
+      if(this.type.indexOf('image') ==-1 ) {
+  		console.log("이상한 파일");
+  		alert("이미지 파일을 다시 선택하세요.");
+  		return false;
+		}
       var formData = new FormData();
       console.log("method");
       formData.append("file", this);
