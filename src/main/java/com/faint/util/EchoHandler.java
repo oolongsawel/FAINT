@@ -15,6 +15,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
  
 public class EchoHandler extends TextWebSocketHandler{
     
+	/*랄랄라*/
     //세션을 모두 저장한다.
     //방법 1 :  1:1 채팅
 //    private Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
