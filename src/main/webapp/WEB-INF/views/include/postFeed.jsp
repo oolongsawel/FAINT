@@ -89,7 +89,7 @@
          <div class="s2_1">
             <div class="s2_1_1">
                <a href="/member/{{usernickname}}">
-                  <img class="s2_1_1_1" src="/displayFile?fileName={{profilephoto}}">   <!-- 프사 -->
+                  <img class="s2_1_1_1">   <!-- 프사 -->
                </a>
                <span class="s2_1_1_2">
                   <a href="/member/{{usernickname}}">
@@ -255,6 +255,14 @@ $(document).ready(function(){
                      var post=Handlebars.compile(source);
                      var postmodal=post(data);
                      $("body").append(postmodal);
+                     
+                     //프로필 사진 삽입
+                     if(data.profilephoto!=null){
+                    	 $(".s2_1_1_1").attr("src", "/displayFile?fileName="+data.profilephoto)
+                     }else{
+                    	 $(".s2_1_1_1").attr("src", "/resources/img/emptyProfile.jpg")
+                     }
+                     
                      //이미지 잘라서 삽입
                      for (var i in data.urlList) {
                         //$(".popImageContainer").append("<img class='popPostImage' src='/displayFile?fileName="+data.urlList[i]+"' style='display:none;' />")
