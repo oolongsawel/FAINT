@@ -36,20 +36,18 @@
 
 .postContainer{
    display: inline-block;
+   width: 935px;
+   max-width: 935px; !important
 }
 .postLiner{
    display:flex !important; 
    width:100%;
-   max-width:879px;
-   max-height:293px;
    display: inline-block;
 }
 .imageContainer{
    height:100%;
    width:33%;
-   max-width: 293px;
-   max-height: 293px;
-   padding: 3px 3px 3px 3px;
+   padding: 5px 5px 5px 5px;
    position: relative;
    cursor:pointer;
 }
@@ -162,8 +160,6 @@
                </span>
             </div>
          </div>
-
-            <hr/>
             
          <div class="s2_2">
             <div class="s2_2_1" id="post{{postid}}">
@@ -171,11 +167,8 @@
                <span class="caption">{{caption}}</span>
                <div class="replyContainer" title="{{postid}}" data-limit=0>
                </div>
-               <time datetime=""+{{regdate}}>{{regdate}}</time>
             </div> 
          </div>
-
-            <hr/>
  
          <div class="s2_3">
             <div class="s2_3_1">
@@ -185,8 +178,6 @@
                <a class="likeContainer" title="{{postid}}">좋아요 <span>0</span>개(링크미구현)</a>
             </div>
          </div>
-
-            <hr/>
 
          <div class="s2_4">
             <div class="s2_4_1" title="{{postid}}">
@@ -198,29 +189,28 @@
    </div>
 </div>
 <style>
-hr{margin: 0;}
 .section1{width: 600px; height: 600px; display: inline-block; float: left; position: relative; background-color: black; }
 #moveLeft > i{ height: 25px; width: 25px; border-radius: 150px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -324px -40px; border: none; margin: 8px 8px 8px; left:0; margin-top: 50%; position: absolute; }
 #moveRight > i{ height: 25px; width: 25px; border-radius: 150px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -324px -72px; border: none; margin: 8px 8px 8px 0; right:0; margin-top: 50%; position: absolute; }    
 .popPostImage{ position: absolute; max-width: 100%; max-height: 100%; width: auto; height: auto; margin: auto; top: 0; bottom: 0; left: 0; right: 0; }
-.section2{ width: 335px; height: 600px; display: inline-block; }
-.s2_1{ width: 335px; height: 78px; }
-.s2_1_1{ padding: 10px; }
-.s2_1_1_1{ width: 50px; height: 50px; display: inline-block; float: left; border-radius: 150px;}
-.s2_1_1_2{ width: 235px; height: 50px; margin-left: 10px; display: inline-block; }
+.section2{ width: 335px; height: 100%; display: inline-block; text-align: center; padding-left: 20px; padding-right: 20px; }
+.s2_1{ padding-top: 20px; padding-bottom: 20px; height: 78px; text-align: left; border-bottom: 1.3px solid #efefef; }
+.s2_1_1{ height: 100%; display: inline-block; }
+.s2_1_1_1{ width: auto; height: 45px; display: inline-block; float: left; border-radius: 150px; }
+.s2_1_1_2{ width: 235px; margin-left: 10px; display: inline-block; }
 .nickname{ font-weight: bold; }
-.s2_2{ width: 335px; height: 372px; }
-.s2_2_1{ width: 315px; height: 352px; overflow-y:scroll; padding: 10px; }
+.s2_2{ width: 100%; height: auto; padding-top: 16px; padding-bottom: 16px; text-align: left; border-bottom: 1.3px solid #efefef; }
+.s2_2_1{ width: 100%; height: 352px; overflow-y: auto; }
 .replyContainer{ margin-top: 20px; bottom: 0; }
 .reply{ margin-bottom: 4px; }
-.s2_3{ width: 335px; height: 88px; }
-.s2_3_1{ padding: 10px; }
-.likeBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); border: none; background-color: #fff; margin: 8px 8px 8px 0; font-size: 0;}
-.replyBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -306px -289px; background-color: #fff; margin: 8px; margin-left: 4px; border: none; font-size: 0;}
-.storeBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-color: #fff; margin: 8px; margin-left: 190px; border: none; font-size: 0;}
-.s2_4{ width: 335px; height: 56px; }
-.s2_4_1{ padding: 10px; }
-.replyRegist{ font-size: 15px; border: none; width: 261px; height: 23px; }
+.s2_3{ width: 100%; height: 85px; text-align: left; border-bottom: 1.3px solid #efefef; }
+.s2_3_1{ padding: 10px 0 10px 0; height: 100%;}
+.likeBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); border: none; background-color: #fff; margin: 0 8px 8px 0; font-size: 0;}
+.replyBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-position: -306px -289px; background-color: #fff; margin: 0 8px 8px 0; border: none; font-size: 0;}
+.storeBtn{ height: 24px; width: 24px; background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png"); background-color: #fff; margin-left: 842%; border: none; font-size: 0;}
+.s2_4{ width: 100%; height: auto; }
+.s2_4_1{ padding: 10px 0 10px 0; }
+.replyRegist{ font-size: 15px; border: none; width: 100%; height: auto; }
 </style>
 </script>
 
@@ -229,12 +219,15 @@ console.log(jsonList);
 
 //body로딩 후
 $(document).ready(function(){
+	//viewport크기 관리
     $(window).resize(function(){
-    	if($(".postContainer").width()<=parseInt($(".postContainer").css("max-width"))){
-        	$(".postContainer").css("width", $(window).width());
-        	$(".postContainer").css("height", "auto");
-    	}else if($(window).width()>=parseInt($(".postContainer").css("max-width"))){
-    		$(".postContainer").css("width", $(window).width()*0.8);
+    	if(parseInt($(".postContainer").css("max-width")) <=parseInt($(window).width())){
+    		//viewport크기에 따른 컨테이너 가로값 조정
+    		$(".postContainer").css("width", "935px;");
+        //viewport크기에 따른 사진이미지 높이 값 조정
+    	}else if(parseInt($(".postContainer").css("max-width")) >= parseInt($(window).width())){
+    		$(".postContainer").css("width", $(window).width());
+        	$(".postLiner").height($(".postLiner").width()*0.33);
     	}
 	})
    getPostList();
@@ -246,16 +239,9 @@ function getPostList(){
 	$(".postContainerWrp").remove();
 	
    //포스트 피드
-   //$("body").append("<div class='postContainer' style='width:100%; height:auto;'></div>");
-   
    $("body").append("<div class='postContainerWrp' style='width:100%; height:100%;'></div>");
    $(".postContainerWrp").append("<div class='postContainer'></div>");
 
-   //window사이즈의 80%
-   $(".postContainer").css("width", $(window).width()*0.8);
-   $(".postContainer").css("max-width", $(window).width()*0.8);
-
-   
    //데이터 담을 변수
    var data="";
    //태그 or 지역 검색 일때
@@ -312,10 +298,11 @@ function getPostList(){
       }
    }
    
+   $(".postLiner").height($(".postLiner").width()*0.33);
+   
    for (i = 0; i < $(".postLiner").length; i++) {
       for (j = 0; j < 3; j++) {
-         $(".postLiner:eq("+i+")").append("<div class='imageContainer' style='width:100%;'>")
-         $(".imageContainer").css("height", $(".imageContainer").width());
+         $(".postLiner:eq("+i+")").append("<div class='imageContainer' style='width:100%; height:auto;'>")
       }
    }
    $(data).each(function(index){
