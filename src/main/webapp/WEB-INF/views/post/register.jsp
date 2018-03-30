@@ -168,26 +168,31 @@
 				<div class="_k7ih4">
 					<div>
 						<div class="_e3il2 _gxii9">
-							<div class="_4rbun" id="imgdiv" >
+							<div class="_4rbun " id="imgdiv" >
 							<c:forEach var="file" items='${files}' varStatus='status'>
 								<c:if test="${file.fileType eq 'image'}">
-										<img alt="이미지" class="_2di5p ${file.filter}" id="image${status.index}" src="/displayFile?fileName=${file.fileUrl }" srcset=""
+										<img alt="이미지" class="_2di5p " id="image${status.index}" src="http://faint1122.s3.ap-northeast-2.amazonaws.com/faint1122${file.fileUrl }" srcset=""
 										style="<c:out value="${status.index eq 0 ? '' : 'display: none;'}"/> ">
 										
 										<c:if test = "${status.index eq 0}">
 											<script>
-												$('#imgdiv').css("padding-bottom", ${file.naturalHeight}/6+"%");
+											$('#image${status.index}').on('load', function(){
+												$('#imgdiv').css("padding-bottom", $(this).height()/6+"%");
+												
+											})
+												$("#imgdiv").attr("class", "_4rbun ${file.filter}");
 											</script>
 										</c:if> 
 									</c:if>
 									<c:if test="${file.fileType eq 'video'}">
-										<video class="_2di5p ${file.filter}" id="video${status.index}" src="/displayFile?fileName=${file.fileUrl }" loop="true" 
+										<video class="_2di5p " id="video${status.index}" src="http://faint1122.s3.ap-northeast-2.amazonaws.com/faint1122${file.fileUrl }" loop="true" 
 										<c:out value="${status.index eq 0 ? 'autoplay' : ''}"/>
 										style="<c:out value="${status.index eq 0 ? '' : 'display: none;'}"/> ">
 										<c:if test = "${status.index eq 0}">
 											<script>
 												document.getElementById('video${status.index}').onloadeddata = function() { 
 													$('#imgdiv').css("padding-bottom", $(this).height()/6+"%");
+													$("#imgdiv").attr("class", "_4rbun ${file.filter}");
 												};
 											</script>
 										</c:if>
@@ -290,7 +295,6 @@
 	<jsp:include page="../common/footer.jsp" flush="false"></jsp:include>
 	</section>
 	</span>
-
 </body>
 <!-- <script type="text/javascript" src="/resources/js/upload.js"></script> -->
 <!-- 구글맵 api -->
@@ -347,9 +351,11 @@ data={
 @media (min-width:414px){._cepxb{margin:0 auto}}
 </style>
 </script>
-
-<script>
+ <script>
 	$(document).ready(function() {
+		
+		//파일 리스트 생성
+		var filesArr = ${files};
 		
 		//게시물 글자수 제한
 		$("._bilrf").first().keyup(function(){
@@ -439,6 +445,7 @@ data={
 		$("#moveRight").on("click",function(){
 			var len = $("._2di5p ").length-1;
 			var curIdx = parseInt($("._2di5p:visible").attr("id").substr(5));
+			var nextIdx = curIdx + 1;
 			var curObj = $("._2di5p:visible");
 			var nextObj;
 			if(curObj.next("script").length == 1){
@@ -448,7 +455,10 @@ data={
 			}
 			//다음객체 비율 조정
 			nextObj.parent("div").css("padding-bottom", nextObj.height()/6+"%");
-			
+			console.log(filesArr);
+			console.log(filesArr[curIdx+1]);
+			//필터 적용
+			$("._4rbun").attr("class", "_4rbun "+ filesArr[curIdx+1].filter);
 			//이미지 전환
 			curObj.css("display","none");
 			nextObj.css("display","block");
@@ -481,10 +491,13 @@ data={
 			//이전객체 비율 조정
 			prevObj.parent("div").css("padding-bottom", prevObj.height()/6+"%");
 			
+			//필터 적용
+			$("._4rbun").attr("class", "_4rbun "+ filesArr[curIdx-1].filter);
+			
 			//이미지 전환
 			curObj.css("display","none");
 			prevObj.css("display","block");
-
+			
 			//비디오 재생
 			if(curObj.prev("video").length == 1){
 				prevObj.get(0).play();

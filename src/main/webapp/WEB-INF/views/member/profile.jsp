@@ -9,7 +9,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${userVO.name}(@${userVO.nickname})</title>
 <!-- 프로필 사진 변경 공통 처리 -->
-<script type="text/javascript" src="../../resources/js/upload.js"></script>
 <style>
 
 .followModal {
@@ -358,7 +357,7 @@ $(document).ready(function(){
    followed();
    following();
    follow();
-   searchFilter();
+   //////////////////////////searchFilter();
 })
 
 function followed(){
@@ -514,7 +513,7 @@ function follow(){
       $.ajax({
          type: type,
          url: url,
-         headers:{header},
+         headers:header,
          dataType:"text",
          success:function(result){
             if(result=="SUCCESS"){
@@ -527,8 +526,7 @@ function follow(){
 
 
 </script>
-
 <jsp:include page="/WEB-INF/views/include/postFeed.jsp" flush="false" />
-
 </body>
+
 </html>

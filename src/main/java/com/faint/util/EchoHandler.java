@@ -29,8 +29,7 @@ public class EchoHandler extends TextWebSocketHandler{
      * 클라이언트 연결 이후에 실행되는 메소드
      */
     @Override
-    public void afterConnectionEstablished(WebSocketSession session)
-            throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         //맵을 쓸때 방법
 //        sessions.put(session.getId(), session);
         //List쓸때 방법
@@ -44,8 +43,7 @@ public class EchoHandler extends TextWebSocketHandler{
      * 클라이언트가 웹소켓 서버로 메시지를 전송했을 때 실행되는 메소드
      */
     @Override
-    protected void handleTextMessage(WebSocketSession session,
-            TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         
         //0번째에 session.getId() 1번째에 message.getPayload() 넣음
         logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
@@ -73,8 +71,7 @@ public class EchoHandler extends TextWebSocketHandler{
      * 클라이언트 연결을 끊었을 때 실행되는 메소드
      */
     @Override
-    public void afterConnectionClosed(WebSocketSession session,
-            CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         //List 삭제
         sessionList.remove(session);
         

@@ -107,8 +107,20 @@
     padding: 0;
 }
 
-.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+.carousel-inner>.item>img, .carousel-inner>.item>a>img, .carousel-inner>.item>video, .carousel-inner>.item>a>video {
     width: 100%;
+}
+
+.thumbnail>img, .thumbnail a>img, .thumbnail>video, .thumbnail a>video {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.img-responsive, .thumbnail>img, .thumbnail a>img, .carousel-inner>.item>img, .carousel-inner>.item>a>img, .thumbnail>video, .thumbnail a>video, .carousel-inner>.item>video, .carousel-inner>.item>a>video {
+    display: block;
+    width: 100% \9;
+    max-width: 100%;
+    height: auto;
 }
 figcaption {
     position: absolute;
@@ -130,7 +142,7 @@ text-decoration:none;
 }
 </style>
 <body>
-
+r
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <div class="container">
     <fieldset class="form-group" style="text-align: right;">
@@ -138,7 +150,7 @@ text-decoration:none;
     	<span class="glyphicon glyphicon-folder-open"></span> 
     	<span class="image-preview-input-title">Browse</span>
 		</div>
-	        <input type="file" id="pro-image" name="pro-image" accept="image/*|video/*"style="display: none;" class="form-control" multiple>
+	        <input type="file" id="pro-image" name="pro-image" accept="image/*,video/*"style="display: none;" class="form-control" multiple>
 		<button type="button" id="upload" class="btn btn-labeled btn-default"> <span class="btn-label"><i class="glyphicon glyphicon-upload"></i> </span>Upload</button>
     </fieldset>
     <div class="preview-images-zone"> </div>
@@ -154,122 +166,149 @@ text-decoration:none;
                 <ul class="hide-bullets">
                     <li class="col-sm-2">
                         <a class="thumbnail " id="nofilter" title="" style="position: relative;"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>#nofilter</figcaption>
                         </a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail _1977" id="1977" title="_1977"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>1977</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail aden" id="Aden" title="aden"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Aden</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail brannan" id="Brannan" title="brannan"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Brannan</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail brooklyn" id="Brooklyn" title="brooklyn"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Brooklyn</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail clarendon" id="Clarendon" title="clarendon"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Clarendon</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail earlybird" id="Earlybird" title="earlybird"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Earlybird</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail gingham" id="Gingham" title="gingham"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Gingham</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail hudson" id="Hudson" title="hudson"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Hudson</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail inkwell" id="Inkwell" title="inkwell"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Inkwell</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail kelvin" id="Kelvin" title="kelvin"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Kelvin</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail lark" id="Lark" title="lark"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Lark</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail lofi" id="Lo-Fi" title="lofi"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Lo-Fi</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail maven" id="Maven" title="maven"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Maven</figcaption></a>
                     </li>
 
                     <li class="col-sm-2">
                         <a class="thumbnail mayfair" id="Mayfair" title="mayfair"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Mayfair</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail moon" id="Moon" title="moon"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Moon</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail nashville" id="Nashville" title="nashville"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Nashville</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail perpetua" id="Perpetua" title="perpetua"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Perpetua</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail reyes" id="Reyes" title="reye"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Reyes</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail rise" id="Rise" title="rise"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Rise</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail slumber" id="Slumber" title="slumber"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Slumber</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail stinson" id="Stinson" title="stinson"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Stinson</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail toaster" id="Toaster" title="toaster"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Toaster</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail valencia" id="Valencia" title="valencia"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Valencia</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail walden" id="Walden" title="walden"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Walden</figcaption></a>
                     </li>
                     <li class="col-sm-2">
                         <a class="thumbnail willow" id="Willow" title="willow"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>Willow</figcaption></a>
                     </li>
                      <li class="col-sm-2">
                         <a class="thumbnail xpro2" id="X-pro II" title="xpro2"><img src="https://una.im/CSSgram/img/atx.jpg">
+                        <video style="display:none"></video>
                         <figcaption>X-pro II</figcaption></a>
                     </li>
                 </ul>
@@ -284,6 +323,7 @@ text-decoration:none;
 </body>
 <script type="text/javascript" src="/resources/js/upload.js"></script>
 <script>
+var path = "http://faint1122.s3.ap-northeast-2.amazonaws.com/faint1122";
 $(document).ready(function() {
 
     $("#pro-image").on("change",function(){
@@ -333,24 +373,14 @@ $(document).ready(function() {
 		var str = "";
     	$(".image-cancel").each(function(index){
 			var data = new Object();
-			var obj;
+			var obj = $(this).siblings("div",".image-zone");
 			//파일 url 추가
     		data.fileUrl =$(this).attr("data-src");
 			//파일 type 추가
-    		data.fileType = $(this).siblings("div",".image-zone").attr("data-type");
-    		
-    		if(data.fileType == 'image'){
-				obj = $(this).siblings("div",".image-zone").children("img");
-    			//타입 이미지인경우
-    			data.naturalHeight = obj[0].naturalHeight;
-    		}
-    		else{
-				obj = $(this).siblings("div",".image-zone").children("video");
-    			//타입 동영상인 경우
-    			data.naturalHeight = obj[0].videoHeight;
-    		}
-    		console.log(obj[0]);
-    		data.filter = obj.attr("class");
+    		data.fileType = obj.attr("data-type");
+
+			console.log(obj[0]);
+    		data.filter = obj.attr("class").split(" ")[1];
     		console.log(JSON.stringify(data));
 			str += "<input type='hidden' name='files' value='" + JSON.stringify(data) + "'> ";
 			
@@ -374,10 +404,10 @@ $(document).ready(function() {
 	   //선택된 이미지가 없을때
 	   //전체 필터 적용
 	   if($(".selected").length == 0){
-		   $(".image-zone > img, .image-zone > video").attr("class", this.title);
+		   $(".image-zone").attr("class", "image-zone " + this.title);
 	   }else{
 		   //선택된 이미지만 필터 적용
-		   $(".selected > div > img, .selected > div > video").attr("class" , this.title);
+		   $(".selected > .image-zone").attr("class" , "image-zone " + this.title);
 		   
 	   }
    });
@@ -392,12 +422,15 @@ function readImage(files) {
     	console.log(files);
         var output = $(".preview-images-zone");
         $(files).each(function() {
+        	console.log(this);
+        	console.log(this.type);
+        	if(this.type.indexOf('image') ==-1 && this.type.indexOf('video') ==-1) {
+        		console.log("이상한 파일");
+        		return true;
+        	}
 			var file = this;
-
-			console.log(this);
 			var formData = new FormData();
 			formData.append("file", this);
-			console.log(formData);
 			$.ajax({
 				url : '/uploadAjax',
 				data : formData,
@@ -410,12 +443,12 @@ function readImage(files) {
 					
 	                var html =  '<div class="preview-image preview-show-' + num + '" onclick="selectUploadImaage(this)">' +
 	                            '<div class="image-cancel" data-no="' + num + '" data-src="'+ fileInfo.fullName+'">x</div>' +
-	                            '<div class="image-zone" data-type="'+fileInfo.fileType+'">' ;
+	                            '<div class="image-zone" id="image-zone-' + num + '" data-type="'+fileInfo.fileType+'">' ;
 	                if(fileInfo.fileType == "image"){
-	                	html =  html + '<img id="pro-img-' + num + '" src="' + fileInfo.imgsrc + '"></div>' +
+	                	html =  html + '<img id="pro-img-' + num + '" src="' + path + data + '"></div>' +
                            '</div>';
 	                }else{
-	                	html =  html + '<video id="pro-img-' + num + '" src="' + fileInfo.imgsrc + '" loop="true" autoplay></div>' +
+	                	html =  html + '<video id="pro-img-' + num + '" src="' + path + data + '" loop="true" autoplay></div>' +
                            '</div>';
 	                }
 	              
@@ -424,7 +457,14 @@ function readImage(files) {
 	                //처음 업로드 되는 이미지로 필터 이미지 변경
 	                if(num == 0){
 	                	if(fileInfo.fileType != 'video'){
-	                		$(".thumbnail > img").attr("src", fileInfo.imgsrc);
+	                		$(".thumbnail > img").css("display","block");
+	                		$(".thumbnail > video").css("display","none");
+	                		$(".thumbnail > img").attr("src", path + data);
+	                	}
+	                	else{
+	                		$(".thumbnail > img").css("display","none");
+	                		$(".thumbnail > video").css("display","block");
+	                		$(".thumbnail > video").attr("src", path + data);
 	                	}
 	                }
 	                num = num + 1;
@@ -441,7 +481,23 @@ function readImage(files) {
 }  
  
 function selectUploadImaage(obj){
+	//소스 읽기
+	var src = $("#"+obj.children[1].children[0].id).attr("src");
+	//타입 읽기
+	var type = $("#"+obj.children[1].id).attr("data-type");
+
+	//클래스 추가
 	$(obj).toggleClass("selected");
+	if(type == 'image'){
+		$(".thumbnail > video").css("display","none");
+		$(".thumbnail > img").css("display","block");
+		$(".thumbnail > img").attr("src", src);
+	}else if(type == 'video'){
+		$(".thumbnail > img").css("display","none");
+		$(".thumbnail > video").css("display","block");
+		$(".thumbnail > video").attr("src", src);
+		
+	}
 }
 </script>
 </html>
