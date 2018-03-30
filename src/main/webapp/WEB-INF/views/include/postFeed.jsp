@@ -674,7 +674,7 @@ function split(text){
 		//오른쪽으로 넘기기
 		function moveRight(){
 			var len = $(".popPostImage").length-1;
-			var curIdx = parseInt($(".popPostImage:visible").attr("id").substr(5));
+			var curIdx = parseInt($(".popPostImage:visible").index());
 			var curObj = $(".popPostImage:visible");
 			var nextObj = curObj.next();
 			//if(curObj.next("script").length == 1){
@@ -709,7 +709,7 @@ function split(text){
 		//이미지 왼쪽으로 넘기기
 		function moveLeft(){
 			var len = $(".popPostImage").length-1;
-			var curIdx = parseInt($(".popPostImage:visible").attr("id").substr(5));
+			var curIdx = parseInt($(".popPostImage:visible").index());
 			var curObj = $(".popPostImage:visible");
 			var prevObj = curObj.prev();
 			//if(curObj.prev("script").length == 1){
