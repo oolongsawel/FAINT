@@ -10,7 +10,7 @@
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 15vh; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -23,7 +23,6 @@
 .postModal-content {
     background-color: #fefefe;
     margin: auto;
-    border: 1px solid #888;
     width: 940px;
     height: 600px;
 }
@@ -219,9 +218,10 @@ console.log(jsonList);
 
 //body로딩 후
 $(document).ready(function(){
+
 	//viewport크기 관리
     $(window).resize(function(){
-    	if(parseInt($(".postContainer").css("max-width")) <=parseInt($(window).width())){
+    	if(parseInt($(".postContainer").css("max-width")) <= parseInt($(window).width())){
     		//viewport크기에 따른 컨테이너 가로값 조정
     		$(".postContainer").css("width", "935px;");
         //viewport크기에 따른 사진이미지 높이 값 조정
@@ -231,6 +231,7 @@ $(document).ready(function(){
     	}
 	})
    getPostList();
+
 })
 
 //포스트 피드 띄우는 함수
@@ -305,6 +306,7 @@ function getPostList(){
          $(".postLiner:eq("+i+")").append("<div class='imageContainer' style='width:100%; height:auto;'>")
       }
    }
+   
    $(data).each(function(index){
       var url=this.url.split('|').reverse(); //쿼리문에서 역순으로 붙어오기때문에 reverse사용
       var img = "<img class='postImage' title='"+this.id+"' style='height:100%; width:100%; object-fit:cover;' src='/displayFile?fileName="+url[0]+"' />";

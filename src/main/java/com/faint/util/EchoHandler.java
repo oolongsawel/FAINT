@@ -1,24 +1,23 @@
 package com.faint.util;
  
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
- 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
  
+@Repository
 public class EchoHandler extends TextWebSocketHandler{
     
     //세션을 모두 저장한다.
     //방법 1 :  1:1 채팅
 //    private Map<String, WebSocketSession> sessions = new HashMap<String, WebSocketSession>();
-    
+    	
     //방법 2 : 전체 채팅
     private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
     

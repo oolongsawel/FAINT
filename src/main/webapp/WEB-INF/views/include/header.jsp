@@ -15,16 +15,19 @@
 
 <!-- 모달 부트스트랩 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- 업로드 관련 스크립트 -->
-<script type="text/javascript" src="../../resources/js/upload.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <!--검색창 부트스트랩  -->
 <link rel="stylesheet" href="/resources/bootstrap/css/nav-style.css">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+<!-- 업로드 관련 확장자 필터링 스크립트 -->
+<script type="text/javascript" src="../../resources/js/upload.js"></script>
+<!-- handlebars -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+<!-- sockjs -->
+<script type="text/javascript" src="../../resources/js/sockjs.js"></script>
+
 <link rel="stylesheet" href="/resources/css/header.css" type="text/css">
 
 <style>
