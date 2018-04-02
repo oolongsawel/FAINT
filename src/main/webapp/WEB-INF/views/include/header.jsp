@@ -27,6 +27,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 <!-- sockjs -->
 <script type="text/javascript" src="../../resources/js/sockjs.js"></script>
+<!-- commonjs -->
+<script type="text/javascript" src="../../resources/js/common.js"></script>
 
 <link rel="stylesheet" href="/resources/css/header.css" type="text/css">
 

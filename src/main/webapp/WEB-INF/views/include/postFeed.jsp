@@ -46,7 +46,7 @@
 .imageContainer{
    height:100%;
    width:33%;
-   padding: 5px 5px 5px 5px;
+   margin: 5px 5px 5px 5px;
    position: relative;
    cursor:pointer;
 }
@@ -309,7 +309,7 @@ function getPostList(){
    
    $(data).each(function(index){
       var url=this.url.split('|').reverse(); //쿼리문에서 역순으로 붙어오기때문에 reverse사용
-      var img = "<img class='postImage' title='"+this.id+"' style='height:100%; width:100%; object-fit:cover;' src='/displayFile?fileName="+url[0]+"' />";
+      var img = "<img class='postImage' title='"+this.id+"' style='height:100%; width:100%; object-fit:cover;' src='http://faint1122.s3.ap-northeast-2.amazonaws.com/faint1122"+url[0]+"' />";
       
       //이미지 많을때 아이콘
       if(url.length>1){ img += "<i class='multiFile'></i>"; }
@@ -449,7 +449,7 @@ function reply(){
                   "<a href='/member/"+this.username+"'><span class='nickname'>" + this.username +"</span></a>\t<span>"+this.comment+"</span>";
                
                if(this.userid==${login.id}){
-                  replystr+="<a class='replyDelete' onclick='javascript:deleteReply(this);' style='cursor:pointer' >X</a></li>";
+                  replystr+="<a class='replyDelete' onclick='javascript:deleteReply(this);' style='cursor:pointer; float:right;' >X</a></li>";
                }else{
                   replystr+="</div>";
                };
@@ -610,67 +610,7 @@ function likerList(){
       }); 
    });
 };
-//searchFilter - 포스트 내용, 프로필 intro, 댓글 해쉬태그 및 인물태그 링크처리
-function searchFilter(){
-   $(".intro, .s2_2_1, .replyContainer").find("span").each(function(){
-      
-      //1. 텍스트 가져오기 & 처리한 새로운 문자
-      var text = $(this).text();
-      
-      //2. split() 함수처리하기
-      text = split(text);
-      
-      //3. 공백으로 나누기
-      var splitArray = text.split(" ");
-      
-      //4. 특수문자 
-      var special = "!$%^&*()-=+<>?_";
-      
-      //5. 링크처리
-      for(var i in splitArray){
-         var word = splitArray[i];
-         
-         //두글자 이상이면서, 첫글자가 #이면서 , 두번째글자가 특수문자가 아니면 링크처리
-         if(splitArray[i].length!=1 && (word.indexOf("#")==0 && special.indexOf(splitArray[i].charAt(1))==-1)){
-            var hash=word.substring(word.lastIndexOf("#")+1);
-            splitArray[i] = "<a href='/search/tags?name="+hash+"'>"+splitArray[i]+"</a>";
-         
-         
-         //두글자 이상이면서, 첫글자가 @이면서 , 두번째글자가 특수문자가 아니면 링크처리
-         } else if(splitArray[i].length!=1 && (word.indexOf("@")==0 && special.indexOf(splitArray[i].charAt(1))==-1)){
-            var person=word.substring(word.lastIndexOf("@")+1);
-            splitArray[i] = "<a href='/member/"+person+"'>"+splitArray[i]+"</a>";
-         }
-      }
-      
-      //6. 한문장으로 합치기
-      var splitMerge = splitArray.join(" ");
-      
-      $(this).html(splitMerge);
-   });
-}
-//searchFilter메서드의 보조 사용 함수
-function split(text){
-    
-    //1. 공백기준으로 나누기
-    var splitArray = text.split(" ");
-    
-    //2. 처리될 특수문자 
-    var special="!$%^&*()-=+<>?_";
-    
-    //3. 두글자 이상이면서, 2번째 글자가 특수문자가 아님
-    // '#'->' #' : #과 @앞에 공백넣기
-    for(var i in splitArray){
-       if(splitArray[i].length!=1 && special.indexOf(splitArray[i].charAt(1))==-1){
-           splitArray[i]=splitArray[i].replace(/#/g, " #"); 
-           splitArray[i]=splitArray[i].replace(/@/g, " @"); 
-       } //if end
-    } // for end
-    
-    //4. 배열의 각 요소를 한문장으로 합치기
-    var splitMerge = splitArray.join(" ");
-    return splitMerge;
-}
+
 //css - 모달창 사진이동버튼
 		
 		//오른쪽으로 넘기기
