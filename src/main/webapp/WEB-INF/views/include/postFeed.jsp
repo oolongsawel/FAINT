@@ -196,7 +196,7 @@
 .section2{ width: 335px; height: 100%; display: inline-block; text-align: center; padding-left: 20px; padding-right: 20px; }
 .s2_1{ padding-top: 20px; padding-bottom: 20px; height: 78px; text-align: left; border-bottom: 1.3px solid #efefef; }
 .s2_1_1{ height: 100%; display: inline-block; }
-.s2_1_1_1{ width: auto; height: 45px; display: inline-block; float: left; border-radius: 150px; }
+.s2_1_1_1{ width: 45px; height: 45px; display: inline-block; float: left; border-radius: 50%; }
 .s2_1_1_2{ width: 235px; margin-left: 10px; display: inline-block; }
 .nickname{ font-weight: bold; }
 .s2_2{ width: 100%; height: auto; padding-top: 16px; padding-bottom: 16px; text-align: left; border-bottom: 1.3px solid #efefef; }
@@ -377,6 +377,15 @@ function getPostList(){
                  		alert("지원하지 않는 타입의 파일형식을 포함하고 있음")
                  	}
                   }
+				
+				//길이조정
+				$(".popPostImage").each(function(){
+					if(this.naturalWidth <= this.naturalHeight){
+						$(this).css("min-height", "100%");
+					}else{
+						$(this).css("min-width", "100%");
+					}
+				})
                   
                   //좋아요버튼 삽입
                   if(data.isLike=='0'){
