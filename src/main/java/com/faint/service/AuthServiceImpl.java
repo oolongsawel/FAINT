@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.faint.domain.UserVO;
-import com.faint.dto.FollowDTO;
+import com.faint.dto.RelationDTO;
 
 public class AuthServiceImpl implements AuthService{
 	
@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService{
 	
 	public UserDetails loadUserByUsername(String username) throws Exception{
 		
-		FollowDTO dto=new FollowDTO();
+		RelationDTO dto=new RelationDTO();
 		dto.setNickname(username);
 		dto.setLoginid(1);
 		

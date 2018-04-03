@@ -48,11 +48,11 @@
    width:33%;
    margin: 0.5% 0.5% 0.5% 0.5%;
    position: relative;
-   cursor:pointer;
 }
 .imageContainer > img{
    overflow:hidden;
    object-fit:cover;
+   cursor:pointer;
 }
 .imageContainer > div{
 	position: absolute;
@@ -66,6 +66,7 @@
 	color: white;
 	font-size: 21px;
 	line-height: 100%;
+	cursor:pointer;
 }
 .imageContainer > div > span{
 	top:0;

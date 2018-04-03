@@ -19,7 +19,7 @@ a:hover {
 .hashTag{
 	color: hotpink;
 }
-.isFlw, #admin{
+.isFlw, #admin, #moreAction, .btnUserUnblock{
 	float: right;
 	font-size: 12px;
 	font-weight: 400;
@@ -164,6 +164,10 @@ div.secondLine span {
 </head>
 <body>
 
+<script>
+console.log("${userVO}");
+</script>
+
 <article>
 	<div class="photo-profile">
 		<section id="proPhoto">
@@ -192,6 +196,9 @@ div.secondLine span {
 					</c:when>
 					<c:otherwise>
 						<c:choose>
+							<c:when test="${userVO.isBlock > 0}">
+								<span><button class='btnUserUnblock' onclick="userUnblock()">차단 해제</button></span>
+							</c:when>
 							<c:when test="${userVO.isFollow > 0}">
 								<span><button class='isFlw' title="${userVO.id}">팔로잉</button></span>
 							</c:when>
@@ -199,8 +206,7 @@ div.secondLine span {
 								<span><button class='isFlw' title="${userVO.id}">팔로우</button></span>
 							</c:otherwise>
 						</c:choose>
-						<span><button>▽</button></span>
-						<span><button>...</button></span>
+						<span><button id="moreAction">...</button></span>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -317,10 +323,6 @@ border-radius: 150px;  /* 프사 둥글게 */
    <div class="_o0j5z" onclick="callRemoveDialog(event)">
    <div class="_784q7" id="modalChangeProfilePhoto" onclick="callRemoveDialog(event)">
    <ul class="_cepxb">
-      <li class="_hql7s">프로필 사진 바꾸기</li>
-      <li class="_o2wxh"><button class="_h74gn" id="btnRemovePhoto" onclick="removePhoto(event)">현재 사진 삭제</button></li>
-      <li class="_hql7s"><button class="_h74gn" id="btnPhotoUpload" onclick="callFileUploader(event)">사진 업로드</button></li>
-      <li class="_hql7s"><button class="_h74gn" id="btnCancle" onclick="callRemoveDialog(event)">취소</button></li>
    </ul>
    </div>
    </div>
@@ -350,7 +352,8 @@ border-radius: 150px;  /* 프사 둥글게 */
 </script>
 
 <script>
-//프로필 사진 버튼 클릭
+// ======================프로필 사진 버튼 클릭(자기페이지일 경우에만)==========================
+// 모달팝업
 if(${userVO.id}==${login.id}){
 	$("#btnChangePhoto").css("cursor", "pointer");
 	$("#btnChangePhoto").on("click",function(){	   
@@ -360,6 +363,13 @@ if(${userVO.id}==${login.id}){
 	         //$("body").attr("sytle","position: fixed; top: -"+$(window).scrollTop()+"px; width: 100%;");
 	         $("body").attr("aria-hidden","true");
 	         
+	         var list = '<li class="_hql7s">프로필 사진 바꾸기</li>';
+	         list += '<li class="_o2wxh"><button class="_h74gn" id="btnRemovePhoto" onclick="removePhoto(event)">현재 사진 삭제</button></li>';
+	         list += '<li class="_hql7s"><button class="_h74gn" id="btnPhotoUpload" onclick="callFileUploader(event)">사진 업로드</button></li>';
+	       	 list += '<li class="_hql7s"><button class="_h74gn" id="btnCancle" onclick="callRemoveDialog(event)">취소</button></li>';
+	         
+	         $("._cepxb").html(list);
+	         
 	         $("._hql7s").on("click",function(event){
 	              event.stopPropagation();
 	         });
@@ -368,7 +378,8 @@ if(${userVO.id}==${login.id}){
 	      }
 	})
 }
-   
+
+// 취소버튼 - CSS처리 (유저 더보기 액션에서도 동일 처리)
 function callRemoveDialog(event){
    if(typeof event != "undefined"){
       event.stopPropagation();
@@ -378,8 +389,7 @@ function callRemoveDialog(event){
    $("div[role='dialog']").remove();
 }
 
-//파일탐색기에서 OK누른 후 처리
-//파일 업로드
+// 파일 업로드 - 파일탐색기에서 OK누른 후 처리
 $("#inputfile").on("change", function(event) {
    console.log("change");
    event.preventDefault();
@@ -387,7 +397,7 @@ $("#inputfile").on("change", function(event) {
 });
 
 
-//=================프로필 사진 서버에 업로드================
+// ======================프로필 사진 CRUD======================
 //프로필 사진 바꾸기
 function uploadFiles(files) {
    $(files).each(function() {
@@ -468,11 +478,77 @@ function updatePhoto(fullName){
    }); //ajax end
 }
 
+//======================유저 더보기 버튼 액션==========================
+//모달팝업
 
-//postFeed 에러방지용 변수
+$("#moreAction").on("click",function(){	   
+	var template = Handlebars.compile($("#modalTemplate").html());
+	$("body").append(template);
+	//$("body").attr("sytle","position: fixed; top: -"+$(window).scrollTop()+"px; width: 100%;");
+	$("body").attr("aria-hidden","true");
+	
+	var list = '<li class="_o2wxh"><button class="_h74gn" id="btnUserReport" onclick="userReport(event)">사용자 신고</button></li>';
+	list += '<li class="_hql7s"><button class="_h74gn" id="btnUserBlock" onclick="userBlock(event)">이 사용자 차단하기</button></li>';
+	list += '<li class="_hql7s"><button class="_h74gn" id="btnCancle" onclick="callRemoveDialog(event)">취소</button></li>';
+	
+	$("._cepxb").html(list);
+	
+	$("._hql7s").on("click",function(event){
+	     event.stopPropagation();
+	});
+})
+
+//사용자 신고
+function userReport(){
+	//임시 함수
+	$("body").attr("sytle","");
+	$("body").attr("aria-hidden","false");
+	$("div[role='dialog']").remove();
+}
+
+//사용자 차단
+function userBlock(){
+	$.ajax({
+		type: "post",
+		url: "/member/block",
+		headers: "{'X-HTTP-Method-Override' : 'POST'}",
+		dataType: "text",
+		async: false,
+		data: {
+			"userid": ${userVO.id}
+		},
+		success: function(result){
+			if(result=="SUCCESS"){
+				alert("차단되었습니다");
+				history.go(0);
+			}
+		}
+	})
+}
+
+//사용자 차단해제
+function userUnblock(){
+	$.ajax({
+		type: "delete",
+		url: "/member/unblock/${userVO.id}",
+		headers: "{'X-HTTP-Method-Override' : 'DELETE'}",
+		dataType: "text",
+		async: false,
+		success: function(result){
+			if(result=="SUCCESS"){
+				alert("차단해제되었습니다");
+				history.go(0);
+			}
+		}
+	})
+}
+
+//======================postFeed.jsp관련======================
 var jsonList="profile";
 var uid=${userVO.id};
 
+
+//======================팔로우 관련 메서드======================
 function followed(){
    $.getJSON("/member/followed/" + ${userVO.id}, function(data){
       var data=$(data)
