@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.faint.mapper.replyMapper">
+	
+	<insert id="create">
+		INSERT INTO faint.tbl_reply
+		(
+		postid
+		,userid
+		,comment
+		)
+		VALUES
+		(
+		#{postid}
+		,#{userid}
+		,#{comment}
+		)
+	</insert>
+	
+	<select id="read" resultType="com.faint.domain.ReplyVO">
+		SELECT *
+		FROM
+			faint.vw_user_reply
+		WHERE postid=#{postid}
+		order by regdate asc
+	</select>
+	
+	<update id="update">
+		UPDATE faint.tbl_reply
+		SET caption=#{caption},
+		<!-- regdate=now() 넣을 경우 프로필 피드에서 위치변경됨-->
+		WHERE id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE
+		FROM faint.tbl_reply
+		WHERE id=#{id}
+	</delete>
+
+</mapper>
