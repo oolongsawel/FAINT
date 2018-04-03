@@ -46,7 +46,7 @@
 .imageContainer{
    height:100%;
    width:33%;
-   margin: 5px 5px 5px 5px;
+   margin: 0.5% 0.5% 0.5% 0.5%;
    position: relative;
    cursor:pointer;
 }
