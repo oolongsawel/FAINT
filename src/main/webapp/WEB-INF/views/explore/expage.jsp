@@ -140,7 +140,7 @@ span {
 </div>
 
 
-<script>
+<script type="text/javascript">
 
 	RTtag();
 	    
@@ -193,8 +193,14 @@ $(document).ready(function() {
 	setInterval("RTtag()", 30000);
 	// 30초에 한번씩 받아온다.
 	
-	
-
+	$(".fid").each(function() {
+		setInterval(3000);
+		$(this).toggleClass("fadeInDown animated");
+		console.log(this);
+		setInterval(3000);
+		$(this).toggleClass("fadeInDown animated");
+	})
+ 	
 	});
 	
 </script>
