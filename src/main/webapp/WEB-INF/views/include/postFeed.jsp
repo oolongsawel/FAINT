@@ -428,6 +428,11 @@ function getPostList(){
                      $(".btnContainer").append("<span><button class='storeBtn' style='background-position: -182px -349px;'>■</button></span>")
                   }
                   
+                  //게시물 수정버튼 삽입
+                  if(data.userid==${login.id}){
+                	  $(".btnContainer").append("<span><a href='/post/"+data.postid+"/postEditor'>더보기</a></span>")
+                  }
+                  
                   //modal창 보이기
                   $("#myModal").css("display","block");
                   
@@ -674,6 +679,8 @@ function likerList(){
 			//비디오 재생
 			if(curObj.next("video").length == 1){
 				nextObj.get(0).play();
+			}else if(curObj.is("video")){
+				curObj.get(0).pause();
 			}
 			//버튼 보이기
 			$("#moveLeft").css("display","block");
@@ -707,6 +714,8 @@ function likerList(){
 			//비디오 재생
 			if(curObj.prev("video").length == 1){
 				prevObj.get(0).play();
+			}else if(curObj.is("video")){
+				curObj.get(0).pause();
 			}
 			
 			//버튼 보이기

@@ -87,7 +87,7 @@
 
 	<nav class="navbar navbar-default">
 	<div class="nav-wrap">
-		<a class="logo pull-left" href="/"></a>
+		<a class="logo pull-left" href="/main"></a>
 		<form class="search-form" action="/search/search" method="get">
 			<input class="textInput" type="text" name='inputKeyword'
 				id='keywordInput' value="${keyword}" placeholder="검색"
@@ -177,7 +177,7 @@ function searchAjax(){
             	
                 for(var i=0; i<result.length; i++) {
                 	
-                    if(searchwords.length>=1) {
+                    if(searchwords.length>0) {
                         for(var a=0; a<searchwords.length; a++) {
                         	
                             if(result[i].type==0 && result[i].tagname!=null){
@@ -214,21 +214,21 @@ function searchAjax(){
                                   
                                   }
                                
-                               if(nickscore<namescore) {
-                            	   result[i].score = namescore;
-                               } else if(nickscore>namescore){
-                            	   result[i].score=nickscore;
-                               } else {
-                            	   result[i].score = nickscore+namescore;
-                               }
-                            }
+                              	 if(nickscore<namescore) {
+                            	  	 result[i].score = namescore;
+                            		   } else if(nickscore>namescore){
+                            		   result[i].score=nickscore;
+                              	 } else {
+                            		   result[i].score = nickscore+namescore;
+                             	  }
+                            }/* elseif끝 */
                             
                             
                             else if(result[i].type==2 && result[i].location!=null) {
                                for(var b=a; b<result[i].location.length; b++) {
                                   if(searchwords.charAt(a)==result[i].location.charAt(b)) {
                                       if(a==b) {
-                                     	 result[i].score += 2;
+                                     	 result[i].score += 2; 
                                       } else {
                                  	 	 result[i].score++;
                                       	}
@@ -257,7 +257,7 @@ function searchAjax(){
                 console.log("바뀐결과값 :"+JSON.stringify(result));
                 
                 // 검색 첫 글자가 문자일 때
-                if(result!=null && searchwords[0]!='#' && searchwords[0]!='@' && searchwords[0]!='%') {
+                if(result!="" && searchwords[0]!='#' && searchwords[0]!='@' && searchwords[0]!='%') {
                 	var count = 0;
                 	var str = ' ';
                 	for(var i=0; i<result.length; i++) {
@@ -282,19 +282,24 @@ function searchAjax(){
                  		         +"<div class='_o92vn'>";
                  		         
                  		         //프로필사진
-                 		         if(result[i].profilephoto.length==0 || result[i].profilephoto == null ){
-                 		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/resources/img/emptyProfile.jpg'; style='height:24px; width:24px;'></span>";
+                 		         //result[i].profilephoto.length==0 || result[i].profilephoto == "" 
+                 		         if(result[i].profilephoto == null){
+                 		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/resources/img/emptyProfile.jpg'; style='height:24px; width:24px; border-radius:50%;'></span>";
                  		         }else{
-                 		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/displayFile?fileName="+result[i].profilephoto+"'; style='height:24px; width:24px;'></span>";
+                 		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/displayFile?fileName="+result[i].profilephoto+"'; style='height:24px; width:24px; border-radius:50%;'></span>";
                  		         }
                  		         
                  		   str+="<div class='_poxna'>"
                  		         +"<div class='_lv0uf'>"
                  		         +"<span class='_b01op'>"+result[i].nickname+"</span>"
                  		         +"</div>"
-                 		         +"<div class='_2ph7c'>"
-                 		         +"<span class=''><span class=''>"+result[i].name.substring(1)+"</span></span>"
-                 		         +"</div></div></div></a>";
+                 		         +"<div class='_2ph7c'>";
+                 		         if(result[i].name!=null) {
+                 		         	str+="<span class=''><span class=''>"+result[i].name.substring(1)+"</span></span>";
+                 		         } else {
+                 		        	 str+="<span class=''><span class=''></span></span>";
+                 		         }
+                 		    str+="</div></div></div></a>";
                  		}
                  		                  
                  		 // 로케이션 검색
@@ -364,17 +369,29 @@ function searchAjax(){
             	  for(var i=0; i<result.length; i++) {
             		  if(result[i].type==1 && result[i].nickname!=null) {
                  			console.log("이름이다");
-                 		   str+="<a class='_ndl3t _4jr79' href='/member/"+result[i].nickname.substring(1)+"'>"
-                 		         +"<div class='_o92vn'>"
-                 		         +"<span class='_po4xn coreSpriteHashtag'></span>"
-                 		         +"<div class='_poxna'>"
-                 		         +"<div class='_lv0uf'>"
-                 		         +"<span class='_b01op'>"+result[i].nickname+"</span>"
-                 		         +"</div>"
-                 		         +"<div class='_2ph7c'>"
-                 		         +"<span class=''><span class=''>"+result[i].name.substring(1)+"</span></span>"
-                 		         +"</div></div></div></a>";
-                 		         }
+	                  	str+="<a class='_ndl3t _4jr79' href='/member/"+result[i].nickname.substring(1)+"'>"
+	           		         		+"<div class='_o92vn'>";
+	           		         
+	           		         //프로필사진
+	           		         //result[i].profilephoto.length==0 || result[i].profilephoto == "" 
+	           		         if(result[i].profilephoto == null){
+	           		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/resources/img/emptyProfile.jpg'; style='height:24px; width:24px; border-radius:50%;'></span>";
+	           		       	  } else{
+	           		        	str+="<span class='_po4xn coreSpriteHashtag'><img src='/displayFile?fileName="+result[i].profilephoto+"'; style='height:24px; width:24px; border-radius:50%;'></span>";
+	           		       		  }
+	           		         
+	           		   str+="<div class='_poxna'>"
+	           		         +"<div class='_lv0uf'>"
+	           		         +"<span class='_b01op'>"+result[i].nickname+"</span>"
+	           		         +"</div>"
+	           		         +"<div class='_2ph7c'>";
+	           		         if(result[i].name!=null) {
+	           		         	str+="<span class=''><span class=''>"+result[i].name.substring(1)+"</span></span>";
+	           		         } else {
+	           		        	 str+="<span class=''><span class=''></span></span>";
+	           		         }
+	           		      str+="</div></div></div></a>";
+                 	}
                   	   
             			else if(result[i].score==0){
              				result[i] = null;
