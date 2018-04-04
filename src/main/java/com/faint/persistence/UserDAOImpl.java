@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.faint.domain.SearchCriteria;
 import com.faint.domain.UserVO;
+import com.faint.domain.user;
 import com.faint.dto.FollowDTO;
 import com.faint.dto.LoginDTO;
 
@@ -199,7 +200,13 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public UserVO read(Integer id) throws Exception{
 		return session.selectOne(namespace + ".read", id);
-	};
+	}
+	
+	//회원정보읽기11
+	@Override
+	public user read1(String email) throws Exception{
+		return session.selectOne(namespace + ".read1", email);
+	}
 	
 	//닉네임 체크
 	@Override
@@ -237,5 +244,20 @@ public class UserDAOImpl implements UserDAO {
 		vo.setId(id);
 		vo.setProfilephoto(url);
 		return session.update(namespace + ".updatePhoto", vo);
-	};
+	}
+	
+	
+	// 차단 IP ban   --> ip 차단 
+	@Override
+	public List<String> find_ip_ban_list() {
+
+		return session.selectList(namespace+".find_ip_ban_list");
+	}
+	
+	@Override  // 차단 ip 첨가 
+	public void insert_ip_ban(String ip) {
+		System.out.println("아이피 차단하러 왔지요 ");
+		session.insert(namespace+".insert_ip_ban",ip);
+	}
+	
 }

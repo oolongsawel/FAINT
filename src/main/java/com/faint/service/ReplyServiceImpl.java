@@ -32,4 +32,12 @@ public class ReplyServiceImpl implements ReplyService{
 		dao.delete(id);
 	}
 	
+	@Override
+	public Integer writeCount(ReplyVO vo) {
+		
+		System.out.println("ssososo여기서부터 죽네 ");
+		// TODO Auto-generated method stub
+		return dao.writeCount(vo);
+	}
+	
 }

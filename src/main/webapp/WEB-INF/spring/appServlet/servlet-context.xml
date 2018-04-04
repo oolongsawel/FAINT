@@ -47,6 +47,24 @@
 	
 	<context:component-scan base-package="com.faint.sns" />
 	
+	<!-- 브라우저 캐시 지우기 (뒤로가기 방지) -->
+	<interceptors>
+	     <interceptor>
+	          <mapping path="/**"/>
+	          <beans:bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+	               <beans:property name="cacheSeconds" value="0"/>
+	          </beans:bean>
+	     </interceptor>
+	</interceptors>
+	
+		<!-- 컨트롤러로 요청이 가기전에 인터셉트-->
+		<interceptors>
+			<interceptor>
+				<mapping path="/main/**"/>
+				<beans:bean class="com.faint.interceptor.IPCheckInterceptor"/>
+			</interceptor>	
+		</interceptors>
+	
 	
 	
 	<!-- auth interceptor : 로그인 안한 유저의 경우 login창으로 이동시킴 -->

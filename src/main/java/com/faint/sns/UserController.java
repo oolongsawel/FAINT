@@ -2,6 +2,7 @@ package com.faint.sns;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;
@@ -54,6 +56,12 @@ public class UserController {
 
 	@Inject
 	private UserService service;
+	
+	@Autowired
+	BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+	public void setBcryptPasswordEncoder(BCryptPasswordEncoder bcryptPasswordEncoder) {
+		this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+	}
 
 	//유저 등록
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -70,6 +78,12 @@ public class UserController {
     	service.regist(user);
         rttr.addFlashAttribute("msg" , "가입시 사용한 이메일로 인증해주세요");
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/login_view")
+	public String login_view(Model model, Principal principal) {
+		model.addAttribute("principal", principal);
+		return "login";
 	}
 
     //유저 email 중복 체크

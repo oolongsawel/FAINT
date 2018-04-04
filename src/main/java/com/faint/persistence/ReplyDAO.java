@@ -11,5 +11,8 @@ public interface ReplyDAO {
 	public List<ReplyVO> read(Integer postid) throws Exception;
 	
 	public void delete(Integer id) throws Exception;
+	
+	//개인 하루 글 작성 개수 계산
+	public Integer writeCount(ReplyVO vo);
 
 }

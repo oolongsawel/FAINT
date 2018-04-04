@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.faint.domain.SearchCriteria;
 import com.faint.domain.UserVO;
+import com.faint.domain.user;
 import com.faint.dto.FollowDTO;
 import com.faint.dto.LoginDTO;
 
@@ -60,6 +61,10 @@ public interface UserDAO {
 
 	public void successAuth (UserVO vo) throws Exception;  // 인증완료로 인한인증키 삭제 
 	
+	public List<String> find_ip_ban_list();  //	 i ip 차단 리스트 뽑
+	
+	public void insert_ip_ban(String ip);   //ip  -insert 
+	
 	// ======================유저정보 읽기======================
 
 	public String getUserProfile(int id) throws Exception;  //유저 프로필 사진 
@@ -76,6 +81,8 @@ public interface UserDAO {
 
 	public UserVO read(Integer id) throws Exception; //회원정보읽기
 	
+	public user read1(String email) throws Exception; //회원정보읽기121
+	
 	public int chkNick(String nickname) throws Exception; //닉네임 체크
 
 	public int update(UserVO vo) throws Exception; //유저정보 변경
@@ -87,4 +94,6 @@ public interface UserDAO {
 	public UserVO naverReadUser(LoginDTO dto) throws Exception; // 네이버 유저읽기( 아직 안됨)
 	
 	public void naverInsertUser(LoginDTO dto) throws Exception; // 네이버 등
+	
+	
 }

@@ -140,11 +140,11 @@ article.post-wrap .post-username, article.post-wrap .comment-username, article.p
 }
 
  .navbar-default .logo{
-    width: 160px;
+    width: 140px;
     height: 30px;
     display: inline-block;
-    background-size: 350px;
-    background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/abfe22.png");
+    background-size: 100px;
+    background-image: url("/resources/image/1_Primary.png");
     background-position: -149px 0;
 } 
 
