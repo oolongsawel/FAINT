@@ -145,7 +145,7 @@
 		<!-- 프사, 닉네임 -->
 		<header class="_7b8eu _9dpug">
 			<div class="_82odm _i2o1o">
-				<a class="_pg23k _jpwof _gvoze" href="#" style="width: 30px; height: 30px;">
+				<a class="_pg23k _jpwof _gvoze" href="/member/${userVO.nickname}" style="width: 30px; height: 30px;">
 				<img class="_rewi8"
 				src="
 						<c:if test="${userVO.profilephoto ne null && userVO.profilephoto != '' }">
@@ -160,7 +160,7 @@
 			<div class="_j56ec">
 				<div class="">
 					<div class="_eeohz">
-						<a class="_2g7d5 notranslate _iadoq" title="${userVO.nickname }" href="#">${userVO.nickname }</a>
+						<a class="_2g7d5 notranslate _iadoq" title="${userVO.nickname }" href="/member/${userVO.nickname}">${userVO.nickname }</a>
 					</div>
 				</div>
 				<div class="_60iqg">
@@ -517,7 +517,7 @@ data={
 		});
 		
 		//작성중 다른페이지 이동 시 확인처리
-		$(".explore, .new-post, .follow-list, .account, .logo").on("click", function(event){
+		$(".explore, .new-post, .follow-list, .account, .logo, ._2g7d5, a._pg23k").on("click", function(event){
 			unloadCheck();
 		});
 	}); //ready 끝
