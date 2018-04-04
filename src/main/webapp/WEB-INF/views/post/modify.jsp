@@ -181,7 +181,10 @@
 										
 										<c:if test = "${status.index eq 0}">
 											<script>
-												$('#imgdiv').css("padding-bottom", $('#image${status.index}').height()/6+"%");
+											$('#image${status.index}').on('load', function(){
+												$('#imgdiv').css("padding-bottom", $(this).height()/6+"%");
+												
+											})
 												$("#imgdiv").attr("class", "_4rbun ${file.filter}");
 											</script>
 										</c:if> 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--헤더-->
 <html>
 <head>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -142,7 +143,7 @@ text-decoration:none;
 }
 </style>
 <body>
-
+<jsp:include page="/WEB-INF/views/include/header.jsp" flush="false"></jsp:include>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <div class="container">
     <fieldset class="form-group" style="text-align: right;">
@@ -411,9 +412,25 @@ $(document).ready(function() {
 		   
 	   }
    });
+    
+	$(".explore, .new-post, .follow-list, .account, .logo").on("click", function(event){
+		unloadCheck();
+	});
 });
 
-
+//파일 업로드 중 검색 할 경우
+// 검색 결과 없을 때 enter키 막기
+function unloadCheck(){
+	var result = confirm("작성을 중지하고 나가시겠습니까?");
+	   console.log(result);
+	   if(result){
+		   //event.preventDefault();
+		   $(".image-cancel").click();
+		   //return true;
+	   }else{
+		   event.preventDefault();
+	   } 
+}
 
 var num = 0;
 function readImage(files) {
@@ -499,5 +516,6 @@ function selectUploadImaage(obj){
 		
 	}
 }
+
 </script>
 </html>

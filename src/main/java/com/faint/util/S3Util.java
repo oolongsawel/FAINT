@@ -14,8 +14,8 @@ import java.util.List;
 
 public class S3Util {
 
-    private String accessKey = "AKIAIENQYPP4WBKIJFNQ"; // 엑세스 키
-    private String secretKey = "NLzrAGJKr93Bf3hs0Wu5g/5Yav0/baPtAW25xz6s"; // 보안 엑세스 키      
+    private String accessKey = "key"; // 엑세스 키
+    private String secretKey = "key"; // 보안 엑세스 키      
 
     private AmazonS3 conn;
 
@@ -56,6 +56,8 @@ public class S3Util {
 
     // 파일 삭제
     public void fileDelete(String bucketName, String fileName) {
+    	System.out.println("fileName : " + fileName);
+    	
         String imgName = (fileName).replace(File.separatorChar, '/');
         conn.deleteObject(bucketName, imgName);
         System.out.println("삭제성공");

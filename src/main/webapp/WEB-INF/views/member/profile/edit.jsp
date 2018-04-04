@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -11,7 +10,11 @@
 
 </head>
 <link href="../../resources/css/style.css" rel="stylesheet" type="text/css">
-
+<style>
+h2{
+	margin:0;
+}
+</style>
 <script>
 //프로필 수정 후 로딩 될때 메시지 띄우기
 	if ('${result}' == "profileEdit") {
@@ -19,6 +22,7 @@
 		alert("프로필이 저장되었습니다.");
 	}
 </script>
+	<jsp:include page="/WEB-INF/views/include/header.jsp" flush="false"></jsp:include>
 <body class style="">
 <span id="react-root" aria-hidden="false">
 	<section class="_sq4bv _29u45"> 

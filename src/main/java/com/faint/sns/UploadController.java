@@ -171,20 +171,9 @@ public class UploadController {
 		logger.info("delete file: "+fileName);
 		
 		String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
-		
-		//확장자 이름 추출
-		MediaType mType = MediaUtils.getMediaType(formatName);
-		
-		//이미지파일인경우 원본파일 먼저 삭제
-		if(mType != null) {
-			String front = fileName.substring(0, 12);
-			String end = fileName.substring(14);
-			//파일삭제
-			new File(uploadPath + (front+end).replace('/',File.separatorChar)).delete();
-		}
-		//일반 파일 삭제
-		new File(uploadPath + fileName.replace('/',File.separatorChar)).delete();
-		
+		String inputDirectory = "faint1122";
+        s3.fileDelete(bucketName, inputDirectory+fileName);
+        		
 		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 }

@@ -80,7 +80,7 @@
 <body>
 
 	<nav class="navbar navbar-default">
-	<div class="nav-wrap">
+	<div class="nav-wrap" style="display: block;">
 		<a class="logo pull-left" href="/"></a>
 		<form class="search-form" action="/search/search" method="get">
 			<input class="textInput" type="text" name='inputKeyword'
@@ -257,7 +257,7 @@ function searchAjax(){
                 	for(var i=0; i<result.length; i++) {
                 		 if(result[i].type==0 && result[i].tagname!=null) {
              		    	console.log("태그다");
-                 		   str+="<a class='_ndl3t _4jr79' href='/search/tags?name="+result[i].tagname.substring(1)+"'>"
+                 		   str+="<a class='_ndl3t _4jr79' onclick='unloadCheck()' href='/search/tags?name="+result[i].tagname.substring(1)+"'>"
                  		         +"<div class='_o92vn'>"
                  		         +"<span class='_po4xn coreSpriteHashtag'><img src='/resources/image/hashtag.jpg' style='height:23px; width:23px;'></span>"
                  		         +"<div class='_poxna'>"
@@ -272,7 +272,7 @@ function searchAjax(){
                  		// 사람 검색
                  		else if(result[i].type==1 && result[i].nickname!=null) {
                  			console.log("이름이다");
-                 		   str+="<a class='_ndl3t _4jr79' href='/member/"+result[i].nickname.substring(1)+"'>"
+                 		   str+="<a class='_ndl3t _4jr79' onclick='unloadCheck()' href='/member/"+result[i].nickname.substring(1)+"'>"
                  		         +"<div class='_o92vn'>";
                  		         
                  		         //프로필사진
@@ -294,7 +294,7 @@ function searchAjax(){
                  		 // 로케이션 검색
                  		else if(result[i].type==2 && result[i].location!=null) {
                  			console.log("지역이다");
-                 		   str+="<a class='_ndl3t _4jr79' href='/search/locations?location="+result[i].location.substring(1)+"'>"
+                 		   str+="<a class='_ndl3t _4jr79' onclick='unloadCheck()' href='/search/locations?location="+result[i].location.substring(1)+"'>"
                  		         +"<div class='_o92vn'>"
                  		         +"<span class='_po4xn coreSpriteHashtag'><img src='/resources/image/location.jpg' style='height:23px; width:23px;'></span>"
                  		         +"<div class='_poxna'>"
@@ -328,7 +328,7 @@ function searchAjax(){
             	   for(i=0; i<result.length; i++) {
                  		 if(result[i].type==0 && result[i].tagname!=null) {
                		    	console.log("태그다");
-                   		   str+="<a class='_ndl3t _4jr79' href='/search/tags?name="+result[i].tagname.substring(1)+"'>"
+                   		   str+="<a class='_ndl3t _4jr79' onclick='unloadCheck()' href='/search/tags?name="+result[i].tagname.substring(1)+"'>"
                    		         +"<div class='_o92vn'>"
                    		         +"<span class='_po4xn coreSpriteHashtag'><img src='/resources/image/hashtag.jpg' style='height:23px; width:23px;'></span>"
                    		         +"<div class='_poxna'>"
@@ -358,7 +358,7 @@ function searchAjax(){
             	  for(var i=0; i<result.length; i++) {
             		  if(result[i].type==1 && result[i].nickname!=null) {
                  			console.log("이름이다");
-                 		   str+="<a class='_ndl3t _4jr79' href='/member/"+result[i].nickname.substring(1)+"'>"
+                 		   str+="<a class='_ndl3t _4jr79' onclick='unloadCheck()' href='/member/"+result[i].nickname.substring(1)+"'>"
                  		         +"<div class='_o92vn'>"
                  		         +"<span class='_po4xn coreSpriteHashtag'></span>"
                  		         +"<div class='_poxna'>"
