@@ -111,9 +111,33 @@
 ._sideSeparator:eq(2){
    overflow:auto;
 }
+
+.mainBox {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  bottom: 5%;
+  left: 43%;
+  text-align: center;
+  display: none;
+  z-index: 2;
+}
+  .inBox {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    line-height: 70px;
+  }
+  .inBox:hover {
+  background-color: #000;
+  transition: all linear 0.5s;
+  }
 </style>
 
 <body>
+
 <script id="modalPost" type="text/x-handlebars-template">
 <div id="myModal" class="postModal">
    <span class="close">&times;</span>
@@ -322,10 +346,13 @@ function getPostList(){
       $(".imageContainer:eq("+index+")").append(str);
       
       //이미지에 마우스올릴 때
-      $(".postImage").mouseenter( function(){$(this).siblings("div").css("display", "block")});
+      $(".postImage").mouseenter( function(){
+   	  	 $(".postImage").siblings("div").css("display", "none");
+    	 $(this).siblings("div").css("display", "block")
+    	 });
       
       //이미지에서 벗어날 때
-      $(".postImage").siblings("div").mouseleave(function(event){$(this).css("display", "none")});
+      $(".postImage").siblings("div").mouseleave(function(event){ $(this).css("display", "none"); });
       
       $(".imageContainer:eq("+index+")").on("click", function(){
          var pid=$(this).children("img").attr("title");
@@ -427,8 +454,8 @@ function getPostList(){
             }
          })
       })
+      
    })
-   
    var height=$(window).scrollTop(height);
 };
 
